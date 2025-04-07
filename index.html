@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式校园地图</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { 
+            width: 75%; 
+            height: 100vh;
+            float: left;
+        }
+        .control-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .audio-panel {
+            width: 25%;
+            height: 100vh;
+            float: right;
+            background: #f5f5f5;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .icon-list {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .icon-option {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .icon-option:hover {
+            border-color: #0078A8;
+        }
+        .icon-option.selected {
+            border-color: #0078A8;
+            background-color: #f0f0f0;
+        }
+        .audio-controls {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .audio-list {
+            margin-top: 20px;
+        }
+        .audio-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .audio-item button {
+            margin-left: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #0078A8;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005c8a;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .recording {
+            background-color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="control-panel">
+        <div class="icon-list">
+            <img src="icons/west_campus.png" class="icon-option" data-icon="classroom" title="教室" alt="教室">
+            <img src="icons/basic_library.png" class="icon-option" data-icon="library" title="图书馆" alt="图书馆">
+            <img src="icons/office.png" class="icon-option" data-icon="cafe" title="餐厅" alt="餐厅">
+            <img src="icons/cafe.png" class="icon-option" data-icon="sports" title="体育设施" alt="体育设施">
+        </div>
+    </div>
+    <div class="audio-panel">
+        <h2>音频控制面板</h2>
+        <div class="audio-controls">
+            <h3>录制新音频</h3>
+            <input type="text" id="audioName" placeholder="输入音频名称" style="width: 100%; margin-bottom: 10px; padding: 5px;">
+            <button id="recordButton">开始录音</button>
+            <button id="stopButton" disabled>停止录音</button>
+            <div id="recordingStatus"></div>
+        </div>
+        <div class="audio-controls">
+            <h3>自定义声音谜题</h3>
+            <input type="text" id="uploadAudioName" placeholder="输入音频名称" style="width: 100%; margin-bottom: 10px; padding: 5px;">
+            <input type="file" id="audioFileInput" accept="audio/*" style="margin-bottom: 10px;">
+            <button id="uploadButton">上传音频</button>
+        </div>
+        <div class="audio-list">
+            <h3>自定义声音谜题</h3>
+            <div id="audioFiles"></div>
+        </div>
+        <div class="audio-list">
+            <h3>声音谜题（不可删除）</h3>
+            <div id="defaultAudioFiles"></div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map.js"></script>
+</body>
+</html>
