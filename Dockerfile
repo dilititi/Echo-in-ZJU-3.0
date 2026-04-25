@@ -22,5 +22,5 @@ ENV SECRET_KEY=your_secret_key_here
 ENV API_KEY=default_api_key
 ENV PORT=10000
 
-# 启动命令（shell格式，支持环境变量展开）
-CMD gunicorn --bind 0.0.0.0:${PORT} server:app
+# 启动命令
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --timeout 120 server:app"]
