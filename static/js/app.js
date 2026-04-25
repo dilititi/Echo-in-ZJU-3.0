@@ -2645,7 +2645,7 @@ const App = {
             popup.style.animation = 'unlockPop 0.3s ease-in reverse';
             setTimeout(() => popup.remove(), 300);
         }, 2000);
-    }},
+    },
 
     /* ==========================================================
        图层切换功能 (Layer Switching)
@@ -2714,41 +2714,12 @@ const App = {
     setSatelliteLayer(mapContainer) {
         document.body.removeAttribute('data-theme');
         
-        // 使用高德卫星地图作为示例
-        if (!this.satelliteLayer) {
-            // 对于自定义坐标系统，我们不能直接用标准tileLayer
-            // 所以显示提示或添加背景图
-            mapContainer.style.backgroundColor = '#2a4b29';
-            
-            // 添加一个简单的卫星效果
-            if (!document.getElementById('satellite-overlay-style')) {
-                const style = document.createElement('style');
-                style.id = 'satellite-overlay-style';
-                style.textContent = `
-                    .satellite-grid {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background-image: 
-                            linear-gradient(rgba(30, 60, 20, 0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(30, 60, 20, 0.1) 1px, transparent 1px);
-                        background-size: 50px 50px;
-                        pointer-events: none;
-                        z-index: 1;
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-            
-            let overlay = document.querySelector('.satellite-grid');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.className = 'satellite-grid';
-                mapContainer.appendChild(overlay);
-            }
-        }
+        // 卫星模式使用绿色背景
+        mapContainer.style.backgroundColor = '#2a4b29';
+        
+        // 移除之前的grid overlay
+        const oldOverlay = document.querySelector('.satellite-grid');
+        if (oldOverlay) oldOverlay.remove();
     },
 
     /* ==========================================================
