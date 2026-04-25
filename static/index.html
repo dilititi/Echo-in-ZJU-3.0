@@ -77,6 +77,32 @@
             font-family: var(--font-body) !important; color: var(--text-dark) !important;
         }
         .leaflet-control-attribution a { color: var(--accent) !important; }
+        
+        /* Leaflet Popup (地标弹窗) */
+        .leaflet-popup-content-wrapper {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 0;
+            box-shadow: 0 0 0 1px var(--gold-dark), 0 8px 32px rgba(0,0,0,.6);
+        }
+        .leaflet-popup-content-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+        }
+        .leaflet-popup-content {
+            color: var(--text-dark);
+            margin: 14px 18px;
+            line-height: 1.75;
+        }
+        .leaflet-popup-tip {
+            background: var(--bg-card-alt);
+            border: 2px solid var(--gold);
+        }
 
         /* =====================================================
            Top Toolbar
