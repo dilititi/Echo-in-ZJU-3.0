@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=your_secret_key_here
+      - API_KEY=default_api_key
+      # OSS配置（可选）
+      # - OSS_ACCESS_KEY_ID=your_access_key_id
+      # - OSS_ACCESS_KEY_SECRET=your_access_key_secret
+      # - OSS_BUCKET_NAME=your_bucket_name
+      # - OSS_ENDPOINT=your_endpoint
+    volumes:
+      - ./local_storage:/app/local_storage
+      - ./default_audio:/app/default_audio
+    restart: unless-stopped
