@@ -955,17 +955,43 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
 
 /* 12. Sound wall post — Enter key + loading guard */
 (function () {
+    function renderWall() {
+        const list = document.getElementById('soundWallList');
+        if (!list) return;
+        const messages = (typeof Storage !== 'undefined' && Storage.socialData)
+            ? Storage.socialData.messageWall : [];
+        if (!messages.length) {
+            list.innerHTML = '<p style="opacity:.5;font-size:12px;margin:6px 0;">还没有留言，来第一个吧～</p>';
+            return;
+        }
+        list.innerHTML = messages.map(m =>
+            `<div style="padding:6px 0;border-bottom:1px solid rgba(212,175,55,.15);">
+                <span style="color:var(--gold);font-size:11px;">${m.nickname || '匿名'}</span>
+                <span style="opacity:.4;font-size:10px;margin-left:6px;">${m.timestamp}</span>
+                <div style="margin-top:2px;font-size:12px;">${m.message}</div>
+            </div>`
+        ).join('');
+    }
+
     function postMessage() {
         const input = document.getElementById('wallMessageInput');
         const msg   = input?.value.trim();
         if (!msg) return;
-        if (typeof App !== 'undefined' && App.addMessageToWall) {
-            App.addMessageToWall(msg);
+        if (typeof Storage !== 'undefined' && Storage.addMessageToWall) {
+            Storage.addMessageToWall(msg);
             input.value = '';
+            renderWall();
+            const btn = document.getElementById('postWallMessage');
+            const orig = btn.textContent;
+            btn.textContent = '✓ 已发布';
+            btn.disabled = true;
+            setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1500);
         }
     }
+
     document.getElementById('postWallMessage').addEventListener('click', postMessage);
     onEnter('wallMessageInput', postMessage);
+    renderWall();
 })();
 
 /* 13. Sound explore — Enter key to submit */
