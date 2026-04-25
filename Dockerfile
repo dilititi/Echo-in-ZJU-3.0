@@ -23,4 +23,4 @@ ENV API_KEY=default_api_key
 ENV PORT=10000
 
 # 启动命令
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --timeout 120 server:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "120", "server:app"]
