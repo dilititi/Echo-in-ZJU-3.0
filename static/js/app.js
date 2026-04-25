@@ -87,6 +87,10 @@ const App = {
             overlay.style.display = 'none';
         }
         localStorage.setItem('hasVisitedBefore', 'true');
+        this.state.allowLevel1Trigger = true;
+        this.state.allowShowLevelInfo = true;
+        this.state.allowCompleteLevel = true;
+        this.showLevelInfo(Data.levels.find(l => l.id === Storage.userProgress.currentLevel));
         this.highlightRecommendedBuildings();
     },
     
