@@ -58,8 +58,12 @@ const App = {
         
         this.initMap();
         this.initEventListeners();
+        this.initLayerSwitching();
         
         this.showAllBuildingMarkers();
+        
+        // 加载用户保存的图层
+        this.loadSavedLayer();
         
         const hasVisited = localStorage.getItem('hasVisitedBefore');
         if (!hasVisited) {
@@ -2641,7 +2645,126 @@ const App = {
             popup.style.animation = 'unlockPop 0.3s ease-in reverse';
             setTimeout(() => popup.remove(), 300);
         }, 2000);
-    }
+    }},
+
+    /* ==========================================================
+       图层切换功能 (Layer Switching)
+    =========================================================== */
+    currentLayer: 'default',
+    satelliteLayer: null,
+    defaultMapBg: null,
+
+    initLayerSwitching() {
+        // 获取图层按钮
+        const layerButtons = document.querySelectorAll('.layer-btn');
+        layerButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const layer = btn.dataset.layer;
+                this.switchLayer(layer);
+                layerButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+        
+        // 保存默认背景色
+        this.defaultMapBg = '#f5f5f5';
+    },
+
+    switchLayer(layerId) {
+        if (layerId === this.currentLayer) return;
+        this.currentLayer = layerId;
+        
+        const mapContainer = document.getElementById('map');
+        
+        switch (layerId) {
+            case 'default':
+                this.setDefaultLayer(mapContainer);
+                break;
+            case 'night':
+                this.setNightLayer(mapContainer);
+                break;
+            case 'satellite':
+                this.setSatelliteLayer(mapContainer);
+                break;
+        }
+        
+        localStorage.setItem('currentLayer', layerId);
+    },
+
+    setDefaultLayer(mapContainer) {
+        document.body.removeAttribute('data-theme');
+        mapContainer.style.backgroundColor = this.defaultMapBg;
+        
+        if (this.satelliteLayer) {
+            this.state.map.removeLayer(this.satelliteLayer);
+            this.satelliteLayer = null;
+        }
+    },
+
+    setNightLayer(mapContainer) {
+        document.body.setAttribute('data-theme', 'dark');
+        mapContainer.style.backgroundColor = '#1a1a2e';
+        
+        if (this.satelliteLayer) {
+            this.state.map.removeLayer(this.satelliteLayer);
+            this.satelliteLayer = null;
+        }
+    },
+
+    setSatelliteLayer(mapContainer) {
+        document.body.removeAttribute('data-theme');
+        
+        // 使用高德卫星地图作为示例
+        if (!this.satelliteLayer) {
+            // 对于自定义坐标系统，我们不能直接用标准tileLayer
+            // 所以显示提示或添加背景图
+            mapContainer.style.backgroundColor = '#2a4b29';
+            
+            // 添加一个简单的卫星效果
+            if (!document.getElementById('satellite-overlay-style')) {
+                const style = document.createElement('style');
+                style.id = 'satellite-overlay-style';
+                style.textContent = `
+                    .satellite-grid {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-image: 
+                            linear-gradient(rgba(30, 60, 20, 0.1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(30, 60, 20, 0.1) 1px, transparent 1px);
+                        background-size: 50px 50px;
+                        pointer-events: none;
+                        z-index: 1;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            let overlay = document.querySelector('.satellite-grid');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'satellite-grid';
+                mapContainer.appendChild(overlay);
+            }
+        }
+    },
+
+    /* ==========================================================
+       加载用户选择的图层
+    =========================================================== */
+    loadSavedLayer() {
+        const savedLayer = localStorage.getItem('currentLayer');
+        if (savedLayer) {
+            const btn = document.querySelector(`.layer-btn[data-layer="${savedLayer}"]`);
+            if (btn) {
+                document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.switchLayer(savedLayer);
+            }
+        }
+    },
 };
 
 let isAppInitialized = false;

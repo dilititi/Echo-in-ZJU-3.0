@@ -46,6 +46,9 @@
             --c-memory:  #F39C12;
         }
 
+        /* =====================================================
+           夜间模式（深色）
+        ===================================================== */
         [data-theme="light"] {
             --bg-primary:   #f4efe4;
             --bg-secondary: #e8dfc8;
@@ -53,6 +56,18 @@
             --bg-card-alt:  #0d1b2a;
             --text-light:   #1b263b;
             --text-dark:    #faf3e0;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary:   #0d0d12;
+            --bg-secondary: #141420;
+            --bg-card:      #1a1a2e;
+            --bg-card-alt:  #16162b;
+            --text-light:   #e8e8f0;
+            --text-dark:    #f0f0f5;
+            --gold:         #e6c35c;
+            --gold-light:   #f7e39b;
+            --gold-dark:    #b8960c;
         }
 
         /* =====================================================
@@ -102,6 +117,56 @@
         .leaflet-popup-tip {
             background: var(--bg-card-alt);
             border: 2px solid var(--gold);
+        }
+
+        /* =====================================================
+           Layer Control (图层切换)
+        ===================================================== */
+        #layerControl {
+            position: fixed;
+            top: 62px;
+            right: 10px;
+            z-index: 3000;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+            padding: 10px 14px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 0 1px var(--gold-dark), 0 6px 24px rgba(0,0,0,.4);
+        }
+        #layerControl h4 {
+            margin: 0 0 10px;
+            font-family: var(--font-display);
+            color: var(--text-dark);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 6px;
+        }
+        .layer-btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 6px;
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid rgba(212,175,55,.45);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--t);
+            text-align: left;
+        }
+        .layer-btn:last-child {
+            margin-bottom: 0;
+        }
+        .layer-btn:hover {
+            border-color: var(--gold);
+            background: rgba(212,175,55,.12);
+        }
+        .layer-btn.active {
+            background: linear-gradient(135deg,var(--gold-dark),var(--gold));
+            color: var(--bg-primary);
+            border-color: var(--gold-light);
         }
 
         /* =====================================================
@@ -552,18 +617,21 @@
         <button class="marker-type-btn" data-type="study"  title="学习">🎓</button>
     </div>
 
-    <p class="cp-label" style="margin-top:12px;">🗺️ 地图图层</p>
-    <select id="mapLayerSelect">
-        <option value="default">默认图层</option>
-        <option value="satellite">卫星图层</option>
-        <option value="night">夜间图层</option>
-    </select>
-
     <button id="resetButton">🗑️ 清除所有标记</button>
 </div>
 
 <!-- MAP -->
 <div id="map"></div>
+
+<!-- ================================================================
+     图层控制面板
+================================================================ -->
+<div id="layerControl">
+    <h4>🗺️ 图层切换</h4>
+    <button class="layer-btn active" data-layer="default">默认图层</button>
+    <button class="layer-btn" data-layer="night">夜间模式</button>
+    <button class="layer-btn" data-layer="satellite">卫星地图</button>
+</div>
 
 <!-- ================================================================
      SIDE PANEL
