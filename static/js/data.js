@@ -109,25 +109,25 @@ const Data = {
     },
     chengjun_yuan: {
       name: '成均苑（人文古籍图书馆）',
-      image: 'layers/成均苑.png',
+      image: 'layers/成均苑（人文古籍图书馆）.png',
       position: [200, 520],
       description: '成均苑是浙江大学人文古籍图书馆，收藏珍贵古籍文献。'
     },
     qiushi_lake: {
       name: '求是湖（现已抽干）',
-      image: 'layers/求是湖.png',
+      image: 'layers/求是湖.jpg',
       position: [270, 260],
       description: '求是湖曾是校园内的景观湖，承载着浙大人的美好回忆。'
     },
     south_gate: {
       name: '南大门',
-      image: 'layers/南大门.png',
+      image: 'layers/南门.jpg',
       position: [220, 920],
       description: '南大门是浙江大学紫金港校区的主要出入口之一。'
     },
     medical_college: {
       name: '医学院',
-      image: 'layers/医学院.png',
+      image: 'layers/医学院.jpg',
       position: [480, 680],
       description: '医学院是浙江大学医学教育的重要基地。'
     },
@@ -145,7 +145,7 @@ const Data = {
     },
     chemistry_center: {
       name: '化学中心',
-      image: 'layers/化学中心.png',
+      image: 'layers/生物中心.png',
       position: [380, 220],
       description: '化学中心是化学实验教学和研究的核心场所。'
     },
@@ -217,13 +217,13 @@ const Data = {
     },
     qizhen_hotel: {
       name: '启真酒店',
-      image: 'layers/启真酒店.png',
+      image: 'layers/圆正启真酒店.jpg',
       position: [870, 320],
       description: '启真酒店是校园内的接待酒店。'
     },
     qizhen_lake: {
       name: '启真湖',
-      image: 'layers/启真湖.png',
+      image: 'layers/主图.jpg',
       position: [500, 500],
       description: '启真湖是紫金港校区的标志性景观湖。'
     },
@@ -241,7 +241,7 @@ const Data = {
     },
     nanhua_garden: {
       name: '南华园',
-      image: 'layers/南华园.png',
+      image: 'layers/南华园.jpg',
       position: [210, 720],
       description: '南华园是校园内的休闲花园。'
     },
@@ -259,37 +259,37 @@ const Data = {
     },
     life_science_college: {
       name: '生命科学学院',
-      image: 'layers/生科院.png',
+      image: 'layers/生命科学学院.jpg',
       position: [520, 720],
       description: '生命科学学院是生命科学研究和教学的重要基地。'
     },
     agricultural_college: {
       name: '农业与生物技术学院',
-      image: 'layers/农学院.png',
+      image: 'layers/农业与生物技术学院.jpg',
       position: [570, 770],
       description: '农业与生物技术学院是浙江大学历史悠久的学院之一。'
     },
     environmental_resource_college: {
       name: '环境与资源学院',
-      image: 'layers/环资学院.png',
+      image: 'layers/环境与资源学院.jpg',
       position: [620, 720],
       description: '环境与资源学院是环境与资源研究的核心力量。'
     },
     animal_science_college: {
       name: '动物科学学院',
-      image: 'layers/动科院.png',
+      image: 'layers/动物科学学院.jpg',
       position: [670, 770],
       description: '动物科学学院是动物科学研究和人才培养的重要基地。'
     },
     bioengineering_food_college: {
       name: '生物系统工程与食品科学学院',
-      image: 'layers/生工与食品学院.png',
+      image: 'layers/生物系统工程与食品科学学院.jpg',
       position: [720, 720],
       description: '生物系统工程与食品科学学院是生物工程和食品科学的交叉学科平台。'
     },
     nano_building: {
       name: '纳米楼（行政服务办事大厅）',
-      image: 'layers/纳米楼.png',
+      image: 'layers/纳米楼（行政服务大厅）.jpg',
       position: [670, 620],
       description: '纳米楼是行政服务办事大厅，提供一站式服务。'
     },
@@ -307,13 +307,13 @@ const Data = {
     },
     foreign_language_college: {
       name: '外国语学院',
-      image: 'layers/外国语学院.png',
+      image: 'layers/外国语学院.jpg',
       position: [570, 220],
       description: '外国语学院是外语教学和研究的重要基地。'
     },
     mengmingwei_building: {
       name: '蒙明伟楼',
-      image: 'layers/蒙明伟楼.png',
+      image: 'layers/蒙明伟楼.jpg',
       position: [640, 320],
       description: '蒙明伟楼是校园内的标志性建筑。'
     },
@@ -331,19 +331,19 @@ const Data = {
     },
     public_administration_college: {
       name: '公共管理学院',
-      image: 'layers/公共管理学院.png',
+      image: 'layers/公共管理学院.jpg',
       position: [380, 480],
       description: '公共管理学院致力于公共管理研究和人才培养，服务国家治理现代化。'
     },
     zhu_kezhen_college: {
       name: '竺可桢学院',
-      image: 'layers/竺可桢学院.png',
+      image: 'layers/竺可桢学院.jpg',
       position: [410, 510],
       description: '竺可桢学院是浙江大学拔尖创新人才培养的荣誉学院，以竺可桢老校长命名。'
     },
     humanities_college: {
       name: '人文学院',
-      image: 'layers/人文学院.png',
+      image: 'layers/文学院.jpg',
       position: [180, 550],
       description: '人文学院是浙江大学人文学科教学与研究的重要基地，传承中华优秀传统文化。'
     },
@@ -355,7 +355,7 @@ const Data = {
     },
     education_college: {
       name: '教育学院',
-      image: 'layers/教育学院.png',
+      image: 'layers/教育学院.jpg',
       position: [220, 610],
       description: '教育学院是教育科学研究和教师培养的重要基地。'
     },
@@ -379,13 +379,13 @@ const Data = {
     },
     medical_complex: {
       name: '医学院综合楼',
-      image: 'layers/医学院综合楼.png',
+      image: 'layers/医学院.jpg',
       position: [510, 700],
       description: '医学院综合楼是医学教育和研究的核心建筑。'
     },
     animal_experiment_center: {
       name: '动物实验中心',
-      image: 'layers/动物实验中心.png',
+      image: 'layers/医学专业图书馆.png',
       position: [550, 730],
       description: '动物实验中心是生命科学和医学研究的重要实验平台。'
     },
@@ -403,7 +403,7 @@ const Data = {
     },
     computing_center: {
       name: '计算中心',
-      image: 'layers/计算中心.png',
+      image: 'layers/计算中心（机房）.png',
       position: [580, 350],
       description: '计算中心是校园信息化和计算服务的重要支撑平台。'
     },
@@ -415,7 +415,7 @@ const Data = {
     },
     art_archaeology_museum: {
       name: '艺术与考古博物馆',
-      image: 'layers/艺术与考古博物馆.png',
+      image: 'layers/艺博馆.jpg',
       position: [320, 600],
       description: '艺术与考古博物馆是浙江大学重要的文化展示和研究机构。'
     },
@@ -451,13 +451,13 @@ const Data = {
     },
     medical_complex_2: {
       name: '医学院综合楼',
-      image: 'layers/医学院综合楼.png',
+      image: 'layers/医学院.jpg',
       position: [520, 710],
       description: '医学院综合楼是医学教育和研究的核心建筑。'
     },
     animal_experiment_center_2: {
       name: '动物实验中心',
-      image: 'layers/动物实验中心.png',
+      image: 'layers/医学专业图书馆.png',
       position: [560, 740],
       description: '动物实验中心是生命科学和医学研究的重要实验平台。'
     },
@@ -475,7 +475,7 @@ const Data = {
     },
     computing_center_2: {
       name: '计算中心',
-      image: 'layers/计算中心.png',
+      image: 'layers/计算中心（机房）.png',
       position: [590, 360],
       description: '计算中心是校园信息化和计算服务的重要支撑平台。'
     },
@@ -487,7 +487,7 @@ const Data = {
     },
     art_archaeology_museum_2: {
       name: '艺术与考古博物馆',
-      image: 'layers/艺术与考古博物馆.png',
+      image: 'layers/艺博馆.jpg',
       position: [330, 610],
       description: '艺术与考古博物馆是浙江大学重要的文化展示和研究机构。'
     },
@@ -523,13 +523,13 @@ const Data = {
     },
     medical_complex_3: {
       name: '医学院综合楼',
-      image: 'layers/医学院综合楼.png',
+      image: 'layers/医学院.jpg',
       position: [530, 720],
       description: '医学院综合楼是医学教育和研究的核心建筑。'
     },
     animal_experiment_center_3: {
       name: '动物实验中心',
-      image: 'layers/动物实验中心.png',
+      image: 'layers/医学专业图书馆.png',
       position: [570, 750],
       description: '动物实验中心是生命科学和医学研究的重要实验平台。'
     },
@@ -547,7 +547,7 @@ const Data = {
     },
     computing_center_3: {
       name: '计算中心',
-      image: 'layers/计算中心.png',
+      image: 'layers/计算中心（机房）.png',
       position: [600, 370],
       description: '计算中心是校园信息化和计算服务的重要支撑平台。'
     },
@@ -559,7 +559,7 @@ const Data = {
     },
     art_archaeology_museum_3: {
       name: '艺术与考古博物馆',
-      image: 'layers/艺术与考古博物馆.png',
+      image: 'layers/艺博馆.jpg',
       position: [340, 620],
       description: '艺术与考古博物馆是浙江大学重要的文化展示和研究机构。'
     },
