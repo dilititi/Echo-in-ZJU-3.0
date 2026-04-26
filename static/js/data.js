@@ -114,10 +114,10 @@ const Data = {
       description: '成均苑是浙江大学人文古籍图书馆，收藏珍贵古籍文献。'
     },
     qiushi_lake: {
-      name: '求是湖（现已抽干）',
-      image: 'layers/求是湖.jpg',
+      name: '中心湖（现已抽干）',
+      image: 'layers/中心湖（现已抽干）.png',
       position: [270, 260],
-      description: '求是湖曾是校园内的景观湖，承载着浙大人的美好回忆。'
+      description: '中心湖曾是校园内的景观湖，承载着浙大人的美好回忆。'
     },
     south_gate: {
       name: '南大门',
@@ -698,11 +698,11 @@ const Data = {
       isPlayed: false
     },
     'qiushi_lake_puzzle': {
-      title: '求是湖往事',
-      description: `求是湖曾是紫金港校区的重要景观水体，与"求是"校训相呼应。
+      title: '中心湖往事',
+      description: `中心湖曾是紫金港校区的重要景观水体，与"求是"校训相呼应。
 湖水清澈时，倒映着周边建筑，是师生休闲散步的好去处。
 因校园建设需要，湖水曾一度抽干，但这里承载的记忆永不干涸。
-求是湖见证了紫金港校区的发展变迁。`,
+中心湖见证了紫金港校区的发展变迁。`,
       image: 'icons/west_campus.png',
       icon: 'icons/west_campus.png',
       audioPattern: '水声',

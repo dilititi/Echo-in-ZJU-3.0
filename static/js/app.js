@@ -806,10 +806,7 @@ const App = {
         
         let content = '';
         
-        // 如果有答题且未完成，显示答题界面
-        if (quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id)) {
-            content = this.renderQuizContent(quiz, building);
-        } else if (showPuzzle && displayEvent) {
+        if (showPuzzle && displayEvent) {
             // 获取建筑情绪热榜
             const emotionTag = this.getBuildingEmotionTag(buildingId);
             const hiddenBadge = displayEvent.hidden ? '<span style="background: linear-gradient(135deg, #d4af37, #f4d35e); color: #1b263b; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px;">🎭 隐藏彩蛋</span>' : '';
@@ -825,7 +822,7 @@ const App = {
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
                     </div>` : ''}
-                    ${quiz ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">📝 参与答题</button>' : ''}
+                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">📝 参与答题</button>' : ''}
                     <button id="closeBuildingInfo" style="margin-top: 15px;">关闭</button>
                 </div>
             `;
@@ -839,7 +836,7 @@ const App = {
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
                     </div>` : ''}
-                    ${quiz ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">📝 参与答题</button>' : ''}
+                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">📝 参与答题</button>' : ''}
                     <button id="closeBuildingInfo" style="margin-top: 10px;">关闭</button>
                 </div>
             `;
