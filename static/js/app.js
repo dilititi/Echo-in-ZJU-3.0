@@ -602,6 +602,11 @@ const App = {
         if (this.elements.audioPanelToggle) {
             this.elements.audioPanelToggle.addEventListener('click', () => this.toggleAudioPanel());
         }
+
+        const libraryChallengeBtn = document.getElementById('libraryChallengeBtn');
+        if (libraryChallengeBtn) {
+            libraryChallengeBtn.addEventListener('click', () => this.startLibraryChallenge());
+        }
         
         if (this.elements.resetButton) {
             this.elements.resetButton.addEventListener('click', () => {
@@ -644,21 +649,26 @@ const App = {
             console.log('showLevelInfo() 被拦截（欢迎弹窗未关闭）');
             return;
         }
-        
+
+        // 无参数调用时（levelBadge 点击）取当前关卡
+        if (!level) {
+            level = Data.levels.find(l => l.id === Storage.userProgress.currentLevel);
+        }
+        if (!level) return;
+
         const existingDiv = document.getElementById('level-info');
         if (existingDiv) existingDiv.remove();
-        
-        let tips = '';
-        if (level.id === 2) {
-            tips = '<p style="margin-top: 10px; color: #ff6600; font-weight: bold;">💡 提示：按 N 键在鼠标位置放置标记，Backspace 删除选中标记</p>';
-        } else if (level.id === 3) {
-            tips = '<p style="margin-top: 10px; color: #ff6600; font-weight: bold;">💡 提示：可以录制或上传音频</p>';
-        } else if (level.id === 4) {
-            tips = '<p style="margin-top: 10px; color: #ff6600; font-weight: bold;">💡 提示：1. 先在下方选择一个音频 2. 按 N 键在地图上放置标记（自动绑定）</p>';
-        } else if (level.id === 5) {
-            tips = '<p style="margin-top: 10px; color: #ff6600; font-weight: bold;">💡 提示：点击播放谜题音频解锁故事</p>';
-        }
-        
+
+        const levelGuides = {
+            1: { icon: '🗺️', action: '点击地图上的建筑图标，探索校园地标' },
+            2: { icon: '🔒', action: '在右侧声音面板里，播放声音谜题音频并猜测答案' },
+            3: { icon: '🎤', action: '在右侧面板录制或上传一段你的声音' },
+            4: { icon: '📌', action: '先在面板选择音频，再按 N 键在地图上放置绑定标记' },
+            5: { icon: '🏛️', action: '点击闪烁的地标，播放谜题音频解锁校园故事' },
+            6: { icon: '🎉', action: '自由探索校园，解锁更多隐藏彩蛋与社交互动' },
+        };
+        const guide = levelGuides[level.id] || {};
+
         const infoDiv = document.createElement('div');
         infoDiv.id = 'level-info';
         infoDiv.style.cssText = `
@@ -666,36 +676,131 @@ const App = {
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: white;
-            padding: 15px 30px;
+            background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+            border: 2px solid var(--art-deco-gold);
+            padding: 20px 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             z-index: 4000;
             text-align: center;
-            max-width: 500px;
+            max-width: 480px;
+            color: #f5f0e1;
         `;
         infoDiv.innerHTML = `
-            <h3 style="margin: 0 0 10px 0; color: #0078A8;">第 ${level.id} 关：${level.title}</h3>
-            <p style="margin: 0; color: #666;">${level.description}</p>
-            <p style="margin: 10px 0 0 0; font-weight: bold; color: #333;">目标：${level.target}</p>
-            ${tips}
-            <button id="closeLevelInfoBtn" style="margin-top: 15px; padding: 8px 20px; background: #0078A8; color: white; border: none; border-radius: 5px; cursor: pointer;">知道了</button>
+            <h3 style="margin:0 0 8px 0;color:var(--art-deco-gold);font-family:var(--font-display);letter-spacing:2px;">
+                第 ${level.id} 关：${level.title}
+            </h3>
+            <p style="margin:0 0 10px 0;color:#ccc;font-size:13px;">${level.description}</p>
+            <div style="background:rgba(212,175,55,0.08);border-left:3px solid var(--art-deco-gold);padding:10px 14px;border-radius:0 6px 6px 0;text-align:left;margin-bottom:12px;">
+                <p style="margin:0 0 4px 0;font-size:12px;color:#f4d35e;">🎯 本关目标</p>
+                <p style="margin:0;font-size:13px;font-weight:bold;color:#f5f0e1;">${level.target}</p>
+            </div>
+            ${guide.action ? `<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:10px 14px;text-align:left;margin-bottom:12px;">
+                <p style="margin:0;font-size:13px;color:#e0e0e0;">${guide.icon} <strong>操作：</strong>${guide.action}</p>
+            </div>` : ''}
+            <button id="closeLevelInfoBtn" style="padding:8px 24px;background:linear-gradient(135deg,var(--art-deco-gold),var(--art-deco-gold-light));color:#1b263b;border:none;border-radius:5px;cursor:pointer;font-weight:bold;font-size:13px;">知道了</button>
         `;
         document.body.appendChild(infoDiv);
-        
-        const closeBtn = document.getElementById('closeLevelInfoBtn');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                const div = document.getElementById('level-info');
-                if (div) div.remove();
-            });
-        }
-        
+
+        document.getElementById('closeLevelInfoBtn').addEventListener('click', () => {
+            const div = document.getElementById('level-info');
+            if (div) div.remove();
+        });
+
         if (level.id === 5) {
             this.startLevel5Highlight();
         } else {
             this.stopLevel5Highlight();
         }
+    },
+
+    startLibraryChallenge() {
+        const existing = document.getElementById('libraryChallengePop');
+        if (existing) existing.remove();
+
+        fetch(`${Config.serverUrl}/soundtrack_list`)
+            .then(r => r.json())
+            .then(data => {
+                const libs = Object.keys(data);
+                if (!libs.length) { alert('暂无音乐文件'); return; }
+
+                const lib = libs[Math.floor(Math.random() * libs.length)];
+                const files = data[lib];
+                const filename = files[Math.floor(Math.random() * files.length)];
+                const audioUrl = `${Config.serverUrl}/soundtrack/${encodeURIComponent(lib)}/${encodeURIComponent(filename)}`;
+
+                let challengeAudio = null;
+
+                const pop = document.createElement('div');
+                pop.id = 'libraryChallengePop';
+                pop.style.cssText = `
+                    position: fixed; top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+                    border: 2px solid var(--art-deco-gold);
+                    padding: 28px; max-width: 420px; width: 90%;
+                    border-radius: 10px; z-index: 6500;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+                    color: #f5f0e1; text-align: center;
+                `;
+                pop.innerHTML = `
+                    <h3 style="margin:0 0 6px 0;color:var(--art-deco-gold);font-family:var(--font-display);letter-spacing:2px;">🎵 图书馆闭馆音乐挑战</h3>
+                    <p style="font-size:12px;color:#aaa;margin:0 0 16px 0;">聆听音乐，猜猜是哪个图书馆的闭馆曲？</p>
+                    <button id="lcPlayBtn" style="background:linear-gradient(135deg,#1a6b3a,#2d9e5f);color:#fff;border:none;padding:9px 24px;border-radius:5px;cursor:pointer;font-size:14px;margin-bottom:14px;">▶ 播放音乐</button>
+                    <div id="lcGuessArea" style="display:none;">
+                        <p style="font-size:13px;color:#e0e0e0;margin:0 0 8px 0;">你猜是哪个图书馆？</p>
+                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
+                            <button class="lc-choice" data-val="基图" style="padding:7px 18px;background:rgba(212,175,55,0.12);color:#f4d35e;border:1px solid #d4af37;border-radius:4px;cursor:pointer;font-size:13px;">基图</button>
+                            <button class="lc-choice" data-val="主图" style="padding:7px 18px;background:rgba(212,175,55,0.12);color:#f4d35e;border:1px solid #d4af37;border-radius:4px;cursor:pointer;font-size:13px;">主图</button>
+                            <button class="lc-choice" data-val="医图" style="padding:7px 18px;background:rgba(212,175,55,0.12);color:#f4d35e;border:1px solid #d4af37;border-radius:4px;cursor:pointer;font-size:13px;">医图</button>
+                        </div>
+                        <div style="display:flex;gap:8px;justify-content:center;align-items:center;">
+                            <button id="lcRevealBtn" style="background:rgba(212,175,55,0.15);color:#f4d35e;border:1px solid #d4af37;padding:6px 14px;border-radius:4px;cursor:pointer;font-size:12px;">显示答案</button>
+                            <span id="lcAnswer" style="display:none;color:#f4d35e;font-weight:bold;font-size:14px;"></span>
+                        </div>
+                        <div id="lcResult" style="margin-top:10px;font-size:13px;min-height:20px;"></div>
+                    </div>
+                    <br>
+                    <button id="lcCloseBtn" style="margin-top:8px;background:rgba(255,255,255,0.08);color:#ccc;border:1px solid #555;padding:6px 18px;border-radius:4px;cursor:pointer;font-size:12px;">关闭</button>
+                `;
+                document.body.appendChild(pop);
+
+                document.getElementById('lcPlayBtn').onclick = () => {
+                    if (challengeAudio) { challengeAudio.pause(); challengeAudio.currentTime = 0; }
+                    challengeAudio = new Audio(audioUrl);
+                    challengeAudio.volume = 0.8;
+                    challengeAudio.play().catch(() => {});
+                    document.getElementById('lcGuessArea').style.display = 'block';
+                    document.getElementById('lcPlayBtn').textContent = '▶ 重新播放';
+                };
+
+                pop.querySelectorAll('.lc-choice').forEach(btn => {
+                    btn.onclick = () => {
+                        const chosen = btn.dataset.val;
+                        const resultEl = document.getElementById('lcResult');
+                        if (chosen === lib) {
+                            resultEl.style.color = '#2ecc71';
+                            resultEl.textContent = '✅ 回答正确！';
+                        } else {
+                            resultEl.style.color = '#e74c3c';
+                            resultEl.textContent = `❌ 答错了，正确答案是：${lib}`;
+                        }
+                        pop.querySelectorAll('.lc-choice').forEach(b => b.disabled = true);
+                    };
+                });
+
+                document.getElementById('lcRevealBtn').onclick = () => {
+                    document.getElementById('lcAnswer').textContent = `答案：${lib}`;
+                    document.getElementById('lcAnswer').style.display = 'inline';
+                    document.getElementById('lcRevealBtn').style.display = 'none';
+                };
+
+                document.getElementById('lcCloseBtn').onclick = () => {
+                    if (challengeAudio) { challengeAudio.pause(); challengeAudio = null; }
+                    pop.remove();
+                };
+            })
+            .catch(() => alert('加载音乐列表失败，请检查服务器'));
     },
 
     showLevelBuildings(level) {
@@ -810,14 +915,58 @@ const App = {
             // 获取建筑情绪热榜
             const emotionTag = this.getBuildingEmotionTag(buildingId);
             const hiddenBadge = displayEvent.hidden ? '<span style="background: linear-gradient(135deg, #d4af37, #f4d35e); color: #1b263b; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px;">🎭 隐藏彩蛋</span>' : '';
-            
+            const audioFile = this.getAudioFileByPattern(displayEvent.audioPattern);
+            const audioAnswerName = audioFile.split('/').pop().replace(/\.[^.]+$/, '');
+
             content = `
                 <div style="text-align: center;">
                     <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--art-deco-gold); margin-bottom: 15px;">
                     <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${displayEvent.title}${hiddenBadge}</h3>
                     <div style="color: #e0e0e0; line-height: 1.8; margin-bottom: 15px; text-align: left; white-space: pre-line;">${displayEvent.description}</div>
-                    <div style="margin-top: 15px; padding: 10px; background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--art-deco-gold);">
-                        <p style="margin: 0; font-size: 12px; color: #f4d35e;">🎵 音频：${displayEvent.audioPattern}</p>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--art-deco-gold); border-radius: 0 6px 6px 0;">
+                        <p style="margin: 0 0 10px 0; font-size: 12px; color: #f4d35e;">🎵 声音谜题（不可删除）</p>
+                        <button id="puzzlePlayBtn" style="
+                            background: linear-gradient(135deg, #1a6b3a, #2d9e5f);
+                            color: #fff;
+                            border: none;
+                            padding: 8px 20px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 14px;
+                            margin-bottom: 10px;
+                        ">▶ 播放音频</button>
+                        <div id="puzzleGuessArea" style="display: none; margin-top: 10px;">
+                            <p style="margin: 0 0 8px 0; font-size: 13px; color: #e0e0e0;">你猜这是什么声音？</p>
+                            <input id="puzzleGuessInput" type="text" placeholder="输入你的猜测..." style="
+                                width: 100%;
+                                box-sizing: border-box;
+                                padding: 7px 10px;
+                                border-radius: 4px;
+                                border: 1px solid var(--art-deco-gold);
+                                background: rgba(255,255,255,0.08);
+                                color: #f5f0e1;
+                                font-size: 13px;
+                                margin-bottom: 8px;
+                            ">
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 4px;">
+                                <button id="puzzleRevealBtn" style="
+                                    background: rgba(212, 175, 55, 0.15);
+                                    color: #f4d35e;
+                                    border: 1px solid var(--art-deco-gold);
+                                    padding: 6px 14px;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                ">显示答案</button>
+                                <span id="puzzleAnswer" style="
+                                    font-size: 13px;
+                                    color: #f4d35e;
+                                    font-weight: bold;
+                                    letter-spacing: 1px;
+                                    display: none;
+                                ">答案：${audioAnswerName}</span>
+                            </div>
+                        </div>
                     </div>
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
@@ -844,7 +993,30 @@ const App = {
         
         popup.innerHTML = content;
         document.body.appendChild(popup);
-        
+
+        // 绑定声音谜题播放和答案按钮
+        const puzzlePlayBtn = document.getElementById('puzzlePlayBtn');
+        if (puzzlePlayBtn && displayEvent) {
+            let puzzleAudio = null;
+            const audioFile = this.getAudioFileByPattern(displayEvent.audioPattern);
+            puzzlePlayBtn.onclick = () => {
+                if (puzzleAudio) { puzzleAudio.pause(); puzzleAudio.currentTime = 0; }
+                puzzleAudio = new Audio(audioFile);
+                puzzleAudio.volume = 0.8;
+                puzzleAudio.play().catch(() => {});
+                document.getElementById('puzzleGuessArea').style.display = 'block';
+                puzzlePlayBtn.textContent = '▶ 重新播放';
+            };
+        }
+        const puzzleRevealBtn = document.getElementById('puzzleRevealBtn');
+        if (puzzleRevealBtn) {
+            puzzleRevealBtn.onclick = () => {
+                const ans = document.getElementById('puzzleAnswer');
+                ans.style.display = 'inline';
+                puzzleRevealBtn.style.display = 'none';
+            };
+        }
+
         // 绑定答题按钮事件
         const startQuizBtn = document.getElementById('startQuizBtn');
         if (startQuizBtn) {
@@ -1575,6 +1747,25 @@ const App = {
         
         audioItem.appendChild(playButton);
         audioItem.appendChild(selectButton);
+
+        if (isDefaultAudio) {
+            const revealBtn = document.createElement('button');
+            revealBtn.textContent = '显示答案';
+            revealBtn.className = 'reveal-answer-btn';
+            revealBtn.style.cssText = 'background: rgba(212,175,55,0.15); color: #f4d35e; border: 1px solid #d4af37; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 4px;';
+
+            const answerSpan = document.createElement('span');
+            answerSpan.style.cssText = 'display:none; margin-left: 8px; color: #f4d35e; font-size: 12px; font-weight: bold;';
+            answerSpan.textContent = filename.replace(/\.[^.]+$/, '');
+
+            revealBtn.onclick = () => {
+                answerSpan.style.display = 'inline';
+                revealBtn.style.display = 'none';
+            };
+
+            audioItem.appendChild(revealBtn);
+            audioItem.appendChild(answerSpan);
+        }
         
         if (showDeleteButton) {
             const deleteButton = document.createElement('button');

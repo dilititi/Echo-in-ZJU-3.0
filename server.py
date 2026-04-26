@@ -307,6 +307,56 @@ def delete_audio():
         logger.error(f'Error in delete_audio: {str(e)}')
         return jsonify({'success': False, 'error': '服务器内部错误'}), 500
 
+@app.route('/soundtrack_list')
+@rate_limit
+def get_soundtrack_list():
+    """返回 soundtrack 子目录及其音频文件列表"""
+    try:
+        soundtrack_dir = os.path.join(os.path.dirname(__file__), 'soundtrack')
+        allowed_libs = ['基图', '主图', '医图']
+        result = {}
+        for lib in allowed_libs:
+            lib_path = os.path.join(soundtrack_dir, lib)
+            if not os.path.isdir(lib_path):
+                continue
+            files = []
+            for fname in os.listdir(lib_path):
+                fpath = os.path.join(lib_path, fname)
+                if os.path.isfile(fpath):
+                    ext = os.path.splitext(fname)[1].lower()
+                    if ext in ALLOWED_AUDIO_EXTENSIONS or ext in ['.aac', '.ogg']:
+                        files.append(fname)
+            if files:
+                result[lib] = files
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f'Error in get_soundtrack_list: {str(e)}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/soundtrack/<library>/<path:filename>')
+@rate_limit
+def serve_soundtrack(library, filename):
+    """提供图书馆闭馆音乐文件"""
+    allowed_libs = ['基图', '主图', '医图']
+    if library not in allowed_libs:
+        return jsonify({'error': 'Access denied'}), 403
+    try:
+        soundtrack_dir = os.path.join(os.path.dirname(__file__), 'soundtrack')
+        file_path = os.path.realpath(os.path.join(soundtrack_dir, library, filename))
+        lib_dir = os.path.realpath(os.path.join(soundtrack_dir, library))
+        if not file_path.startswith(lib_dir + os.sep) and file_path != lib_dir:
+            return jsonify({'error': 'Access denied'}), 403
+        if not os.path.isfile(file_path):
+            return jsonify({'error': 'File not found'}), 404
+        from mimetypes import guess_type
+        mime_type, _ = guess_type(file_path)
+        return send_file(file_path, mimetype=mime_type or 'audio/mpeg', as_attachment=False)
+    except Exception as e:
+        logger.error(f'Error in serve_soundtrack: {str(e)}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
 if __name__ == '__main__':
     logger.info('Starting Flask server...')
     try:
