@@ -719,8 +719,12 @@ const App = {
         if (existing) existing.remove();
 
         fetch(`${Config.serverUrl}/soundtrack_list`)
-            .then(r => r.json())
+            .then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
             .then(data => {
+                if (data.error) { alert('暂无音乐文件：' + data.error); return; }
                 const libs = Object.keys(data);
                 if (!libs.length) { alert('暂无音乐文件'); return; }
 
@@ -871,7 +875,7 @@ const App = {
         
         const puzzleEventId = buildingId + '_puzzle';
         const puzzleEvent = Data.puzzleEvents[puzzleEventId];
-        const showPuzzle = Storage.userProgress.currentLevel >= 5 && puzzleEvent;
+        const showPuzzle = !!puzzleEvent;
         
         // 检查是否有答题
         const quiz = Data.quizQuestions.find(q => q.buildingId === buildingId);
@@ -1261,7 +1265,7 @@ const App = {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
+            background: #3a3a3a;
             border: 3px solid var(--art-deco-gold);
             padding: 30px 40px;
             border-radius: 10px;
