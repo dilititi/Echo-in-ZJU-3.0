@@ -591,15 +591,28 @@
     </div>
 
     <div class="toolbar-sep"></div>
-    <button class="toolbar-btn" id="soundJourneyBtn">🗺️ 声音游记</button>
-    <button class="toolbar-btn" id="socialBtn">💬 社区</button>
-    <button class="toolbar-btn" id="soundModeBtn">🎧 声音探索</button>
-    <button class="toolbar-btn" id="themeToggleBtn">🌙 夜间</button>
+    <!-- Main actions visible -->
     <button class="toolbar-btn" id="helpBtn">📖 帮助</button>
+    
+    <!-- Hamburger menu for other actions -->
+    <button class="toolbar-btn" id="hamburgerBtn" title="更多功能">☰</button>
+    
     <div class="toolbar-sep"></div>
 
     <!-- Backend connection status — polled against /health -->
     <div id="serverStatus" title="后端连接状态" role="status" aria-label="后端连接状态：检测中"></div>
+</div>
+
+<!-- ================================================================
+     HAMBURGER MENU DROPDOWN
+================================================================ -->
+<div id="hamburgerMenu" style="display:none;position:fixed;top:48px;right:12px;z-index:6000;background:linear-gradient(135deg,var(--bg-card),var(--bg-card-alt));padding:10px;border:2px solid var(--gold);box-shadow:0 0 0 1px var(--gold-dark),0 8px 30px rgba(0,0,0,0.4);border-radius:4px;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+        <button class="toolbar-btn" id="soundJourneyBtn" style="width:100%;justify-content:left;">🗺️ 声音游记</button>
+        <button class="toolbar-btn" id="socialBtn" style="width:100%;justify-content:left;">💬 社区</button>
+        <button class="toolbar-btn" id="soundModeBtn" style="width:100%;justify-content:left;">🎧 声音探索</button>
+        <button class="toolbar-btn" id="themeToggleBtn" style="width:100%;justify-content:left;">🌙 夜间</button>
+    </div>
 </div>
 
 <!-- ================================================================

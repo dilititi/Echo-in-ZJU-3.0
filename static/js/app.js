@@ -58,12 +58,8 @@ const App = {
         
         this.initMap();
         this.initEventListeners();
-        this.initLayerSwitching();
         
         this.showAllBuildingMarkers();
-        
-        // 加载用户保存的图层
-        this.loadSavedLayer();
         
         const hasVisited = localStorage.getItem('hasVisitedBefore');
         if (!hasVisited) {
@@ -798,7 +794,7 @@ const App = {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
+            background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
             border: 2px solid var(--art-deco-gold);
             padding: 30px;
             max-width: 500px;
@@ -821,10 +817,10 @@ const App = {
             content = `
                 <div style="text-align: center;">
                     <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--art-deco-gold); margin-bottom: 15px;">
-                    <h3 style="font-family: var(--font-display); color: var(--art-deco-text-dark); margin: 0 0 10px 0; letter-spacing: 2px;">${displayEvent.title}${hiddenBadge}</h3>
-                    <div style="color: var(--art-deco-text-dark); line-height: 1.8; margin-bottom: 15px; text-align: left; white-space: pre-line;">${displayEvent.description}</div>
+                    <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${displayEvent.title}${hiddenBadge}</h3>
+                    <div style="color: #e0e0e0; line-height: 1.8; margin-bottom: 15px; text-align: left; white-space: pre-line;">${displayEvent.description}</div>
                     <div style="margin-top: 15px; padding: 10px; background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--art-deco-gold);">
-                        <p style="margin: 0; font-size: 12px; color: var(--art-deco-accent);">🎵 音频：${displayEvent.audioPattern}</p>
+                        <p style="margin: 0; font-size: 12px; color: #f4d35e;">🎵 音频：${displayEvent.audioPattern}</p>
                     </div>
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
@@ -838,8 +834,8 @@ const App = {
             content = `
                 <div style="text-align: center;">
                     <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--art-deco-gold); margin-bottom: 15px;">
-                    <h3 style="font-family: var(--font-display); color: var(--art-deco-text-dark); margin: 0 0 10px 0; letter-spacing: 2px;">${building.name}</h3>
-                    <p style="color: var(--art-deco-text-dark); line-height: 1.6; margin-bottom: 15px;">${building.description || ''}</p>
+                    <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${building.name}</h3>
+                    <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 15px;">${building.description || ''}</p>
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
                     </div>` : ''}
@@ -881,7 +877,7 @@ const App = {
         return `
             <div style="text-align: center;">
                 <h3 style="font-family: var(--font-display); color: var(--art-deco-gold); margin: 0 0 20px 0; letter-spacing: 2px;">📝 校史问答</h3>
-                <p style="color: var(--art-deco-text-dark); font-size: 16px; margin-bottom: 20px;">${quiz.question}</p>
+                <p style="color: #e0e0e0; font-size: 16px; margin-bottom: 20px;">${quiz.question}</p>
                 <div id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
                     ${quiz.options.map((opt, i) => `
                         <button class="quiz-option" data-index="${i}" style="
@@ -891,7 +887,7 @@ const App = {
                             border-radius: 8px;
                             cursor: pointer;
                             font-size: 14px;
-                            color: var(--art-deco-text-dark);
+                            color: #f5f0e1;
                             transition: all 0.3s ease;
                         ">${opt}</button>
                     `).join('')}
@@ -930,7 +926,7 @@ const App = {
                         <p style="margin: 0 0 10px 0; font-size: 18px; color: ${isCorrect ? '#2ECC71' : '#E74C3C'};">
                             ${isCorrect ? '✅ 回答正确！' : '❌ 回答错误'}
                         </p>
-                        <p style="margin: 0; font-size: 14px; color: var(--art-deco-text-dark);">${quiz.explanation}</p>
+                        <p style="margin: 0; font-size: 14px; color: #e0e0e0;">${quiz.explanation}</p>
                     </div>
                     <button id="closeQuizBtn" style="margin-top: 15px;">继续探索</button>
                 `;
@@ -2645,97 +2641,7 @@ const App = {
             popup.style.animation = 'unlockPop 0.3s ease-in reverse';
             setTimeout(() => popup.remove(), 300);
         }, 2000);
-    },
-
-    /* ==========================================================
-       图层切换功能 (Layer Switching)
-    =========================================================== */
-    currentLayer: 'default',
-    satelliteLayer: null,
-    defaultMapBg: null,
-
-    initLayerSwitching() {
-        // 获取图层按钮
-        const layerButtons = document.querySelectorAll('.layer-btn');
-        layerButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const layer = btn.dataset.layer;
-                this.switchLayer(layer);
-                layerButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
-        
-        // 保存默认背景色
-        this.defaultMapBg = '#f5f5f5';
-    },
-
-    switchLayer(layerId) {
-        if (layerId === this.currentLayer) return;
-        this.currentLayer = layerId;
-        
-        const mapContainer = document.getElementById('map');
-        
-        switch (layerId) {
-            case 'default':
-                this.setDefaultLayer(mapContainer);
-                break;
-            case 'night':
-                this.setNightLayer(mapContainer);
-                break;
-            case 'satellite':
-                this.setSatelliteLayer(mapContainer);
-                break;
-        }
-        
-        localStorage.setItem('currentLayer', layerId);
-    },
-
-    setDefaultLayer(mapContainer) {
-        document.body.removeAttribute('data-theme');
-        mapContainer.style.backgroundColor = this.defaultMapBg;
-        
-        if (this.satelliteLayer) {
-            this.state.map.removeLayer(this.satelliteLayer);
-            this.satelliteLayer = null;
-        }
-    },
-
-    setNightLayer(mapContainer) {
-        document.body.setAttribute('data-theme', 'dark');
-        mapContainer.style.backgroundColor = '#1a1a2e';
-        
-        if (this.satelliteLayer) {
-            this.state.map.removeLayer(this.satelliteLayer);
-            this.satelliteLayer = null;
-        }
-    },
-
-    setSatelliteLayer(mapContainer) {
-        document.body.removeAttribute('data-theme');
-        
-        // 卫星模式使用绿色背景
-        mapContainer.style.backgroundColor = '#2a4b29';
-        
-        // 移除之前的grid overlay
-        const oldOverlay = document.querySelector('.satellite-grid');
-        if (oldOverlay) oldOverlay.remove();
-    },
-
-    /* ==========================================================
-       加载用户选择的图层
-    =========================================================== */
-    loadSavedLayer() {
-        const savedLayer = localStorage.getItem('currentLayer');
-        if (savedLayer) {
-            const btn = document.querySelector(`.layer-btn[data-layer="${savedLayer}"]`);
-            if (btn) {
-                document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.switchLayer(savedLayer);
-            }
-        }
-    },
+    }
 };
 
 let isAppInitialized = false;
