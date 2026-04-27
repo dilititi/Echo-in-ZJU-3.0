@@ -1002,9 +1002,12 @@ document.getElementById('confirmResetButton').addEventListener('click', () => {
     const html = document.documentElement;
     const saved = localStorage.getItem(THEME_KEY) || 'dark';
     html.setAttribute('data-theme', saved);
-    btn.textContent = saved === 'dark' ? '☀️ 日间' : '🌙 夜间';
+    if (btn) {
+        btn.textContent = saved === 'dark' ? '☀️ 日间' : '🌙 夜间';
+    }
 
-    btn.addEventListener('click', () => {
+    if (btn) {
+        btn.addEventListener('click', () => {
         const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-theme', next);
         btn.textContent = next === 'dark' ? '☀️ 日间' : '🌙 夜间';
@@ -1014,9 +1017,12 @@ document.getElementById('confirmResetButton').addEventListener('click', () => {
 })();
 
 /* 8. Map layer selector */
-document.getElementById('mapLayerSelect').addEventListener('change', function () {
-    if (typeof App !== 'undefined' && App.showLayer) App.showLayer(this.value);
-});
+const mapLayerSelect = document.getElementById('mapLayerSelect');
+if (mapLayerSelect) {
+    mapLayerSelect.addEventListener('change', function () {
+        if (typeof App !== 'undefined' && App.showLayer) App.showLayer(this.value);
+    });
+}
 
 /* 9. Marker type buttons */
 document.querySelectorAll('.marker-type-btn').forEach(btn => {
