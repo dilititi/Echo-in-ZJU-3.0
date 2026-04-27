@@ -23,7 +23,9 @@ const Utils = {
             const parsedUrl = new URL(url);
             return parsedUrl.origin === window.location.origin || 
                    parsedUrl.origin === 'http://localhost:8000' || 
-                   parsedUrl.origin === 'http://127.0.0.1:8080';
+                   parsedUrl.origin === 'http://127.0.0.1:8080' ||
+                   parsedUrl.hostname.endsWith('.aliyuncs.com') ||
+                   parsedUrl.hostname.endsWith('.oss-cn-hangzhou.aliyuncs.com');
         } catch {
             return false;
         }
