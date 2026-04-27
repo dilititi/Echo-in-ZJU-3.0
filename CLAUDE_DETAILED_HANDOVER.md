@@ -2,6 +2,28 @@
 
 ---
 
+## 📝 最近更新记录 (2026-04-27)
+
+### ✅ Bug 修复与优化
+
+1. **修复 `app.js` 第 606 行语法错误**
+   - 问题：`document.getElementById(555'libraryChallengeBtn')` 语法错误
+   - 修复：`document.getElementById('libraryChallengeBtn')`
+   - Commit: `d47d8ce`
+
+2. **修复 `index.html` 元素不存在错误**
+   - 问题：`mapLayerSelect` 和 `themeToggleBtn` 可能不存在
+   - 修复：添加元素存在性检查，避免 `addEventListener` 报错
+   - Commit: `f922b41`
+
+3. **修复阿里云 OSS URL 验证问题**
+   - 问题：`validateUrl` 只允许本地域名
+   - 修复：添加 `.aliyuncs.com` 和 `.oss-cn-hangzhou.aliyuncs.com` 域名支持
+   - 修改文件：`static/js/utils.js`
+   - Commit: `a508bf7`
+
+---
+
 ## 📝 最近更新记录 (2026-04-26)
 
 ### ✅ 已完成的工作
