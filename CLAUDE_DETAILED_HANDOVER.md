@@ -4,6 +4,22 @@
 
 ## 📝 最近更新记录 (2026-04-27)
 
+### ✅ Soundtrack 目录添加 (重要!)
+
+1. **将 soundtrack 目录添加到 Git**
+   - 问题：部署时 `soundtrack` 目录缺失，导致服务器启动警告
+   - 解决方案：将 soundtrack/ 目录提交到 git
+   - Commit: `e6a2751`
+   - 包含 29 个音频文件（3 个图书馆闭馆音乐）
+
+**Soundtrack 目录结构：**
+```
+soundtrack/
+├── 基图/ (19首 Secret Garden 系列钢琴曲)
+├── 主图/ (8首，包括赵海洋系列钢琴曲)
+└── 医图/ (2首，包括钢琴《亲爱的小孩》)
+```
+
 ### ✅ Bug 修复与优化
 
 1. **修复 `app.js` 第 606 行语法错误**
@@ -448,14 +464,46 @@ const Storage = {
 
 ---
 
+## 🔧 `utils.js` 工具函数
+
+### validateUrl 函数 (2026-04-27 更新)
+
+```javascript
+validateUrl(url) {
+    try {
+        if (url.startsWith('/')) return true;
+        const parsedUrl = new URL(url);
+        return parsedUrl.origin === window.location.origin || 
+               parsedUrl.origin === 'http://localhost:8000' || 
+               parsedUrl.origin === 'http://127.0.0.1:8080' ||
+               parsedUrl.hostname.endsWith('.aliyuncs.com') ||
+               parsedUrl.hostname.endsWith('.oss-cn-hangzhou.aliyuncs.com');
+    } catch {
+        return false;
+    }
+}
+```
+
+**允许的域名：**
+- 相对路径 (`/`)
+- 当前页面域名
+- `http://localhost:8000`
+- `http://127.0.0.1:8080`
+- `.aliyuncs.com` (阿里云 OSS 通用域名)
+- `.oss-cn-hangzhou.aliyuncs.com` (阿里云 OSS 杭州区域域名)
+
+---
+
 ## 🎯 部署前验证检查清单
 
 ### 功能检查
 - 本地访问 http://127.0.0.1:5000/health 返回
 - 地图显示正常
 - 地标加载正常
-- 音频可播放
+- 音频可播放（包括本地和 OSS）
 - 关卡引导工作正常
+- 声音面板显示默认音频无报错
+- 图书馆闭馆音乐挑战功能正常
 
 ---
 
