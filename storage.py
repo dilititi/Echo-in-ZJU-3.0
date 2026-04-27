@@ -289,5 +289,102 @@ class StorageManager:
         except Exception as e:
             logger.error(f'Error in init_default_audio: {str(e)}')
 
+    def list_soundtrack(self):
+        """列出 soundtrack 子目录文件，返回 {lib: [filename, ...]}"""
+        allowed_libs = ['基图', '主图', '医图']
+        if self.use_local_fallback:
+            return self._local_list_soundtrack(allowed_libs)
+        else:
+            return self._oss_list_soundtrack(allowed_libs)
+
+    def get_soundtrack_url(self, lib, filename):
+        """获取 soundtrack 文件 URL"""
+        if self.use_local_fallback:
+            return f'/local_soundtrack/{lib}/{filename}'
+        else:
+            oss_key = f'soundtrack/{lib}/{filename}'
+            return self._oss_get_url(oss_key)
+
+    def _local_list_soundtrack(self, allowed_libs):
+        """本地列出 soundtrack"""
+        soundtrack_dir = os.path.join(os.path.dirname(__file__), 'soundtrack')
+        result = {}
+        audio_exts = ALLOWED_AUDIO_EXTENSIONS | {'.aac', '.ogg'}
+        for lib in allowed_libs:
+            lib_path = os.path.join(soundtrack_dir, lib)
+            if not os.path.isdir(lib_path):
+                continue
+            files = [f for f in os.listdir(lib_path)
+                     if os.path.isfile(os.path.join(lib_path, f))
+                     and os.path.splitext(f)[1].lower() in audio_exts]
+            if files:
+                result[lib] = files
+        return result
+
+    def _oss_list_soundtrack(self, allowed_libs):
+        """OSS 列出 soundtrack"""
+        try:
+            result = {}
+            for lib in allowed_libs:
+                prefix = f'soundtrack/{lib}/'
+                files = []
+                for obj in oss2.ObjectIterator(self.bucket, prefix=prefix):
+                    fname = obj.key[len(prefix):]
+                    if fname:
+                        files.append(fname)
+                if files:
+                    result[lib] = files
+            return result
+        except Exception as e:
+            logger.error(f'Error in OSS list soundtrack: {str(e)}')
+            return {}
+
+    def init_soundtrack(self):
+        """启动时将 soundtrack/ 目录下的文件上传到 OSS（仅 OSS 模式）"""
+        if self.use_local_fallback:
+            logger.info('Local fallback mode, skipping soundtrack OSS upload')
+            return
+
+        soundtrack_dir = os.path.join(os.path.dirname(__file__), 'soundtrack')
+        if not os.path.isdir(soundtrack_dir):
+            logger.warning(f'Soundtrack directory not found: {soundtrack_dir}')
+            return
+
+        allowed_libs = ['基图', '主图', '医图']
+        audio_exts = ALLOWED_AUDIO_EXTENSIONS | {'.aac', '.ogg'}
+        upload_count = 0
+
+        # 获取 OSS 上已有的 soundtrack 文件
+        existing = set()
+        try:
+            for obj in oss2.ObjectIterator(self.bucket, prefix='soundtrack/'):
+                existing.add(obj.key)
+        except Exception as e:
+            logger.error(f'Failed to list existing soundtrack files in OSS: {str(e)}')
+            return
+
+        for lib in allowed_libs:
+            lib_path = os.path.join(soundtrack_dir, lib)
+            if not os.path.isdir(lib_path):
+                continue
+            for fname in os.listdir(lib_path):
+                fpath = os.path.join(lib_path, fname)
+                if not os.path.isfile(fpath):
+                    continue
+                if os.path.splitext(fname)[1].lower() not in audio_exts:
+                    continue
+                oss_key = f'soundtrack/{lib}/{fname}'
+                if oss_key in existing:
+                    continue
+                try:
+                    with open(fpath, 'rb') as f:
+                        self.bucket.put_object(oss_key, f)
+                    logger.info(f'Uploaded soundtrack: {oss_key}')
+                    upload_count += 1
+                except Exception as e:
+                    logger.error(f'Failed to upload soundtrack {oss_key}: {str(e)}')
+
+        logger.info(f'Soundtrack init done, uploaded {upload_count} files')
+
 # 全局存储管理器实例
 storage_manager = StorageManager()
