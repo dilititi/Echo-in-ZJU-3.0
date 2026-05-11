@@ -1,0 +1,14 @@
+1.
+runTests()  // 运行所有测试
+2.
+Migration.getStatus()  // 查看localStorage状态
+Migration.run()        // 手动执行迁移
+Migration.cleanOldData() // 清理旧数据
+3.
+checkConfig()  // 运行配置检查
+runTests()     // 运行测试套件
+4.
+validateUrl(url)           // URL 安全验证
+validateAudioKey(key)      // 音频 key 格式验证
+validateAudioName(name)    // 音频名称验证
+escapeHtml(text)           // XSS 防护

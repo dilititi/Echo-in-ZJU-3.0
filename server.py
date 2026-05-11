@@ -1,7 +1,8 @@
-"""音频服务器主模块"""
+"""音频服务器主模块 - 整合 3D 功能"""
 import os
+import json
 import logging
-from flask import Flask, request, jsonify, redirect, send_file
+from flask import Flask, request, jsonify, redirect, send_file, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
 
@@ -29,6 +30,16 @@ CORS(app)
 # 设置配置
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+
+# ========== 3D 功能配置 ==========
+OSM_DATA_FILE = "osm_data.json"
+
+def load_osm_data():
+    """加载 OSM 数据"""
+    if os.path.exists(OSM_DATA_FILE):
+        with open(OSM_DATA_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return None
 
 # 初始化存储（模块级别，兼容 Gunicorn 启动）
 try:
@@ -357,10 +368,59 @@ def serve_soundtrack(library, filename):
         return jsonify({'error': 'Internal server error'}), 500
 
 
+# ========== 3D 功能路由 ==========
+@app.route('/3d_index.html')
+def index_3d():
+    """3D 页面"""
+    return send_from_directory('static', '3d_index.html')
+
+
+@app.route('/api/osm-data')
+def api_osm_data():
+    """获取 OSM 数据 API"""
+    data = load_osm_data()
+    if data:
+        return jsonify(data)
+    return jsonify({'error': 'data not found'}), 404
+
+
+@app.route('/api/convert/wgs84-to-pixel')
+def api_convert_wgs84_to_pixel():
+    """坐标转换 API: 经纬度 → 像素"""
+    try:
+        lng = float(request.args.get('lng', 0))
+        lat = float(request.args.get('lat', 0))
+        
+        data = load_osm_data()
+        if not data:
+            return jsonify({'error': 'no data'}), 400
+            
+        bounds = data['osm_bounds']
+        map_size = data['map_2d']
+        
+        x = (lng - bounds['min_lng']) / (bounds['max_lng'] - bounds['min_lng'])
+        y = (lat - bounds['min_lat']) / (bounds['max_lat'] - bounds['min_lat'])
+        
+        px = x * map_size['width']
+        py = map_size['height'] - y * map_size['height']
+        
+        return jsonify({'pixel': [px, py], 'wgs84': [lng, lat]})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+
 if __name__ == '__main__':
     logger.info('Starting Flask server...')
+    logger.info('-' * 60)
+    logger.info('🎓 紫金港声音校园 - 已整合 3D 功能')
+    logger.info('-' * 60)
+    logger.info('访问地址:')
+    logger.info('  主页:   http://localhost:8081/ (2D 地图)')
+    logger.info('  3D:     http://localhost:8081/3d_index.html')
+    logger.info('-' * 60)
+    
     try:
-        port = int(os.getenv('PORT', 10000))
+        port = int(os.getenv('PORT', 8081))
         logger.info(f"Server starting on http://0.0.0.0:{port}, debug mode: {DEBUG}")
         app.run(host='0.0.0.0', port=port, debug=DEBUG)
     except Exception as e:

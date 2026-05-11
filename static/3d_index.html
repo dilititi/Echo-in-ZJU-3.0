@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紫金港 3D 声音校园</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        body { overflow: hidden; font-family: 'Microsoft YaHei', sans-serif; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+        
+        /* UI 面板 */
+        .ui-panel {
+            position: fixed;
+            background: linear-gradient(135deg, rgba(13, 27, 42, 0.95), rgba(26, 26, 46, 0.95));
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            color: #f5f0e1;
+            padding: 15px;
+            z-index: 100;
+        }
+        
+        .control-panel {
+            top: 20px;
+            left: 20px;
+            min-width: 200px;
+        }
+        
+        .info-panel {
+            top: 20px;
+            right: 20px;
+            width: 280px;
+            display: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #d4af37, #f4d35e);
+            border: none;
+            color: #1b263b;
+            padding: 8px 16px;
+            margin: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,175,55,0.4); }
+        
+        .building-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #d4af37;
+            z-index: 200;
+        }
+        
+        .error-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(139, 0, 0, 0.95);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            z-index: 300;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">🎮 正在加载 3D 紫金港...</div>
+    <div id="error-panel" class="error-panel">
+        <h3>❌ 加载失败</h3>
+        <p id="error-message">请检查网络连接</p>
+        <button class="btn" onclick="location.reload()">重试</button>
+    </div>
+    <div id="canvas-container"></div>
+    
+    <!-- 控制面板 -->
+    <div class="ui-panel control-panel">
+        <h3 style="color:#d4af37; margin-bottom:10px;">🎮 3D 校园</h3>
+        <button class="btn" onclick="toggleView()">切换视角</button>
+        <button class="btn" onclick="goTo2D()">返回 2D</button>
+        <hr style="margin:10px 0; border-color:#d4af37;">
+        <p style="font-size:12px; color:#aaa;">
+            <strong>操作说明:</strong><br>
+            左键拖拽: 旋转视角<br>
+            滚轮: 缩放<br>
+            右键拖拽: 平移<br>
+            点击建筑: 查看详情
+        </p>
+    </div>
+    
+    <!-- 建筑信息面板 -->
+    <div class="ui-panel info-panel" id="info-panel">
+        <div class="building-name" id="building-name">-</div>
+        <p id="building-desc" style="font-size:14px; line-height:1.6;"></p>
+        <hr style="margin:10px 0; border-color:#d4af37;">
+        <button class="btn" onclick="playSoundForBuilding()">🔊 播放声音</button>
+        <button class="btn" onclick="closeInfoPanel()">关闭</button>
+    </div>
+
+    <!-- Three.js (更稳定的 CDN，版本 r128) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls (必须与 r128 完全匹配) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- 坐标系统 (必须在 Three.js 之后加载) -->
+    <script src="js/coordinate_system.js"></script>
+    <!-- 数据 -->
+    <script src="js/data.js"></script>
+    
+    <script>
+        // ========== 依赖检查 ==========
+        function checkDependencies() {
+            if (typeof THREE === 'undefined') {
+                showError('Three.js 加载失败，请检查网络连接');
+                return false;
+            }
+            if (typeof THREE.OrbitControls === 'undefined') {
+                showError('OrbitControls 加载失败，请检查网络连接');
+                return false;
+            }
+            if (typeof CoordinateSystem === 'undefined') {
+                showError('坐标系统加载失败');
+                return false;
+            }
+            if (typeof Data === 'undefined') {
+                showError('数据加载失败');
+                return false;
+            }
+            return true;
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error-panel').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+            console.error('❌ ' + message);
+        }
+        
+        // ========== 3D 场景初始化 ==========
+        let scene, camera, renderer, controls;
+        let buildingMeshes = [];
+        let selectedBuilding = null;
+        
+        const buildingColors = {
+            default: 0x8b7355,
+            library: 0x4a90e2,
+            dormitory: 0x90ee90,
+            teaching: 0xffd700,
+            sports: 0xff6b6b
+        };
+        
+        async function init() {
+            // 检查依赖
+            if (!checkDependencies()) return;
+            
+            console.log('✅ 依赖检查通过');
+            
+            try {
+                // 1. 创建场景
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x0d1b2a);
+                scene.fog = new THREE.Fog(0x0d1b2a, 100, 300);
+                
+                // 2. 创建相机
+                camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+                // 初始位置先设为 0,0,0，稍后由 createBuildings() 动态设置
+                camera.position.set(0, 0, 0);
+                camera.lookAt(0, 0, 0);
+                
+                // 3. 创建渲染器
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.shadowMap.enabled = true;
+                document.getElementById('canvas-container').appendChild(renderer.domElement);
+                
+                // 4. 控制器
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.maxPolarAngle = Math.PI / 2.2;
+                
+                // 5. 光照
+                addLighting();
+                
+                // 6. 创建地面和环境
+                createGround();
+                
+                // 7. 创建建筑
+                await createBuildings();
+                
+                // 8. 事件监听
+                setupInteraction();
+                window.addEventListener('resize', onWindowResize);
+                
+                // 隐藏加载
+                document.getElementById('loading').style.display = 'none';
+                
+                console.log('✅ 3D 场景初始化完成');
+                
+                // 开始动画循环
+                animate();
+            } catch (e) {
+                console.error('❌ 初始化失败:', e);
+                showError('初始化失败: ' + e.message);
+            }
+        }
+        
+        function addLighting() {
+            // 环境光
+            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambient);
+            
+            // 主光源
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(50, 100, 50);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            scene.add(dirLight);
+            
+            // 金色补光
+            const fillLight = new THREE.DirectionalLight(0xd4af37, 0.3);
+            fillLight.position.set(-50, 50, -50);
+            scene.add(fillLight);
+        }
+        
+        function createGround() {
+    // 现在由 createBuildings 内的 updateGround() 自动处理
+    // 这里只加雾和背景色，不创建 PlaneGeometry
+}
+function createBuildings() {
+    console.log("🏗️ 计算建筑边界...");
+    console.log("🏗️ 计算建筑边界...");
+
+    // ── 第一遍：收集所有 3D 坐标，算出 XZ 边界 ──────────────────
+    let minX = Infinity, maxX = -Infinity;
+    let minZ = Infinity, maxZ = -Infinity;
+
+    for (const [key, building] of Object.entries(Data.buildings)) {
+        if (building.footprint) {
+            for (const [lng, lat] of building.footprint) {
+                const [x, , z] = CoordinateSystem.wgs84To3D(lng, lat, 0);
+                minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+                minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z);
+            }
+        } else if (building.position) {
+            const [x, , z] = CoordinateSystem.pixelTo3D(building.position[0], building.position[1], 0);
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+            minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z);
+        }
+    }
+
+    const spanX = maxX - minX;
+    const spanZ = maxZ - minZ;
+    const centerX = (minX + maxX) / 2;
+    const centerZ = (minZ + maxZ) / 2;
+    console.log(`📐 建筑范围: X[${minX.toFixed(1)}, ${maxX.toFixed(1)}] Z[${minZ.toFixed(1)}, ${maxZ.toFixed(1)}]`);
+    console.log(`📐 跨度: ${spanX.toFixed(1)} x ${spanZ.toFixed(1)}`);
+
+    // ── 调整地面和相机到建筑真实中心 ────────────────────────────
+    const groundSize = Math.max(spanX, spanZ) * 1.3; // 留 30% 边距
+    updateGround(groundSize, centerX, centerZ);
+    
+    // 把相机和 controls 对准建筑中心
+    camera.position.set(centerX - 80, 60, centerZ + 120);
+    controls.update();
+
+    // ── 第二遍：创建建筑 ──────────────────────────────────────────
+    let footprintCount = 0, boxCount = 0;
+
+    for (const [key, building] of Object.entries(Data.buildings)) {
+        try {
+        camera.position.set(centerX, groundSize * 0.6, centerZ + groundSize * 0.6);
+        controls.target.set(centerX, 0, centerZ);
+        controls.update();
+        createBoxBuilding(key, building);
+        boxCount++;
+        }
+        catch (e) {
+            console.warn('⚠️ 建筑创建失败:', key, e);
+        }
+    }
+
+    console.log(`✅ 轮廓建筑 ${footprintCount} 栋，方块建筑 ${boxCount} 栋`);
+}
+
+// 动态更新地面大小和位置
+function updateGround(size, cx, cz) {
+    // 移除旧地面和网格
+    scene.children
+        .filter(o => o.userData.isGround)
+        .forEach(o => scene.remove(o));
+
+    const groundGeo = new THREE.PlaneGeometry(size, size);
+    const groundMat = new THREE.MeshStandardMaterial({
+        color: 0x1a4a3a,
+        roughness: 0.8,
+    });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.set(cx, 0, cz);
+    ground.receiveShadow = true;
+    ground.userData.isGround = true;
+    scene.add(ground);
+
+    const divisions = Math.floor(size / 2);
+    const grid = new THREE.GridHelper(size, divisions, 0x3a5a4a, 0x2a3a2a);
+    grid.position.set(cx, 0.01, cz);
+    grid.userData.isGround = true;
+    scene.add(grid);
+
+    console.log(`✅ 地面更新: ${size.toFixed(0)} x ${size.toFixed(0)}，中心 (${cx.toFixed(1)}, ${cz.toFixed(1)})`);
+}
+
+        function createFootprintBuilding(key, building) {
+            const height = building.height || 12;
+
+            // 经纬度轮廓 → Three.js XZ 坐标（用 X/Z 平面）
+            const pts = building.footprint.map(([lng, lat]) => {
+                const [x, , z] = CoordinateSystem.wgs84To3D(lng, lat, 0);
+                return new THREE.Vector2(x, z);
+            });
+
+            const shape = new THREE.Shape(pts);
+            const geometry = new THREE.ExtrudeGeometry(shape, {
+                depth: height,
+                bevelEnabled: false,
+            });
+
+            // ExtrudeGeometry 默认沿 Z 轴挤出 → 旋转到 Y 轴向上
+            geometry.rotateX(-Math.PI / 2);
+            // 旋转后底面在 -height，平移到 y=0（贴地）
+            geometry.translate(0, 0, 0);
+
+            const material = new THREE.MeshStandardMaterial({
+                color: getBuildingColor(building.name),
+                roughness: 0.7,
+                metalness: 0.1,
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            mesh.userData = {
+                id: key,
+                name: building.name,
+                description: building.description,
+                data: building,
+            };
+
+            scene.add(mesh);
+            buildingMeshes.push(mesh);
+        }
+
+        function createBoxBuilding(key, building) {
+            const [x, , z] = CoordinateSystem.pixelTo3D(
+                building.position[0], building.position[1], 0
+            );
+            const height = building.height || 12;
+
+            const geometry = new THREE.BoxGeometry(6, height, 6);
+            const material = new THREE.MeshStandardMaterial({
+                color: getBuildingColor(building.name),
+                roughness: 0.7,
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x, height / 2, z);
+            mesh.castShadow = true;
+            mesh.userData = {
+                id: key,
+                name: building.name,
+                description: building.description,
+                data: building,
+            };
+            scene.add(mesh);
+            buildingMeshes.push(mesh);
+        }
+
+        function getBuildingColor(name) {
+            if (name.includes('图书馆'))                            return 0x4a90e2;
+            if (name.includes('舍'))                               return 0x90ee90;
+            if (name.includes('教学楼'))                            return 0xffd700;
+            if (name.includes('体育馆') || name.includes('操场'))   return 0xff6b6b;
+            if (name.includes('酒店') || name.includes('宾馆'))     return 0xda70d6;
+            return 0x8b7355;
+        }
+
+        function setupInteraction() {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+
+            renderer.domElement.addEventListener('click', (event) => {
+                mouse.x =  (event.clientX / window.innerWidth)  * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+                raycaster.setFromCamera(mouse, camera);
+                // ✅ true = 递归检测子对象（屋顶）
+                const intersects = raycaster.intersectObjects(buildingMeshes, true);
+
+                if (intersects.length > 0) {
+                    // 从命中对象向上找有 userData.id 的祖先（处理屋顶被点击）
+                    let obj = intersects[0].object;
+                    while (obj && !obj.userData.id) {
+                        obj = obj.parent;
+                    }
+                    if (obj) selectBuilding(obj);
+                }
+            });
+        }
+        
+        function selectBuilding(mesh) {
+            // 取消之前的选择
+            if (selectedBuilding) {
+                selectedBuilding.material.emissive.setHex(0x000000);
+            }
+            
+            // 选中新建筑
+            selectedBuilding = mesh;
+            mesh.material.emissive.setHex(0xd4af37);
+            
+            // 显示信息
+            showBuildingInfo(mesh.userData);
+            
+            // 聚焦
+            const targetPos = new THREE.Vector3(
+                mesh.position.x,
+                mesh.position.y + 10,
+                mesh.position.z + 30
+            );
+            smoothMoveCamera(targetPos, mesh.position);
+        }
+        
+        function showBuildingInfo(data) {
+            const panel = document.getElementById('info-panel');
+            document.getElementById('building-name').textContent = data.name;
+            document.getElementById('building-desc').textContent = data.description || '暂无描述';
+            panel.style.display = 'block';
+        }
+        
+        function closeInfoPanel() {
+            document.getElementById('info-panel').style.display = 'none';
+            if (selectedBuilding) {
+                selectedBuilding.material.emissive.setHex(0x000000);
+                selectedBuilding = null;
+            }
+        }
+        
+        function smoothMoveCamera(targetPosition, lookAt) {
+            const startPos = camera.position.clone();
+            const startTarget = controls.target.clone();
+            const duration = 1000;
+            const startTime = performance.now();
+            
+            function update() {
+                const elapsed = performance.now() - startTime;
+                const t = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - t, 3);
+                
+                camera.position.lerpVectors(startPos, targetPosition, eased);
+                controls.target.lerpVectors(startTarget, lookAt, eased);
+                
+                if (t < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            update();
+        }
+        
+        function playSoundForBuilding() {
+            if (selectedBuilding) {
+                alert(`🎵 播放 ${selectedBuilding.userData.name} 的声音！`);
+            }
+        }
+        
+        let viewMode = 0;
+        function toggleView() {
+            const views = [
+                { pos: [0, 80, 80], target: [0, 0, 0] },
+                { pos: [0, 150, 0], target: [0, 0, 0] },
+                { pos: [-50, 30, -50], target: [0, 10, 0] }
+            ];
+            viewMode = (viewMode + 1) % views.length;
+            const view = views[viewMode];
+            smoothMoveCamera(
+                new THREE.Vector3(...view.pos),
+                new THREE.Vector3(...view.target)
+            );
+        }
+        
+        function goTo2D() {
+            window.location.href = 'index.html';
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        // 启动
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 开始加载 3D 校园...');
+            init();
+        });
+    </script>
+</body>
+</html>

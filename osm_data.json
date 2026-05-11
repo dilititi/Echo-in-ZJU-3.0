@@ -1,0 +1,4064 @@
+{
+  "osm_bounds": {
+    "min_lat": 30.29689,
+    "max_lat": 30.31314,
+    "min_lng": 120.0652,
+    "max_lng": 120.08763
+  },
+  "map_2d": {
+    "width": 1000,
+    "height": 1000
+  },
+  "buildings": [
+    {
+      "osm_id": 161322492,
+      "name": "食堂",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07964968000002,
+        30.310396119999997
+      ],
+      "tags": {
+        "amenity": "public_building",
+        "building": "yes",
+        "name": "食堂"
+      }
+    },
+    {
+      "osm_id": 161324040,
+      "name": "管理学院/行政楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08330070000001,
+        30.305798326666665
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "18",
+        "height": "56",
+        "name": "管理学院/行政楼"
+      }
+    },
+    {
+      "osm_id": 161325273,
+      "name": "临水报告厅",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08348875238096,
+        30.30411718095238
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "1",
+        "height": "7",
+        "name": "临水报告厅"
+      }
+    },
+    {
+      "osm_id": 161325315,
+      "name": "东1教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08411516571427,
+        30.30459768285714
+      ],
+      "tags": {
+        "building": "university",
+        "building:levels": "5",
+        "height": "16",
+        "name": "东1教学楼"
+      }
+    },
+    {
+      "osm_id": 161325385,
+      "name": "东2教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08494832,
+        30.303646840000006
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "3",
+        "layer": "1",
+        "name": "东2教学楼"
+      }
+    },
+    {
+      "osm_id": 161393058,
+      "name": "东3教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0842409586207,
+        30.30280998275862
+      ],
+      "tags": {
+        "building": "university",
+        "name": "东3教学楼"
+      }
+    },
+    {
+      "osm_id": 161393066,
+      "name": "东4教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.084164437037,
+        30.30155627777777
+      ],
+      "tags": {
+        "building": "university",
+        "name": "东4教学楼"
+      }
+    },
+    {
+      "osm_id": 161393397,
+      "name": "紫云1舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07772788571428,
+        30.309874842857145
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "紫云1舍"
+      }
+    },
+    {
+      "osm_id": 161393402,
+      "name": "紫云2舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07761984285715,
+        30.310388842857144
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "紫云2舍"
+      }
+    },
+    {
+      "osm_id": 161393431,
+      "name": "紫云3舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07812796,
+        30.31051774
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "紫云3舍"
+      }
+    },
+    {
+      "osm_id": 161393432,
+      "name": "紫云5舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07825244,
+        30.30992792
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "紫云5舍"
+      }
+    },
+    {
+      "osm_id": 161393434,
+      "name": "紫云4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07818635999999,
+        30.3102177
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "紫云4舍"
+      }
+    },
+    {
+      "osm_id": 161416716,
+      "name": "西1教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08003472800002,
+        30.304767731999995
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "西1教学楼"
+      }
+    },
+    {
+      "osm_id": 161417065,
+      "name": "体育馆",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08444695,
+        30.308446219999997
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "1",
+        "height": "14",
+        "name": "体育馆"
+      }
+    },
+    {
+      "osm_id": 161417081,
+      "name": "风雨操场",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08594446,
+        30.308727919999995
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "3",
+        "height": "20",
+        "name": "风雨操场"
+      }
+    },
+    {
+      "osm_id": 232499325,
+      "name": "小剧场A座",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08123611666666,
+        30.30624207777778
+      ],
+      "tags": {
+        "amenity": "theatre",
+        "building": "yes",
+        "name": "小剧场A座"
+      }
+    },
+    {
+      "osm_id": 232499590,
+      "name": "西2教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08003347407406,
+        30.303934962962966
+      ],
+      "tags": {
+        "building": "university",
+        "name": "西2教学楼"
+      }
+    },
+    {
+      "osm_id": 232500019,
+      "name": "东5教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08621191304348,
+        30.304859039130445
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "4",
+        "height": "19",
+        "name": "东5教学楼"
+      }
+    },
+    {
+      "osm_id": 232500959,
+      "name": "东6东7教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0863401342105,
+        30.303213131578946
+      ],
+      "tags": {
+        "building": "university",
+        "name": "东6东7教学楼"
+      }
+    },
+    {
+      "osm_id": 237808342,
+      "name": "蓝田1舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07776265454544,
+        30.312117754545454
+      ],
+      "tags": {
+        "addr:city": "杭州",
+        "addr:housename": "浙大紫金港校区 蓝田1舍",
+        "addr:housenumber": "388",
+        "addr:postcode": "310058",
+        "addr:street": "余杭塘路",
+        "building": "dormitory",
+        "building:levels": "6",
+        "name": "蓝田1舍"
+      }
+    },
+    {
+      "osm_id": 237808500,
+      "name": "小剧场B座",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08089633333334,
+        30.306167687500007
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "5",
+        "name": "小剧场B座"
+      }
+    },
+    {
+      "osm_id": 237810385,
+      "name": "西3教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0810797142857,
+        30.304673557142856
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "西3教学楼"
+      }
+    },
+    {
+      "osm_id": 237810386,
+      "name": "西3教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08120222222222,
+        30.30427107777778
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "西3教学楼"
+      }
+    },
+    {
+      "osm_id": 237810387,
+      "name": "西3教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08130805714286,
+        30.303906157142855
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "西3教学楼"
+      }
+    },
+    {
+      "osm_id": 237810388,
+      "name": "西4教学楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08032929500003,
+        30.302657845
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "西4教学楼"
+      }
+    },
+    {
+      "osm_id": 237810389,
+      "name": "浙江大学医学院",
+      "name_en": "Zhejiang University School of Medicine",
+      "type": "university",
+      "center": [
+        120.07940246285715,
+        30.29852641428571
+      ],
+      "tags": {
+        "building": "university",
+        "name": "浙江大学医学院",
+        "name:en": "Zhejiang University School of Medicine"
+      }
+    },
+    {
+      "osm_id": 237812466,
+      "name": "浙江大学基础图书馆",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08365465714284,
+        30.30606135714286
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "4",
+        "height": "16",
+        "name": "浙江大学基础图书馆"
+      }
+    },
+    {
+      "osm_id": 237812468,
+      "name": "紫金港校医院",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08367122631577,
+        30.31158612631579
+      ],
+      "tags": {
+        "amenity": "hospital",
+        "building": "yes",
+        "healthcare": "hospital",
+        "healthcare:speciality": "general",
+        "name": "紫金港校医院"
+      }
+    },
+    {
+      "osm_id": 237812469,
+      "name": "圆正·启真酒店",
+      "name_en": "Yuanzheng Qizhen Hotel",
+      "type": "yes",
+      "center": [
+        120.08276119523812,
+        30.312627042857144
+      ],
+      "tags": {
+        "addr:housenumber": "866",
+        "addr:street": "Yuhangtang Road",
+        "building": "yes",
+        "internet_access": "wlan",
+        "name": "圆正·启真酒店",
+        "name:en": "Yuanzheng Qizhen Hotel",
+        "name:zh": "圆正·启真酒店",
+        "tourism": "hotel"
+      }
+    },
+    {
+      "osm_id": 252088095,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07667397999998,
+        30.30846414
+      ],
+      "tags": {
+        "building": "yes",
+        "leisure": "sports_centre",
+        "sport": "climbing"
+      }
+    },
+    {
+      "osm_id": 252581090,
+      "name": "金工实习中心",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07788801578947,
+        30.30214453157895
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "金工实习中心"
+      }
+    },
+    {
+      "osm_id": 252581201,
+      "name": "南华园",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08122664999998,
+        30.30039470454545
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "南华园"
+      }
+    },
+    {
+      "osm_id": 255623985,
+      "name": "浙江大学人体博物馆",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07911697727273,
+        30.29825424545454
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "浙江大学人体博物馆",
+        "tourism": "museum"
+      }
+    },
+    {
+      "osm_id": 255623986,
+      "name": "浙江大学药学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08117684000001,
+        30.29888914
+      ],
+      "tags": {
+        "building": "university",
+        "name": "浙江大学药学院"
+      }
+    },
+    {
+      "osm_id": 255623987,
+      "name": "浙江大学实验动物中心",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08142529999999,
+        30.297869400000003
+      ],
+      "tags": {
+        "building": "university",
+        "name": "浙江大学实验动物中心"
+      }
+    },
+    {
+      "osm_id": 255623995,
+      "name": "蒙民伟楼 / 图书信息C楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08562685666668,
+        30.306020276666672
+      ],
+      "tags": {
+        "building": "university",
+        "building:levels": "6",
+        "height": "20",
+        "name": "蒙民伟楼 / 图书信息C楼"
+      }
+    },
+    {
+      "osm_id": 255623996,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07774276923078,
+        30.30750752307692
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 255623997,
+      "name": "生物实验中心",
+      "name_en": "Biology Lab Center",
+      "type": "yes",
+      "center": [
+        120.07823967058823,
+        30.30005967058824
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "生物实验中心",
+        "name:en": "Biology Lab Center"
+      }
+    },
+    {
+      "osm_id": 255623998,
+      "name": "周厚复楼（化学实验中心）",
+      "name_en": "Chemistry Experimental Center",
+      "type": "yes",
+      "center": [
+        120.07856274444445,
+        30.301429766666665
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "周厚复楼（化学实验中心）",
+        "name:en": "Chemistry Experimental Center"
+      }
+    },
+    {
+      "osm_id": 288874061,
+      "name": "碧峰2舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.0769924,
+        30.31024714285714
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "碧峰2舍"
+      }
+    },
+    {
+      "osm_id": 288874062,
+      "name": "碧峰1舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07706278333335,
+        30.30972435
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "碧峰1舍"
+      }
+    },
+    {
+      "osm_id": 288874063,
+      "name": "碧峰5舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.0765331,
+        30.30960362
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "碧峰5舍"
+      }
+    },
+    {
+      "osm_id": 288874064,
+      "name": "碧峰4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07647762000002,
+        30.309912500000003
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "碧峰4舍"
+      }
+    },
+    {
+      "osm_id": 288874065,
+      "name": "碧峰3舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07640690000001,
+        30.31022712
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "碧峰3舍"
+      }
+    },
+    {
+      "osm_id": 288874844,
+      "name": "浙江大学紫金港校区",
+      "name_en": "Zhejiang University Zijingang Campus",
+      "type": "university",
+      "center": [
+        120.07682571374998,
+        30.303763295
+      ],
+      "tags": {
+        "amenity": "university",
+        "education": "university",
+        "name": "浙江大学紫金港校区",
+        "name:en": "Zhejiang University Zijingang Campus",
+        "name:zh": "浙江大学紫金港校区",
+        "wikidata": "Q8071853",
+        "wikipedia": "zh:浙江大学紫金港校区"
+      }
+    },
+    {
+      "osm_id": 302556946,
+      "name": "蓝田4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07638755833334,
+        30.311175824999996
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "蓝田4舍"
+      }
+    },
+    {
+      "osm_id": 305829554,
+      "name": "蓝田3舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07635310588235,
+        30.311874564705885
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "蓝田3舍"
+      }
+    },
+    {
+      "osm_id": 305829555,
+      "name": "蓝田5舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07718057777778,
+        30.310828133333334
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "蓝田5舍"
+      }
+    },
+    {
+      "osm_id": 305829556,
+      "name": "蓝田6舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07786072307691,
+        30.311349515384617
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "蓝田6舍"
+      }
+    },
+    {
+      "osm_id": 305829557,
+      "name": "丹阳1舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07946123999997,
+        30.311118020000002
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "丹阳1舍"
+      }
+    },
+    {
+      "osm_id": 305829558,
+      "name": "丹阳2舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07892538000002,
+        30.311029579999996
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "丹阳2舍"
+      }
+    },
+    {
+      "osm_id": 306105473,
+      "name": "白沙1舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08158610000001,
+        30.310978279999997
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "白沙1舍"
+      }
+    },
+    {
+      "osm_id": 306105478,
+      "name": "留学生宿舍",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08218670000001,
+        30.311545719999998
+      ],
+      "tags": {
+        "building": "apartments",
+        "name": "留学生宿舍"
+      }
+    },
+    {
+      "osm_id": 306105479,
+      "name": "留学生宿舍",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08187253999999,
+        30.312214779999998
+      ],
+      "tags": {
+        "building": "apartments",
+        "name": "留学生宿舍"
+      }
+    },
+    {
+      "osm_id": 306105480,
+      "name": "丹阳3,4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07894646000003,
+        30.311567079999996
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "丹阳3,4舍"
+      }
+    },
+    {
+      "osm_id": 306105481,
+      "name": "丹阳5舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07923424,
+        30.312212119999998
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "丹阳5舍"
+      }
+    },
+    {
+      "osm_id": 306105482,
+      "name": "丹阳6舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07864388,
+        30.312132299999995
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "丹阳6舍"
+      }
+    },
+    {
+      "osm_id": 306105489,
+      "name": "青溪1,2舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08017868461539,
+        30.31138463076923
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "青溪1,2舍"
+      }
+    },
+    {
+      "osm_id": 306105490,
+      "name": "青溪3,4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07999966923074,
+        30.312139776923082
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "青溪3,4舍"
+      }
+    },
+    {
+      "osm_id": 306107349,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08340682000001,
+        30.30154372
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107350,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08387696,
+        30.30154536
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107351,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08517762000001,
+        30.301562
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107352,
+      "name": "西1辅楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08074666,
+        30.30520654
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "西1辅楼"
+      }
+    },
+    {
+      "osm_id": 306107353,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08035743999999,
+        30.304832479999998
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107354,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07986762,
+        30.304380860000002
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107355,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08038468,
+        30.304381740000004
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107356,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08037318,
+        30.303936780000004
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107357,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08002606,
+        30.303305100000006
+      ],
+      "tags": {
+        "building": "yes",
+        "layer": "1"
+      }
+    },
+    {
+      "osm_id": 306107358,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08115847777779,
+        30.304511655555554
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107359,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08130505555556,
+        30.304098955555553
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107360,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07818660000001,
+        30.30181442
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107361,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07847503999999,
+        30.300586279999997
+      ],
+      "tags": {
+        "building": "yes",
+        "layer": "1"
+      }
+    },
+    {
+      "osm_id": 306107363,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07719584000002,
+        30.31006646
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107364,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07762727142858,
+        30.310131157142855
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107365,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08343865999998,
+        30.30283088
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107366,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08390514,
+        30.30283498
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107367,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08534198,
+        30.30284762
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107368,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0852619,
+        30.303721360000004
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107369,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08452848333333,
+        30.302097349999997
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107372,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08388528,
+        30.304704019999996
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "3",
+        "height": "9"
+      }
+    },
+    {
+      "osm_id": 306107373,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.083405,
+        30.304711840000003
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "3",
+        "height": "9"
+      }
+    },
+    {
+      "osm_id": 306107374,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08503172,
+        30.30470706
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "2",
+        "height": "7"
+      }
+    },
+    {
+      "osm_id": 306107375,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08484128,
+        30.30470434
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "3",
+        "height": "9"
+      }
+    },
+    {
+      "osm_id": 306107376,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0861646857143,
+        30.3041426
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107905,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08695172,
+        30.3035334
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 306107906,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08575613999999,
+        30.304826100000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 322445520,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0851993,
+        30.3103519
+      ],
+      "tags": {
+        "building": "yes",
+        "leisure": "sports_centre"
+      }
+    },
+    {
+      "osm_id": 322644189,
+      "name": "浙江大学艺术与考古博物馆",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06661974827585,
+        30.300035434482762
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "浙江大学艺术与考古博物馆",
+        "tourism": "museum",
+        "wikidata": "Q82952331"
+      }
+    },
+    {
+      "osm_id": 322644198,
+      "name": "",
+      "name_en": "",
+      "type": "bicycle_parking",
+      "center": [
+        120.08693632000002,
+        30.306462680000003
+      ],
+      "tags": {
+        "amenity": "bicycle_parking"
+      }
+    },
+    {
+      "osm_id": 408887316,
+      "name": "翠柏4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08109931333335,
+        30.312505373333334
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "翠柏4舍"
+      }
+    },
+    {
+      "osm_id": 408887320,
+      "name": "白沙3舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08242025454545,
+        30.31101390909091
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "白沙3舍"
+      }
+    },
+    {
+      "osm_id": 408887332,
+      "name": "",
+      "name_en": "",
+      "type": "bicycle_parking",
+      "center": [
+        120.08193624444445,
+        30.310504455555556
+      ],
+      "tags": {
+        "amenity": "bicycle_parking"
+      }
+    },
+    {
+      "osm_id": 408887333,
+      "name": "白沙2舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08154932999999,
+        30.310673440000006
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "白沙2舍"
+      }
+    },
+    {
+      "osm_id": 408887340,
+      "name": "翠柏1舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08129138399998,
+        30.311370172
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "翠柏1舍"
+      }
+    },
+    {
+      "osm_id": 408887342,
+      "name": "白沙4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.082324,
+        30.31066170555556
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "白沙4舍"
+      }
+    },
+    {
+      "osm_id": 408887346,
+      "name": "白沙3-4舍大厅",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08213854166668,
+        30.310811391666665
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "白沙3-4舍大厅"
+      }
+    },
+    {
+      "osm_id": 408887347,
+      "name": "翠柏3舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.0810733,
+        30.31214671538462
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "翠柏3舍"
+      }
+    },
+    {
+      "osm_id": 408887350,
+      "name": "翠柏2舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08117767142858,
+        30.31175059285714
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "翠柏2舍"
+      }
+    },
+    {
+      "osm_id": 408887354,
+      "name": "翠柏3-4舍大厅",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08124277692308,
+        30.312345169230774
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "翠柏3-4舍大厅"
+      }
+    },
+    {
+      "osm_id": 408887358,
+      "name": "翠柏1-2舍大厅",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08138771875001,
+        30.311606474999994
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "翠柏1-2舍大厅"
+      }
+    },
+    {
+      "osm_id": 408887360,
+      "name": "白沙1-2舍大厅",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.08168398333332,
+        30.310852541666666
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "白沙1-2舍大厅"
+      }
+    },
+    {
+      "osm_id": 408887361,
+      "name": "白沙综合楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08143732068966,
+        30.31037094137931
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "白沙综合楼"
+      }
+    },
+    {
+      "osm_id": 411343552,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08459286,
+        30.3000589
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 411343554,
+      "name": "",
+      "name_en": "",
+      "type": "bicycle_parking",
+      "center": [
+        120.08402859999998,
+        30.29941548
+      ],
+      "tags": {
+        "amenity": "bicycle_parking"
+      }
+    },
+    {
+      "osm_id": 411343555,
+      "name": "",
+      "name_en": "",
+      "type": "bicycle_parking",
+      "center": [
+        120.08343333333333,
+        30.299414483333333
+      ],
+      "tags": {
+        "amenity": "bicycle_parking"
+      }
+    },
+    {
+      "osm_id": 411343566,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.07810741875001,
+        30.304166837500002
+      ],
+      "tags": {
+        "amenity": "parking",
+        "highway": "pedestrian",
+        "parking": "surface"
+      }
+    },
+    {
+      "osm_id": 411343678,
+      "name": "动物科学学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08491561818185,
+        30.30012933636364
+      ],
+      "tags": {
+        "alt_name": "农生环E座",
+        "building": "university",
+        "name": "动物科学学院"
+      }
+    },
+    {
+      "osm_id": 411343679,
+      "name": "安中大楼A座",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07882820909093,
+        30.30372157272727
+      ],
+      "tags": {
+        "building": "university",
+        "name": "安中大楼A座"
+      }
+    },
+    {
+      "osm_id": 411343681,
+      "name": "安中大楼B座",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07880096666666,
+        30.30422533333333
+      ],
+      "tags": {
+        "building": "university",
+        "name": "安中大楼B座"
+      }
+    },
+    {
+      "osm_id": 411343682,
+      "name": "安中大楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07903588333333,
+        30.303972516666665
+      ],
+      "tags": {
+        "building": "university",
+        "name": "安中大楼"
+      }
+    },
+    {
+      "osm_id": 411343683,
+      "name": "月牙楼",
+      "name_en": "Crescent building",
+      "type": "university",
+      "center": [
+        120.08153686,
+        30.307529350000003
+      ],
+      "tags": {
+        "building": "university",
+        "building:levels": "5",
+        "name": "月牙楼",
+        "name:en": "Crescent building"
+      }
+    },
+    {
+      "osm_id": 411343684,
+      "name": "建工试验大厅",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07757695999999,
+        30.304249320000004
+      ],
+      "tags": {
+        "building": "university",
+        "name": "建工试验大厅"
+      }
+    },
+    {
+      "osm_id": 411343685,
+      "name": "海洋试验大厅",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07748093999999,
+        30.30522098
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海洋试验大厅"
+      }
+    },
+    {
+      "osm_id": 411343688,
+      "name": "浙江加州国际纳米技术研究所",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08403794545453,
+        30.3001076
+      ],
+      "tags": {
+        "building": "university",
+        "name": "浙江加州国际纳米技术研究所",
+        "short_name": "纳米楼"
+      }
+    },
+    {
+      "osm_id": 411343689,
+      "name": "浙江大学校友活动中心",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0836624,
+        30.300571333333327
+      ],
+      "tags": {
+        "alt_name": "李摩西楼",
+        "building": "university",
+        "name": "浙江大学校友活动中心"
+      }
+    },
+    {
+      "osm_id": 411343690,
+      "name": "浙江大学行政楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08381035999999,
+        30.29963605999999
+      ],
+      "tags": {
+        "building": "university",
+        "name": "浙江大学行政楼"
+      }
+    },
+    {
+      "osm_id": 415697310,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.0827108,
+        30.29773842
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 415697311,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.0834361,
+        30.298950119999994
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 415697313,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08354589999999,
+        30.29895226
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 415697315,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08340214999998,
+        30.29819446666667
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 415697385,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08440074,
+        30.298300819999998
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697387,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08384555999999,
+        30.297882019999996
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697389,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08428552000001,
+        30.29788534
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697391,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08372484000002,
+        30.297886619999996
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697392,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08403108,
+        30.2978858
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697394,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08352794,
+        30.29787778
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697397,
+      "name": "",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08440055714286,
+        30.29860517142857
+      ],
+      "tags": {
+        "building": "university"
+      }
+    },
+    {
+      "osm_id": 415697399,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08353667142858,
+        30.298092771428575
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697401,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08443545714285,
+        30.298410899999997
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697403,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08362092857143,
+        30.298410971428574
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697405,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.084008575,
+        30.298106924999995
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697407,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.08373584444445,
+        30.298089899999997
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697409,
+      "name": "",
+      "name_en": "",
+      "type": "greenhouse",
+      "center": [
+        120.0843584,
+        30.298077022222223
+      ],
+      "tags": {
+        "building": "greenhouse"
+      }
+    },
+    {
+      "osm_id": 415697412,
+      "name": "水电中心",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08390233749998,
+        30.2987381
+      ],
+      "tags": {
+        "building": "university",
+        "name": "水电中心"
+      }
+    },
+    {
+      "osm_id": 415697414,
+      "name": "浙江大学农业试验站农业科技园管委会",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08403288571428,
+        30.29840475714286
+      ],
+      "tags": {
+        "alt_name": "浙江大学昆虫科学研究所人工气候室",
+        "building": "university",
+        "name": "浙江大学农业试验站农业科技园管委会"
+      }
+    },
+    {
+      "osm_id": 446943878,
+      "name": "杭州市西湖区天虹幼儿园水月园区",
+      "name_en": "",
+      "type": "kindergarten",
+      "center": [
+        120.08784676,
+        30.31274674
+      ],
+      "tags": {
+        "amenity": "kindergarten",
+        "barrier": "fence",
+        "education": "kindergarten",
+        "name": "杭州市西湖区天虹幼儿园水月园区"
+      }
+    },
+    {
+      "osm_id": 448480105,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08311196,
+        30.299131640000002
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 448480106,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08309494285716,
+        30.298318385714282
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 448480118,
+      "name": "浙江大学紫金港校区农医图书馆",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0826761625,
+        30.29839419375
+      ],
+      "tags": {
+        "amenity": "library",
+        "building": "university",
+        "name": "浙江大学紫金港校区农医图书馆",
+        "operator": "浙江大学",
+        "short_name": "医图"
+      }
+    },
+    {
+      "osm_id": 448480119,
+      "name": "麦香餐厅",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08243746250001,
+        30.298216462499997
+      ],
+      "tags": {
+        "amenity": "restaurant",
+        "building": "yes",
+        "name": "麦香餐厅"
+      }
+    },
+    {
+      "osm_id": 478006668,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07786096,
+        30.30714696
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 478006669,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07770074,
+        30.30792084
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 504974771,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08047682000002,
+        30.298972420000002
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 504974784,
+      "name": "生命科学学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.085254331579,
+        30.2987404631579
+      ],
+      "tags": {
+        "building": "university",
+        "name": "生命科学学院"
+      }
+    },
+    {
+      "osm_id": 504974786,
+      "name": "",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08608266000002,
+        30.29852414
+      ],
+      "tags": {
+        "building": "university"
+      }
+    },
+    {
+      "osm_id": 504974789,
+      "name": "农业与生物技术学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08692907333332,
+        30.29865912
+      ],
+      "tags": {
+        "alt_name": "农生环A座",
+        "building": "university",
+        "name": "农业与生物技术学院"
+      }
+    },
+    {
+      "osm_id": 504974795,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08683297999998,
+        30.2999091
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 504974811,
+      "name": "浙江大学电子显微镜中心",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08697489,
+        30.300329299999998
+      ],
+      "tags": {
+        "building": "university",
+        "name": "浙江大学电子显微镜中心"
+      }
+    },
+    {
+      "osm_id": 504974812,
+      "name": "",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08613581428573,
+        30.29972747142857
+      ],
+      "tags": {
+        "building": "university"
+      }
+    },
+    {
+      "osm_id": 504974813,
+      "name": "环境与资源学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0866224235294,
+        30.29990149411765
+      ],
+      "tags": {
+        "alt_name": "农生环B座",
+        "building": "university",
+        "name": "环境与资源学院"
+      }
+    },
+    {
+      "osm_id": 504974815,
+      "name": "",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08697903571428,
+        30.300981085714284
+      ],
+      "tags": {
+        "alt_name": "农生环C座",
+        "building": "university"
+      }
+    },
+    {
+      "osm_id": 504974816,
+      "name": "",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0866089875,
+        30.301191925
+      ],
+      "tags": {
+        "building": "university"
+      }
+    },
+    {
+      "osm_id": 504974817,
+      "name": "生物系统工程与食品科学学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08605357000002,
+        30.300839890000002
+      ],
+      "tags": {
+        "alt_name": "农生环D座",
+        "building": "university",
+        "name": "生物系统工程与食品科学学院"
+      }
+    },
+    {
+      "osm_id": 519369434,
+      "name": "浙江大学南大门",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07688985999998,
+        30.29765058
+      ],
+      "tags": {
+        "addr:city": "杭州市",
+        "addr:district": "西湖区",
+        "addr:housenumber": "866",
+        "addr:province": "浙江省",
+        "addr:street": "余杭塘路",
+        "building": "yes",
+        "layer": "1",
+        "name": "浙江大学南大门"
+      }
+    },
+    {
+      "osm_id": 519369449,
+      "name": "室内游泳馆",
+      "name_en": "",
+      "type": "construction",
+      "center": [
+        120.08406594545455,
+        30.31001724545454
+      ],
+      "tags": {
+        "building": "construction",
+        "leisure": "sports_centre",
+        "name": "室内游泳馆",
+        "sport": "swimming"
+      }
+    },
+    {
+      "osm_id": 529029530,
+      "name": "求是大讲堂",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07471465,
+        30.304329226923088
+      ],
+      "tags": {
+        "building": "university",
+        "name": "求是大讲堂"
+      }
+    },
+    {
+      "osm_id": 543883197,
+      "name": "蓝田2舍",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.0769266111111,
+        30.312370933333334
+      ],
+      "tags": {
+        "building": "apartments",
+        "name": "蓝田2舍"
+      }
+    },
+    {
+      "osm_id": 543895377,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07823237999999,
+        30.31147272
+      ],
+      "tags": {
+        "amenity": "restaurant",
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 543895378,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07807034,
+        30.31111078
+      ],
+      "tags": {
+        "amenity": "restaurant",
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 543896552,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07664439999999,
+        30.311743760000002
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 562767792,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07711353000002,
+        30.30580685
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 614260756,
+      "name": "学生服务中心",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0676107,
+        30.301813983333332
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "学生服务中心",
+        "name:zh": "尧坤楼"
+      }
+    },
+    {
+      "osm_id": 614260757,
+      "name": "惟学1幢",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06722775,
+        30.308204200000006
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "惟学1幢"
+      }
+    },
+    {
+      "osm_id": 652569974,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0777850933333,
+        30.299575840000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703248077,
+      "name": "惟学2幢",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06765710000002,
+        30.308210699999997
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "惟学2幢"
+      }
+    },
+    {
+      "osm_id": 703248079,
+      "name": "澄月学园1舍",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07571643846153,
+        30.298907207692313
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "澄月学园1舍"
+      }
+    },
+    {
+      "osm_id": 703248080,
+      "name": "澄月学园2舍",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07559884999999,
+        30.298512033333335
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "澄月学园2舍"
+      }
+    },
+    {
+      "osm_id": 703248081,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07538421428572,
+        30.298757914285716
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703248086,
+      "name": "澄月学园3舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07456756666666,
+        30.298154216666664
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "澄月学园3舍"
+      }
+    },
+    {
+      "osm_id": 703248087,
+      "name": "澄月学园4舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.0745701,
+        30.29786374444445
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "澄月学园4舍"
+      }
+    },
+    {
+      "osm_id": 703248089,
+      "name": "研究生教育综合楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07567445,
+        30.297868358333336
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "研究生教育综合楼"
+      }
+    },
+    {
+      "osm_id": 703248090,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07538177272727,
+        30.297995500000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703248091,
+      "name": "澄月学园5舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07363624285713,
+        30.29869055714286
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "澄月学园5舍"
+      }
+    },
+    {
+      "osm_id": 703248092,
+      "name": "澄月学园6舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07382445714286,
+        30.29816211428571
+      ],
+      "tags": {
+        "alt_name": "浙江大学紫金港校区留学生公寓C2",
+        "building": "dormitory",
+        "name": "澄月学园6舍"
+      }
+    },
+    {
+      "osm_id": 703248093,
+      "name": "澄月学园7舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07366486000001,
+        30.297810580000004
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "澄月学园7舍"
+      }
+    },
+    {
+      "osm_id": 703248094,
+      "name": "浙江大学国际教育学院",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07278096,
+        30.298765170000003
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "浙江大学国际教育学院"
+      }
+    },
+    {
+      "osm_id": 703248095,
+      "name": "留学生行政楼",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07264852307692,
+        30.29864103846154
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "留学生行政楼"
+      }
+    },
+    {
+      "osm_id": 703248096,
+      "name": "澄月学园8舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.07271372,
+        30.298094760000005
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "澄月学园8舍"
+      }
+    },
+    {
+      "osm_id": 703248097,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07288836000001,
+        30.297868620000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703248098,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07315721999998,
+        30.297867580000002
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249690,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07559611111111,
+        30.304190144444444
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249691,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07559825555556,
+        30.304493844444444
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249692,
+      "name": "基础交叉研究院",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07599194444444,
+        30.304442322222226
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "基础交叉研究院"
+      }
+    },
+    {
+      "osm_id": 703249693,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0759880230769,
+        30.304164107692312
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249694,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07600344,
+        30.30431266
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249695,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07581250000001,
+        30.304488019999997
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249696,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07536883999998,
+        30.30448628
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249697,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07525875555555,
+        30.304226133333334
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703249698,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07576426,
+        30.304200079999998
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251437,
+      "name": "人文学院",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07524781111111,
+        30.30041337777778
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "人文学院",
+        "name:zh": "成均苑4幢"
+      }
+    },
+    {
+      "osm_id": 703251439,
+      "name": "马克思主义学院",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.07566153999998,
+        30.29995472
+      ],
+      "tags": {
+        "building": "college",
+        "name": "马克思主义学院",
+        "name:zh": "成均苑2幢"
+      }
+    },
+    {
+      "osm_id": 703251440,
+      "name": "传媒与国际文化学院",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.07533305,
+        30.299643133333333
+      ],
+      "tags": {
+        "building": "college",
+        "name": "传媒与国际文化学院",
+        "name:zh": "成均苑1幢"
+      }
+    },
+    {
+      "osm_id": 703251441,
+      "name": "古籍图书馆",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07461255000003,
+        30.30025403333333
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "古籍图书馆"
+      }
+    },
+    {
+      "osm_id": 703251442,
+      "name": "经济学院",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.073925125,
+        30.300379299999996
+      ],
+      "tags": {
+        "building": "college",
+        "name": "经济学院",
+        "name:zh": "成均苑7幢"
+      }
+    },
+    {
+      "osm_id": 703251443,
+      "name": "公共管理学院",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.073420125,
+        30.2999805375
+      ],
+      "tags": {
+        "building": "college",
+        "name": "公共管理学院",
+        "name:zh": "成均苑9幢"
+      }
+    },
+    {
+      "osm_id": 703251444,
+      "name": "教育学院",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.07374519999998,
+        30.299677499999998
+      ],
+      "tags": {
+        "building": "college",
+        "name": "教育学院",
+        "name:zh": "成均苑10幢"
+      }
+    },
+    {
+      "osm_id": 703251445,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07357171999999,
+        30.2998564
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251446,
+      "name": "",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.07365958749999,
+        30.3003902875
+      ],
+      "tags": {
+        "building": "college"
+      }
+    },
+    {
+      "osm_id": 703251447,
+      "name": "科意大楼-财务核算中心",
+      "name_en": "",
+      "type": "college",
+      "center": [
+        120.07287679999997,
+        30.300044288888884
+      ],
+      "tags": {
+        "building": "college",
+        "name": "科意大楼-财务核算中心",
+        "name:zh": "成均苑8幢"
+      }
+    },
+    {
+      "osm_id": 703251448,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07121273333333,
+        30.299241816666665
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251449,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07061994,
+        30.298565259999997
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251450,
+      "name": "管理学院",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07100191666666,
+        30.2987073
+      ],
+      "tags": {
+        "alt_name": "浙江大学管理学院",
+        "building": "yes",
+        "name": "管理学院"
+      }
+    },
+    {
+      "osm_id": 703251451,
+      "name": "玉湖6、7舍",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06768876153845,
+        30.301197607692306
+      ],
+      "tags": {
+        "building": "university",
+        "name": "玉湖6、7舍"
+      }
+    },
+    {
+      "osm_id": 703251452,
+      "name": "玉湖4、5舍",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06625077692306,
+        30.3011926
+      ],
+      "tags": {
+        "building": "university",
+        "name": "玉湖4、5舍"
+      }
+    },
+    {
+      "osm_id": 703251455,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06603701111109,
+        30.302564433333334
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251456,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06685434444444,
+        30.30256755555556
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251457,
+      "name": "玉湖1、2舍",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06639676923076,
+        30.302410623076923
+      ],
+      "tags": {
+        "building": "university",
+        "name": "玉湖1、2舍"
+      }
+    },
+    {
+      "osm_id": 703251458,
+      "name": "海纳苑2幢（数学科学学院）",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07082734285713,
+        30.30024774285714
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "海纳苑2幢（数学科学学院）"
+      }
+    },
+    {
+      "osm_id": 703251459,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07077526,
+        30.300366560000004
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 703251460,
+      "name": "海纳苑1幢（地球科学学院）",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06978496923077,
+        30.300425953846155
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海纳苑1幢（地球科学学院）"
+      }
+    },
+    {
+      "osm_id": 703251461,
+      "name": "海纳苑8幢（物理学院）",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06916082000001,
+        30.30148622666667
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海纳苑8幢（物理学院）"
+      }
+    },
+    {
+      "osm_id": 703251462,
+      "name": "海纳苑4幢（理学部大楼）",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07030998,
+        30.301292159999996
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "海纳苑4幢（理学部大楼）"
+      }
+    },
+    {
+      "osm_id": 703251463,
+      "name": "海纳苑3幢（心理系）",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07061399999999,
+        30.30089517142857
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海纳苑3幢（心理系）"
+      }
+    },
+    {
+      "osm_id": 703251464,
+      "name": "海纳苑7幢",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0697314,
+        30.30264084
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海纳苑7幢"
+      }
+    },
+    {
+      "osm_id": 982001078,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.08496132,
+        30.310975069999994
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 982001087,
+      "name": "",
+      "name_en": "",
+      "type": "motorcycle_parking",
+      "center": [
+        120.07981027999999,
+        30.310834220000004
+      ],
+      "tags": {
+        "amenity": "motorcycle_parking"
+      }
+    },
+    {
+      "osm_id": 982001088,
+      "name": "港湾家园26幢",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08364128000001,
+        30.3126028
+      ],
+      "tags": {
+        "building": "apartments",
+        "building:levels": "7",
+        "height": "21",
+        "name": "港湾家园26幢"
+      }
+    },
+    {
+      "osm_id": 982001089,
+      "name": "港湾家园27幢",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.0836661,
+        30.31229108
+      ],
+      "tags": {
+        "building": "apartments",
+        "building:levels": "7",
+        "height": "21",
+        "name": "港湾家园27幢"
+      }
+    },
+    {
+      "osm_id": 982001090,
+      "name": "港湾家园25幢",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08359026000001,
+        30.31296432
+      ],
+      "tags": {
+        "building": "apartments",
+        "building:levels": "7",
+        "height": "21",
+        "name": "港湾家园25幢"
+      }
+    },
+    {
+      "osm_id": 982001091,
+      "name": "",
+      "name_en": "",
+      "type": "bicycle_parking",
+      "center": [
+        120.08153568,
+        30.30827746
+      ],
+      "tags": {
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "surface",
+        "capacity": "50"
+      }
+    },
+    {
+      "osm_id": 982026091,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07832452,
+        30.312564700000003
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026092,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07861768000001,
+        30.312606619999997
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026093,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07913292,
+        30.312692020000004
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026094,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07944425999999,
+        30.312740740000002
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026095,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07988811666667,
+        30.312807933333332
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026096,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08009548333332,
+        30.312807083333336
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026097,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.080649,
+        30.312905533333335
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026098,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08086634000001,
+        30.312947759999997
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026103,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07813852,
+        30.31321854
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026109,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08130109999999,
+        30.313046980000003
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026110,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.0816194,
+        30.313089060000003
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 982026111,
+      "name": "",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.08205786,
+        30.31319776
+      ],
+      "tags": {
+        "building": "apartments"
+      }
+    },
+    {
+      "osm_id": 1073555298,
+      "name": "海洋大楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07854831176469,
+        30.30479575882353
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海洋大楼"
+      }
+    },
+    {
+      "osm_id": 1087815412,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06510871999998,
+        30.310928240000003
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1087815413,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06627562222224,
+        30.311415455555554
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1087815414,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06680416000002,
+        30.31231632
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1087815415,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06607196,
+        30.311807820000002
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1087815416,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06594364285714,
+        30.312260642857144
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1087815419,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06578988000001,
+        30.31332556
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1087815420,
+      "name": "",
+      "name_en": "",
+      "type": "office",
+      "center": [
+        120.06527804,
+        30.312792460000004
+      ],
+      "tags": {
+        "building": "office"
+      }
+    },
+    {
+      "osm_id": 1112645053,
+      "name": "北4教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0716525,
+        30.30769714444444
+      ],
+      "tags": {
+        "building": "university",
+        "name": "北4教学楼"
+      }
+    },
+    {
+      "osm_id": 1112645054,
+      "name": "北3教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07251975555556,
+        30.308072099999997
+      ],
+      "tags": {
+        "building": "university",
+        "name": "北3教学楼"
+      }
+    },
+    {
+      "osm_id": 1112645055,
+      "name": "北1教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07195211999999,
+        30.306985830000002
+      ],
+      "tags": {
+        "building": "university",
+        "name": "北1教学楼"
+      }
+    },
+    {
+      "osm_id": 1112645056,
+      "name": "北2教学楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07292641111111,
+        30.307407233333336
+      ],
+      "tags": {
+        "building": "university",
+        "name": "北2教学楼"
+      }
+    },
+    {
+      "osm_id": 1112646409,
+      "name": "新农村发展研究院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.0737173181818,
+        30.308523436363643
+      ],
+      "tags": {
+        "building": "university",
+        "name": "新农村发展研究院"
+      }
+    },
+    {
+      "osm_id": 1112646412,
+      "name": "银泉食堂",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07126303999999,
+        30.308611919999997
+      ],
+      "tags": {
+        "amenity": "restaurant",
+        "building": "yes",
+        "name": "银泉食堂"
+      }
+    },
+    {
+      "osm_id": 1112646413,
+      "name": "开物苑",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07062084444445,
+        30.30678883055556
+      ],
+      "tags": {
+        "building": "university",
+        "name": "开物苑",
+        "name:zh": "机械工程学院"
+      }
+    },
+    {
+      "osm_id": 1122109341,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.08433881111108,
+        30.30364163333333
+      ],
+      "tags": {
+        "building": "yes",
+        "building:levels": "2",
+        "layer": "1"
+      }
+    },
+    {
+      "osm_id": 1122111924,
+      "name": "东教学区学生文化连廊",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.08448606666667,
+        30.303693166666665
+      ],
+      "tags": {
+        "building": "university",
+        "building:levels": "2",
+        "layer": "-1",
+        "name": "东教学区学生文化连廊"
+      }
+    },
+    {
+      "osm_id": 1122290579,
+      "name": "玉湖餐厅",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06750274615386,
+        30.302396799999997
+      ],
+      "tags": {
+        "amenity": "restaurant",
+        "building": "university",
+        "cuisine": "chinese",
+        "diet:local": "yes",
+        "name": "玉湖餐厅"
+      }
+    },
+    {
+      "osm_id": 1122290580,
+      "name": "海纳苑5幢",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.07006875714285,
+        30.30182825714286
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海纳苑5幢"
+      }
+    },
+    {
+      "osm_id": 1122290581,
+      "name": "海纳苑6幢",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06979222,
+        30.302245720000002
+      ],
+      "tags": {
+        "building": "university",
+        "name": "海纳苑6幢"
+      }
+    },
+    {
+      "osm_id": 1125378161,
+      "name": "和同苑1/2幢",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06874354545452,
+        30.303941381818184
+      ],
+      "tags": {
+        "building": "university",
+        "name": "和同苑1/2幢"
+      }
+    },
+    {
+      "osm_id": 1125378162,
+      "name": "材料科学与工程学院",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06875981818183,
+        30.305302445454547
+      ],
+      "tags": {
+        "building": "university",
+        "name": "材料科学与工程学院",
+        "name:zh": "和同苑9/10幢"
+      }
+    },
+    {
+      "osm_id": 1125378163,
+      "name": "高分子大楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06955975555557,
+        30.305539655555556
+      ],
+      "tags": {
+        "building": "university",
+        "name": "高分子大楼"
+      }
+    },
+    {
+      "osm_id": 1208408934,
+      "name": "主图书馆",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0754938,
+        30.30542886
+      ],
+      "tags": {
+        "amenity": "library",
+        "building": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "customers",
+        "name": "主图书馆",
+        "opening_hours": "Mo-Su 08:00-22:00"
+      }
+    },
+    {
+      "osm_id": 1245558458,
+      "name": "紫金港社区便民服务中心",
+      "name_en": "",
+      "type": "service",
+      "center": [
+        120.07745585555556,
+        30.312879088888888
+      ],
+      "tags": {
+        "building": "service",
+        "name": "紫金港社区便民服务中心"
+      }
+    },
+    {
+      "osm_id": 1280070702,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.0720932777778,
+        30.308901300000002
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 1302813125,
+      "name": "银泉学园8舍",
+      "name_en": "",
+      "type": "dormitory",
+      "center": [
+        120.06705410000001,
+        30.307231484615386
+      ],
+      "tags": {
+        "building": "dormitory",
+        "name": "银泉学园8舍"
+      }
+    },
+    {
+      "osm_id": 1302813126,
+      "name": "银泉学园7舍",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06773793076923,
+        30.30751994615385
+      ],
+      "tags": {
+        "building": "yes",
+        "name": "银泉学园7舍"
+      }
+    },
+    {
+      "osm_id": 1302813127,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06613913999999,
+        30.306470460000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813128,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06610256000002,
+        30.3065652
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813129,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06603874,
+        30.30667138
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813130,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06596712000001,
+        30.306772180000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813131,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06592232,
+        30.306882100000003
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813132,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06586313999999,
+        30.306980199999998
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813133,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06581644,
+        30.307055479999995
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813134,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06556274000002,
+        30.3068149
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813135,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06560163999998,
+        30.30674232
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813136,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06565301999998,
+        30.3066375
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813137,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06571836,
+        30.3065367
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813138,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06576974,
+        30.306433220000002
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1302813139,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06616872,
+        30.307030080000004
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1409965367,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.06624608,
+        30.297355099999997
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1410577278,
+      "name": "和同苑6/7幢",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06958927272726,
+        30.30516686363637
+      ],
+      "tags": {
+        "building": "university",
+        "name": "和同苑6/7幢"
+      }
+    },
+    {
+      "osm_id": 1410577279,
+      "name": "和同苑4/5幢",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.06958906363637,
+        30.30435621818182
+      ],
+      "tags": {
+        "building": "university",
+        "name": "和同苑4/5幢"
+      }
+    },
+    {
+      "osm_id": 1410577280,
+      "name": "永谦大楼",
+      "name_en": "",
+      "type": "university",
+      "center": [
+        120.069584,
+        30.30379947777778
+      ],
+      "tags": {
+        "building": "university",
+        "name": "永谦大楼"
+      }
+    },
+    {
+      "osm_id": 1410577281,
+      "name": "浙江大学动物医院（紫金港总院）",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.0742045,
+        30.31136442
+      ],
+      "tags": {
+        "amenity": "veterinary",
+        "building": "yes",
+        "name": "浙江大学动物医院（紫金港总院）",
+        "name:zh": "浙大动物医学中心"
+      }
+    },
+    {
+      "osm_id": 1421662835,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.07631563999999,
+        30.297682299999998
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 1421662836,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.07624917999999,
+        30.297976319999997
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 1421662837,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.07625484,
+        30.298822579999996
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 1421662850,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.0699794,
+        30.298968100000003
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 1421662852,
+      "name": "",
+      "name_en": "",
+      "type": "parking",
+      "center": [
+        120.07383712000001,
+        30.30733118
+      ],
+      "tags": {
+        "amenity": "parking"
+      }
+    },
+    {
+      "osm_id": 1462301204,
+      "name": "银泉学园1幢",
+      "name_en": "",
+      "type": "apartments",
+      "center": [
+        120.07009381999998,
+        30.308225399999998
+      ],
+      "tags": {
+        "building": "apartments",
+        "name": "银泉学园1幢"
+      }
+    },
+    {
+      "osm_id": 1462552361,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07462535000002,
+        30.299841739999994
+      ],
+      "tags": {
+        "amenity": "shelter",
+        "bench": "yes",
+        "building": "yes",
+        "lit": "no",
+        "lockable": "no",
+        "shelter_type": "gazebo",
+        "wheelchair": "no"
+      }
+    },
+    {
+      "osm_id": 1502850910,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07296993999998,
+        30.31082852
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1502850911,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07319951999997,
+        30.3103521
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    },
+    {
+      "osm_id": 1502850912,
+      "name": "",
+      "name_en": "",
+      "type": "yes",
+      "center": [
+        120.07343818,
+        30.30996588
+      ],
+      "tags": {
+        "building": "yes"
+      }
+    }
+  ],
+  "name_mapping": {
+    "qiushi_auditorium": "求是大讲堂",
+    "old_management_building": "浙江大学行政楼",
+    "south_gate": "浙江大学南大门",
+    "zju_gymnasium": "体育馆",
+    "zju_library": "主图书馆",
+    "zju_crescent_building": "月牙楼",
+    "qizhen_hotel": "圆正·启真酒店",
+    "nanhua_garden": "南华园",
+    "medical_college": "浙江大学医学院",
+    "pharmacy_college": "浙江大学药学院",
+    "life_science_college": "生命科学学院",
+    "agricultural_college": "农业与生物技术学院",
+    "environmental_resource_college": "环境与资源学院",
+    "animal_science_college": "动物科学学院",
+    "bioengineering_food_college": "生物系统工程与食品科学学院",
+    "nano_building": "浙江加州国际纳米技术研究所",
+    "mengmingwei_building": "蒙民伟楼 / 图书信息C楼",
+    "public_administration_college": "公共管理学院",
+    "humanities_college": "人文学院",
+    "education_college": "教育学院",
+    "art_archaeology_museum": "浙江大学艺术与考古博物馆"
+  }
+}

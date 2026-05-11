@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python upload_to_oss.py)",
+      "Bash(\"C:/Users/chen/AppData/Local/Programs/Python/Python310/python.exe\" -m pip install oss2 python-dotenv -q)",
+      "Bash(\"C:/Users/chen/AppData/Local/Programs/Python/Python310/python.exe\" upload_to_oss.py)",
+      "Bash(PYTHONIOENCODING=utf-8 \"C:/Users/chen/AppData/Local/Programs/Python/Python310/python.exe\" upload_to_oss.py)",
+      "Bash(curl -s \"https://echo-zju-3-0.onrender.com/health\")",
+      "Bash(curl -s \"https://echo-zju-3-0.onrender.com/\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
+    ]
+  }
+}
