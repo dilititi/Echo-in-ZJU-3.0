@@ -668,6 +668,23 @@
             ← 返回 2D
         </button>
         <hr style="margin:10px 0;border-color:#d4af37;">
+        <p style="font-size:11px;color:#d4af37;margin:0 0 6px;font-weight:bold;">🎵 环境音效</p>
+        <button onclick="Audio3D.startRain(0.5)" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
+            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
+            🌧️ 开始下雨
+        </button>
+        <button onclick="Audio3D.stopRain()" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
+            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
+            🌤️ 停止下雨
+        </button>
+        <div style="margin:8px 4px 2px;display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;color:#aaa;">🔊</span>
+            <input type="range" min="0" max="1" step="0.05" value="0.8"
+                   oninput="Audio3D.setMasterVolume(+this.value)"
+                   title="主音量"
+                   style="flex:1;accent-color:#d4af37;cursor:pointer;">
+        </div>
+        <hr style="margin:10px 0;border-color:#d4af37;">
         <p style="font-size:12px;color:#aaa;">
             <strong>操作说明:</strong><br>
             左键拖拽: 旋转视角<br>
@@ -1245,7 +1262,7 @@ document.getElementById('uploadButton').addEventListener('click', function () {
             dot.setAttribute('aria-label', label);
         });
 
-    setTimeout(checkServerHealth, 60000);
+    if (dot.className !== 'offline') setTimeout(checkServerHealth, 60000);
 })();
 </script>
 </body>
