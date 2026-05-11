@@ -19,6 +19,7 @@ function switchTo3D() {
 }
 
 function switchTo2D() {
+    Audio3D.stopRain();
     document.getElementById('scene-3d').style.display = 'none';
     document.getElementById('map').style.display = '';
     document.getElementById('controlPanel').style.display = '';
@@ -61,6 +62,7 @@ function init3D() {
         controls3d.maxPolarAngle = Math.PI / 2.2;
 
         add3DLighting();
+        Audio3D.init();
         create3DBuildings();
         setup3DInteraction();
         window.addEventListener('resize', on3DResize);
@@ -201,6 +203,17 @@ function setup3DInteraction() {
 }
 
 function select3DBuilding(mesh) {
+// 计算真实中心
+    mesh.geometry.computeBoundingBox();
+    const center = new THREE.Vector3();
+    mesh.geometry.boundingBox.getCenter(center);
+
+    // 用 center 替代 mesh.position
+    smoothMove3DCamera(
+        new THREE.Vector3(center.x, center.y + 10, center.z + 30),
+        center
+    );
+
     if (selectedBuilding3D) selectedBuilding3D.material.emissive?.setHex(0x000000);
     selectedBuilding3D = mesh;
     mesh.material.emissive?.setHex(0xd4af37);
@@ -233,7 +246,7 @@ function play3DSound() {
     }
 
     if (audioUrl) {
-        play3DSpatialAudio(audioUrl, pos);
+        Audio3D.playSpatialAudio(audioUrl, pos);
     } else {
         alert(`🎵 ${selectedBuilding3D.userData.name} 暂无音频`);
     }
@@ -271,5 +284,7 @@ function on3DResize() {
 function animate3D() {
     requestAnimationFrame(animate3D);
     controls3d.update();
+    Audio3D.updateListener(camera);
+    Audio3D.tick();
     renderer.render(scene, camera);
 }
