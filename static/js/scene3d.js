@@ -131,16 +131,52 @@ function create3DBuildings() {
 
 function update3DGround(size, cx, cz) {
     scene.children.filter(o => o.userData.isGround).forEach(o => scene.remove(o));
+
+    // ── 卫星地图纹理 ──────────────────────────────────────────────
+    const satTex = textureLoader.load('/assets/紫金港卫星地图.png');
+    satTex.wrapS = satTex.wrapT = THREE.ClampToEdgeWrapping;
+
+    // 图片经纬度范围（目视估算，部署后微调 offset）
+    // 图片覆盖：lng 120.068~120.092, lat 30.294~30.320
+    const imgLngMin = 120.068, imgLngMax = 120.092;
+    const imgLatMin = 30.294,  imgLatMax = 30.320;
+
+    // 3D 世界对应的经纬度范围
+    const worldLngMin = 120.07420, worldLngMax = 120.08589;
+    const worldLatMin = 30.30080,  worldLatMax = 30.31508;
+
+    // 计算 UV offset 和 repeat（让图片只显示校园部分）
+    const lngSpan = imgLngMax - imgLngMin;
+    const latSpan = imgLatMax - imgLatMin;
+
+    const uOffset = (worldLngMin - imgLngMin) / lngSpan;
+    const vOffset = (imgLatMax - worldLatMax) / latSpan;  // V 轴翻转
+    const uRepeat = (worldLngMax - worldLngMin) / lngSpan;
+    const vRepeat = (worldLatMax - worldLatMin) / latSpan;
+
+    satTex.offset.set(uOffset, vOffset);
+    satTex.repeat.set(uRepeat, vRepeat);
+
+    console.log(`🗺️ 卫星图 UV: offset(${uOffset.toFixed(3)}, ${vOffset.toFixed(3)}) repeat(${uRepeat.toFixed(3)}, ${vRepeat.toFixed(3)})`);
+
     const ground = new THREE.Mesh(
         new THREE.PlaneGeometry(size, size),
-        new THREE.MeshStandardMaterial({ color: 0x1a4a3a, roughness: 0.8 })
+        new THREE.MeshStandardMaterial({
+            map: satTex,
+            roughness: 0.9,
+            metalness: 0.0,
+        })
     );
     ground.rotation.x = -Math.PI / 2;
-    ground.position.set(cx, 0, cz);
+    ground.position.set(cx, -0.1, cz);
     ground.receiveShadow = true;
     ground.userData.isGround = true;
     scene.add(ground);
-    const grid = new THREE.GridHelper(size, Math.floor(size/2), 0x3a5a4a, 0x2a3a2a);
+
+    // 网格线（半透明叠加，帮助调试对齐）
+    const grid = new THREE.GridHelper(size, Math.floor(size/4), 0x444444, 0x333333);
+    grid.material.opacity = 0.15;
+    grid.material.transparent = true;
     grid.position.set(cx, 0.01, cz);
     grid.userData.isGround = true;
     scene.add(grid);
@@ -285,6 +321,5 @@ function animate3D() {
     requestAnimationFrame(animate3D);
     controls3d.update();
     Audio3D.updateListener(camera);
-    Audio3D.tick();
     renderer.render(scene, camera);
 }

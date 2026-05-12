@@ -13,17 +13,17 @@ const Audio3D = (() => {
         {
             id: 'lake',
             label: '求是湖',
-            pos: [-20, 0, -10],    // 调整为湖的实际 3D 坐标
+            pos: [-30, 0, 45],
             radius: 30,
             sounds: [
-                { url: '/default_audio/蛙叫（纯净）.mp3', loop: true, volume: 0.4 },
+            { url: '/default_audio/%E7%80%91%E5%B8%83%E5%A3%B0.mp3', loop: true, volume: 0.3 },
             ],
             ambience: 'water',     // 用程序合成水声
         },
         {
             id: 'teaching',
             label: '教学区',
-            pos: [30, 0, 20],
+            pos: [-6, 0, 54],
             radius: 40,
             sounds: [],
             ambience: 'wind',      // 轻风声
@@ -31,7 +31,7 @@ const Audio3D = (() => {
         {
             id: 'dorm',
             label: '宿舍区',
-            pos: [-30, 0, 40],
+            pos: [-13, 0, 15],
             radius: 35,
             sounds: [],
             ambience: 'crowd',     // 低频人声白噪音
@@ -39,7 +39,7 @@ const Audio3D = (() => {
         {
             id: 'road',
             label: '主干道',
-            pos: [0, 0, 60],
+            pos: [42, 0, -128],
             radius: 25,
             sounds: [],
             ambience: 'traffic',   // 远处车流声
@@ -48,8 +48,8 @@ const Audio3D = (() => {
 
     // ── 移动声源（鸟/自行车）────────────────────────────────────────
     const MOVING_SOURCES = [
-        { id: 'bird1', ambience: 'bird', speed: 0.05, radius: 80, height: 15 },
-        { id: 'bird2', ambience: 'bird', speed: 0.03, radius: 60, height: 20 },
+        { id: 'bird1', ambience: 'bird', centerX: -20, centerZ: 40,  speed: 0.008, radius: 40, height: 18 },
+        { id: 'bird2', ambience: 'bird', centerX: 80,  centerZ: -95, speed: 0.005, radius: 30, height: 22 },
     ];
 
     // ── 程序合成白噪音 ───────────────────────────────────────────────
