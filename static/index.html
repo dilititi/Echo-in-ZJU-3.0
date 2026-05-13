@@ -748,6 +748,15 @@ document.getElementById('uploadButton').addEventListener('click', function () {
     if (dot.className !== 'offline') setTimeout(checkServerHealth, 60000);
 })();
 
+(function () {
+    if (new URLSearchParams(window.location.search).get('mode') === '3d') {
+        const trySwitch = () => typeof switchTo3D === 'function'
+            ? switchTo3D()
+            : setTimeout(trySwitch, 300);
+        setTimeout(trySwitch, 900);
+    }
+})();
+
 </script>
 </body>
 </html>
