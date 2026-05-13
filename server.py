@@ -60,7 +60,12 @@ def file_too_large(error):
 
 @app.route('/')
 def home():
-    """首页"""
+    """首页 → PPT 介绍页"""
+    return app.send_static_file('ppt/index.html')
+
+@app.route('/map')
+def map_2d():
+    """2D 声音地图"""
     return app.send_static_file('index.html')
 
 @app.route('/health')
@@ -415,7 +420,8 @@ if __name__ == '__main__':
     logger.info('🎓 紫金港声音校园 - 已整合 3D 功能')
     logger.info('-' * 60)
     logger.info('访问地址:')
-    logger.info('  主页:   http://localhost:8081/ (2D 地图)')
+    logger.info('  介绍:   http://localhost:8081/ (PPT 介绍页)')
+    logger.info('  2D:     http://localhost:8081/map')
     logger.info('  3D:     http://localhost:8081/3d_index.html')
     logger.info('-' * 60)
     
