@@ -207,7 +207,6 @@ const Audio3D = (() => {
         gain.connect(masterGain);
         src.start();
         rainSource = { source: src, gain };
-        console.log('🌧️ 雨声开始');
     }
 
     function stopRain() {
@@ -217,7 +216,6 @@ const Audio3D = (() => {
             try { rainSource.source.stop(); } catch(e) {}
             rainSource = null;
         }, 2100);
-        console.log('🌤️ 雨声停止');
     }
 
     // ── 更新听者位置（每帧由 animate3D 调用）────────────────────────
@@ -269,7 +267,6 @@ const Audio3D = (() => {
 
         initZones();
         initBirds();
-        console.log('✅ Audio3D 空间音频系统初始化完成');
     }
 
 return { init, updateListener, startRain, stopRain, setMasterVolume, playSpatialAudio, tick: tickMovingSources };

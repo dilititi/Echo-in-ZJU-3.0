@@ -1,5 +1,8 @@
 const CoordinateSystem = (() => {
   // 校准点：来自 data.js 的 position + 紫金港实测经纬度
+  // 标定方法：在 Leaflet 卫星图上对照建筑轮廓人工点取，精度 ±5m
+  // 最后标定时间：2024-05（地图版本 v1.0）
+  // 如校园地图重新测绘或更换底图，需重新标定此文件所有 REF 坐标。
   // south_gate:   pixel [220, 920]  ↔  lng/lat [120.0742, 30.3043]
   // qizhen_hotel: pixel [870, 320]  ↔  lng/lat [120.0821, 30.3092]
   const REF = [

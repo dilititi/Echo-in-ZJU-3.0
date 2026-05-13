@@ -38,7 +38,8 @@ const App = {
         soundExploreCurrentBuilding: null,
         soundExploreCurrentAudio: null,
         soundExploreUnlockedBuildings: new Set(),
-        soundExploreAttempts: {}
+        soundExploreAttempts: {},
+        isCompletingLevel: false
     },
 
     elements: {},

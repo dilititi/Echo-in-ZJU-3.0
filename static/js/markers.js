@@ -369,23 +369,24 @@ Object.assign(App, {
                 markersData.forEach(data => {
                     const markerType = Data.markerTypes[data.type] || Data.markerTypes.memory;
 
-                    const icon = L.divIcon({
+                    const MARKER_SIZE = 36;
+                const icon = L.divIcon({
                         className: 'user-marker',
                         html: `<div style="
-                            width: 36px;
-                            height: 36px;
+                            width: ${MARKER_SIZE}px;
+                            height: ${MARKER_SIZE}px;
                             background: ${markerType.color};
                             border: 2px solid white;
                             border-radius: 50%;
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            font-size: 18px;
+                            font-size: ${MARKER_SIZE / 2}px;
                             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
                             cursor: pointer;
                         ">${markerType.icon}</div>`,
-                        iconSize: [36, 36],
-                        iconAnchor: [18, 18]
+                        iconSize: [MARKER_SIZE, MARKER_SIZE],
+                        iconAnchor: [MARKER_SIZE / 2, MARKER_SIZE / 2]
                     });
 
                     const marker = L.marker([data.lat, data.lng], {

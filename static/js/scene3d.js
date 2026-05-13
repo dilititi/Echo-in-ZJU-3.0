@@ -1,10 +1,12 @@
 // ── scene3d.js：3D 场景全部逻辑 ─────────────────────────────────
 
-let scene, camera, renderer, controls3d;
+let scene, camera, renderer, controls3d, textureLoader;
 let buildingMeshes = [];
 let selectedBuilding3D = null;
 let scene3dReady = false;
 let viewMode3D = 0;
+let groundMesh = null;
+let groundGrid = null;
 
 // ── 切换函数（供 index.html 调用）────────────────────────────────
 function switchTo3D() {
@@ -44,6 +46,7 @@ function init3D() {
     }
 
     try {
+        textureLoader = new THREE.TextureLoader();
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0d1b2a);
         scene.fog = new THREE.Fog(0x0d1b2a, 200, 500);
@@ -99,7 +102,7 @@ function add3DLighting() {
 function create3DBuildings() {
     let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
 
-    for (const [, b] of Object.entries(Data.buildings)) {
+    for (const [key, b] of Object.entries(Data.buildings)) {
         if (b.footprint) {
             for (const [lng, lat] of b.footprint) {
                 const [x,,z] = CoordinateSystem.wgs84To3D(lng, lat, 0);
@@ -111,6 +114,11 @@ function create3DBuildings() {
             minX = Math.min(minX,x); maxX = Math.max(maxX,x);
             minZ = Math.min(minZ,z); maxZ = Math.max(maxZ,z);
         }
+
+        try {
+            if (b.footprint && b.footprint.length >= 3) createFootprintMesh(key, b);
+            else if (b.position) createBoxMesh(key, b);
+        } catch(e) { console.warn('建筑失败:', key, e); }
     }
 
     const cx = (minX + maxX) / 2, cz = (minZ + maxZ) / 2;
@@ -120,17 +128,11 @@ function create3DBuildings() {
     controls3d.target.set(cx, 0, cz);
     controls3d.update();
     camera.position.set(cx - 80, 60, cz + 120);
-
-    for (const [key, b] of Object.entries(Data.buildings)) {
-        try {
-            if (b.footprint && b.footprint.length >= 3) createFootprintMesh(key, b);
-            else if (b.position) createBoxMesh(key, b);
-        } catch(e) { console.warn('建筑失败:', key, e); }
-    }
 }
 
 function update3DGround(size, cx, cz) {
-    scene.children.filter(o => o.userData.isGround).forEach(o => scene.remove(o));
+    if (groundMesh) { scene.remove(groundMesh); groundMesh = null; }
+    if (groundGrid) { scene.remove(groundGrid); groundGrid = null; }
 
     // ── 卫星地图纹理 ──────────────────────────────────────────────
     const satTex = textureLoader.load('/assets/紫金港卫星地图.png');
@@ -157,8 +159,6 @@ function update3DGround(size, cx, cz) {
     satTex.offset.set(uOffset, vOffset);
     satTex.repeat.set(uRepeat, vRepeat);
 
-    console.log(`🗺️ 卫星图 UV: offset(${uOffset.toFixed(3)}, ${vOffset.toFixed(3)}) repeat(${uRepeat.toFixed(3)}, ${vRepeat.toFixed(3)})`);
-
     const ground = new THREE.Mesh(
         new THREE.PlaneGeometry(size, size),
         new THREE.MeshStandardMaterial({
@@ -171,7 +171,8 @@ function update3DGround(size, cx, cz) {
     ground.position.set(cx, -0.1, cz);
     ground.receiveShadow = true;
     ground.userData.isGround = true;
-    scene.add(ground);
+    groundMesh = ground;
+    scene.add(groundMesh);
 
     // 网格线（半透明叠加，帮助调试对齐）
     const grid = new THREE.GridHelper(size, Math.floor(size/4), 0x444444, 0x333333);
@@ -179,7 +180,8 @@ function update3DGround(size, cx, cz) {
     grid.material.transparent = true;
     grid.position.set(cx, 0.01, cz);
     grid.userData.isGround = true;
-    scene.add(grid);
+    groundGrid = grid;
+    scene.add(groundGrid);
 }
 
 function createFootprintMesh(key, b) {

@@ -179,7 +179,7 @@ Object.assign(App, {
             if (building.position && !this.state.soundExploreUnlockedBuildings.has(buildingId)) {
                 const hotspot = document.createElement('div');
                 hotspot.className = 'sound-hotspot';
-                hotspot.dataset.buildingId = buildingId;
+                hotspot.dataset.building = buildingId;
 
                 const point = this.state.map.latLngToContainerPoint([building.position[0], building.position[1]]);
 
@@ -201,11 +201,6 @@ Object.assign(App, {
                 hotspot.innerHTML = `<span style="color: #0078A8; font-size: 16px;">🔊</span>`;
                 hotspot.title = '点击播放音频';
 
-                hotspot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.startSoundExploreChallenge({ id: buildingId, building: building });
-                });
-
                 hotspot.addEventListener('mouseenter', () => {
                     hotspot.style.background = 'radial-gradient(circle, rgba(0, 123, 168, 0.6) 0%, rgba(0, 123, 168, 0.2) 70%, transparent 100%)';
                     hotspot.style.transform = 'scale(1.2)';
@@ -220,9 +215,18 @@ Object.assign(App, {
             }
         });
 
-        this.state.map.on('zoomend moveend', () => {
-            this.updateHotspotPositions();
+        container.addEventListener('click', e => {
+            const hotspot = e.target.closest('[data-building]');
+            if (!hotspot) return;
+            e.stopPropagation();
+            const id = hotspot.dataset.building;
+            this.startSoundExploreChallenge({ id, building: Data.buildings[id] });
         });
+
+        const MAP_EVENTS = 'zoomend moveend';
+        this._hotspotMapEvents = MAP_EVENTS;
+        this._hotspotPositionHandler = () => this.updateHotspotPositions();
+        this.state.map.on(MAP_EVENTS, this._hotspotPositionHandler);
 
         if (!document.getElementById('hotspot-animation-style')) {
             const style = document.createElement('style');
@@ -242,7 +246,7 @@ Object.assign(App, {
         if (!container) return;
 
         container.querySelectorAll('.sound-hotspot').forEach(hotspot => {
-            const buildingId = hotspot.dataset.buildingId;
+            const buildingId = hotspot.dataset.building;
             const building = Data.buildings[buildingId];
             if (building && building.position) {
                 const point = this.state.map.latLngToContainerPoint([building.position[0], building.position[1]]);
@@ -257,6 +261,11 @@ Object.assign(App, {
         if (container) container.remove();
         const progressHint = document.getElementById('sound-progress-hint');
         if (progressHint) progressHint.remove();
+        if (this._hotspotPositionHandler) {
+            this.state.map.off(this._hotspotMapEvents, this._hotspotPositionHandler);
+            this._hotspotPositionHandler = null;
+            this._hotspotMapEvents = null;
+        }
     },
 
     updateSoundProgressHint() {

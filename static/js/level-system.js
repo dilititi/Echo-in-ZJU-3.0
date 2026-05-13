@@ -100,7 +100,6 @@ Object.assign(App, {
 
     showLevelInfo(level) {
         if (!this.state.allowShowLevelInfo) {
-            console.log('showLevelInfo() 被拦截（欢迎弹窗未关闭）');
             return;
         }
         if (!level) {
@@ -415,14 +414,12 @@ Object.assign(App, {
     },
 
     completeLevel() {
-        console.trace('completeLevel() 被调用了！调用者如下：');
-        if (!this.state.allowCompleteLevel) {
-            console.log('completeLevel() 被拦截（未解锁）');
-            return;
-        }
+        if (!this.state.allowCompleteLevel) return;
+        if (this.state.isCompletingLevel) return;
+        this.state.isCompletingLevel = true;
 
         const currentLevel = Data.levels.find(l => l.id === Storage.userProgress.currentLevel);
-        if (!currentLevel) return;
+        if (!currentLevel) { this.state.isCompletingLevel = false; return; }
 
         if (!Storage.userProgress.completedLevels.includes(currentLevel.id)) {
             Storage.userProgress.completedLevels.push(currentLevel.id);
@@ -443,6 +440,7 @@ Object.assign(App, {
         Storage.saveUserProgress();
         this.unlockLayersByLevel(currentLevel.id);
         this.showLevelCompleteModal(currentLevel);
+        this.state.isCompletingLevel = false;
     },
 
     showLevelCompleteModal(level) {

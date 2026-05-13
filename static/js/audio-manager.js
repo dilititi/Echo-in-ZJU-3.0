@@ -137,6 +137,7 @@ Object.assign(App, {
     processAudioListData(data) {
         this.elements.audioFiles.innerHTML = '';
         this.elements.defaultAudioFiles.innerHTML = '';
+        this.state.riddleCounter = 0;
 
         if (!data.files || data.files.length === 0) {
             this.elements.audioFiles.innerHTML = '<p>没有找到音频文件</p>';
@@ -158,18 +159,27 @@ Object.assign(App, {
         if (defaultFiles.length === 0) {
             this.elements.defaultAudioFiles.innerHTML = '<p>没有原始音频文件</p>';
         } else {
-            const limitedDefaultFiles = defaultFiles.slice(0, Config.maxDefaultAudioMarkers);
-            limitedDefaultFiles.forEach(file => this.createAudioItem(file, this.elements.defaultAudioFiles, false));
+            const frag = document.createDocumentFragment();
+            defaultFiles.slice(0, Config.maxDefaultAudioMarkers).forEach(file => {
+                const el = this.createAudioItem(file, false);
+                if (el) frag.appendChild(el);
+            });
+            this.elements.defaultAudioFiles.appendChild(frag);
         }
 
         if (userFiles.length === 0) {
             this.elements.audioFiles.innerHTML = '<p>没有上传的音频文件</p>';
         } else {
-            userFiles.forEach(file => this.createAudioItem(file, this.elements.audioFiles, true));
+            const frag = document.createDocumentFragment();
+            userFiles.forEach(file => {
+                const el = this.createAudioItem(file, true);
+                if (el) frag.appendChild(el);
+            });
+            this.elements.audioFiles.appendChild(frag);
         }
     },
 
-    createAudioItem(file, container, showDeleteButton) {
+    createAudioItem(file, showDeleteButton) {
         const audioItem = document.createElement('div');
         audioItem.className = 'audio-item';
 
@@ -187,7 +197,7 @@ Object.assign(App, {
 
         if (!Utils.validateUrl(file.url)) {
             console.error('Invalid audio URL:', file.url);
-            return;
+            return null;
         }
 
         const isDefaultAudio = !showDeleteButton;
@@ -269,7 +279,7 @@ Object.assign(App, {
             audioItem.appendChild(deleteButton);
         }
 
-        container.appendChild(audioItem);
+        return audioItem;
     },
 
     playAudio(url, button, isDefaultAudio = false) {
@@ -310,8 +320,27 @@ Object.assign(App, {
         let audio;
         if (this.state.audioPool.has(url)) {
             audio = this.state.audioPool.get(url);
+            // 清理上一次挂在该 Audio 对象上的 handler，防止池复用时双触发
+            if (audio._endedHandler) {
+                audio.removeEventListener('ended', audio._endedHandler);
+                audio._endedHandler = null;
+            }
+            if (audio._errorHandler) {
+                audio.removeEventListener('error', audio._errorHandler);
+                audio._errorHandler = null;
+            }
             audio.currentTime = 0;
         } else {
+            // LRU 淘汰：超出上限时移除最早入池的条目并释放 PCM 缓冲
+            if (this.state.audioPool.size >= 30) {
+                const oldestKey = this.state.audioPool.keys().next().value;
+                const oldestAudio = this.state.audioPool.get(oldestKey);
+                oldestAudio.pause();
+                oldestAudio.removeEventListener('ended', oldestAudio._endedHandler);
+                oldestAudio.removeEventListener('error', oldestAudio._errorHandler);
+                oldestAudio.src = '';
+                this.state.audioPool.delete(oldestKey);
+            }
             audio = new Audio(url);
             this.state.audioPool.set(url, audio);
         }
@@ -325,18 +354,31 @@ Object.assign(App, {
             button.dataset.playing = 'true';
         }
 
-        audio.addEventListener('ended', () => {
+        audio._endedHandler = () => {
+            audio._endedHandler = null;
+            audio._errorHandler = null;
             this.handleAudioEnded(button);
             if (isDefaultAudio && Storage.userProgress.currentLevel === 5 && !this.state.level5Completed) {
                 this.state.level5Completed = true;
                 this.stopLevel5Highlight();
                 this.completeLevel();
             }
-        }, { once: true });
+        };
+        audio._errorHandler = (e) => {
+            audio._endedHandler = null;
+            audio._errorHandler = null;
+            this.handleAudioError(button, e);
+        };
 
-        audio.addEventListener('error', (e) => this.handleAudioError(button, e), { once: true });
+        audio.addEventListener('ended', audio._endedHandler, { once: true });
+        audio.addEventListener('error', audio._errorHandler, { once: true });
 
         audio.play().catch(error => {
+            this.state.isPlaying = false;
+            this.state.currentAudio = null;
+            this.state.currentPlayButton = null;
+            audio._endedHandler = null;
+            audio._errorHandler = null;
             console.error('Playback failed:', error);
             this.handleAudioError(button, error);
         });
@@ -381,9 +423,9 @@ Object.assign(App, {
     },
 
     clearProgressInterval(button) {
-        if (button && button.progressInterval) {
-            clearInterval(button.progressInterval);
-            button.progressInterval = null;
+        if (button && button._rafId) {
+            cancelAnimationFrame(button._rafId);
+            button._rafId = null;
         }
     },
 
@@ -412,12 +454,15 @@ Object.assign(App, {
             button.progressFill = progressFill;
         }
 
-        button.progressInterval = setInterval(() => {
+        const updateLoop = () => {
+            if (button.dataset.playing !== 'true') { button._rafId = null; return; }
             if (audio.duration && !isNaN(audio.duration) && button.progressFill) {
                 const progress = (audio.currentTime / audio.duration) * 100;
                 button.progressFill.style.width = `${progress}%`;
             }
-        }, 100);
+            button._rafId = requestAnimationFrame(updateLoop);
+        };
+        button._rafId = requestAnimationFrame(updateLoop);
     },
 
     deleteAudio(key) {
