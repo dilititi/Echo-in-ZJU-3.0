@@ -79,7 +79,7 @@ Object.assign(App, {
             const emotionTag = this.getBuildingEmotionTag(buildingId);
             const hiddenBadge = displayEvent.hidden ? '<span style="background: linear-gradient(135deg, #d4af37, #f4d35e); color: #1b263b; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px;">🎭 隐藏彩蛋</span>' : '';
             const audioFile = this.getAudioFileByPattern(displayEvent.audioPattern);
-            const audioAnswerName = audioFile.split('/').pop().replace(/\.[^.]+$/, '');
+            const audioAnswerName = audioFile ? audioFile.split('/').pop().replace(/\.[^.]+$/, '') : '';
 
             content = `
                 <div style="text-align: center;">
@@ -162,6 +162,7 @@ Object.assign(App, {
             let puzzleAudio = null;
             const audioFile = this.getAudioFileByPattern(displayEvent.audioPattern);
             puzzlePlayBtn.onclick = () => {
+                if (!audioFile) return;
                 if (puzzleAudio) { puzzleAudio.pause(); puzzleAudio.currentTime = 0; }
                 puzzleAudio = new Audio(audioFile);
                 puzzleAudio.volume = 0.8;

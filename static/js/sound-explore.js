@@ -432,22 +432,33 @@ Object.assign(App, {
 
     getAudioFileByPattern(pattern) {
         const audioMap = {
+            // data.js 中实际使用的 audioPattern 值（精确匹配）
+            '木板走路声': '/default_audio/木板走路声.mp3',
+            '踩石子': '/default_audio/踩石子.mp3',
+            '食堂后堂声': '/default_audio/食堂后堂声.mp3',
+            '走楼梯': '/default_audio/走楼梯.mp3',
+            '翻书声': '/default_audio/翻书声.mp3',
+            '蝉鸣': '/default_audio/蝉鸣.mp3',
+            '敲键盘': '/default_audio/敲键盘.mp3',
+            '踩树叶': '/default_audio/踩树叶.mp3',
+            '电梯声': '/default_audio/电梯声.mp3',
+            '蛙叫（纯净）': '/default_audio/蛙叫（纯净）.mp3',
+            '摇晃水杯': '/default_audio/摇晃水杯.mp3',
+            // 保留旧 key（带"声"后缀），兼容其他调用方
             '走路声': '/default_audio/木板走路声.mp3',
             '踩石子声': '/default_audio/踩石子.mp3',
             '食堂声': '/default_audio/食堂后堂声.mp3',
             '走楼梯声': '/default_audio/走楼梯.mp3',
             '踩木地板声': '/default_audio/木板走路声.mp3',
-            '翻书声': '/default_audio/翻书声.mp3',
             '蝉鸣声': '/default_audio/蝉鸣.mp3',
             '敲键盘声': '/default_audio/敲键盘.mp3',
             '踩树叶声': '/default_audio/踩树叶.mp3',
-            '电梯声': '/default_audio/电梯声.mp3',
             '蛙鸣声': '/default_audio/蛙叫（纯净）.mp3',
             '摇晃水杯声': '/default_audio/摇晃水杯.mp3',
             '天鹅叫声': '/default_audio/天鹅叫声.mp3',
             '瀑布声': '/default_audio/瀑布声.mp3',
         };
-        return audioMap[pattern] || '/default_audio/踩石子.mp3';
+        return audioMap[pattern] || null;
     },
 
     initSoundExploreModalEvents() {
