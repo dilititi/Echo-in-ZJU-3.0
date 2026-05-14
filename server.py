@@ -249,15 +249,20 @@ def serve_local_audio(file_path):
 @app.route('/default_audio/<path:filename>')
 @rate_limit
 def serve_default_audio(filename):
-    """提供默认音频文件"""
+    """提供默认音频文件：OSS 模式重定向到签名 URL，本地模式直接 serve"""
     try:
+        if not storage_manager.use_local_fallback:
+            oss_key = f'audio/default_{filename}'
+            url = storage_manager.get_file_url(oss_key)
+            if url:
+                return redirect(url)
+            return jsonify({'error': 'File not found'}), 404
+
         default_audio_path = os.path.join(os.path.dirname(__file__), 'audio', 'default_audio')
         file_path = os.path.join(default_audio_path, filename)
-        
         if os.path.exists(file_path):
             return send_file(file_path, as_attachment=False)
-        else:
-            return jsonify({'error': 'File not found'}), 404
+        return jsonify({'error': 'File not found'}), 404
     except Exception as e:
         logger.error(f'Error in serve_default_audio: {str(e)}')
         return jsonify({'error': 'Internal server error'}), 500
