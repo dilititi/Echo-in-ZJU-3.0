@@ -317,7 +317,7 @@
     <!-- 右侧：卫星图占位 -->
     <div style="margin-top:7vh">
       <div class="frame-img r-4x3" style="height:52vh">
-        <img src="images/satellite.png" alt="紫金港校区卫星影像">
+        <img src="/ppt/images/satellite.png" alt="紫金港校区卫星影像">
       </div>
       <div class="img-cap" style="margin-top:.8vh">紫金港校区卫星影像 · Zijingang Campus</div>
     </div>
@@ -417,7 +417,7 @@
     <!-- 右侧：探索模式界面占位 -->
     <div>
       <div class="frame-img r-3x4" style="height:56vh">
-        <img src="images/sound-explore.png" alt="声音探索界面">
+        <img src="/ppt/images/sound-explore.png" alt="声音探索界面">
       </div>
     </div>
   </div>
@@ -467,25 +467,25 @@
     <div class="grid-4">
       <figure class="tile" data-anim>
         <div class="frame-img" style="height:26vh">
-          <img src="images/map-2d.png" alt="2D 声音地图">
+          <img src="/ppt/images/map-2d.png" alt="2D 声音地图">
         </div>
         <div class="img-cap">2D 声音地图 · Leaflet + OSM</div>
       </figure>
       <figure class="tile" data-anim>
         <div class="frame-img" style="height:26vh">
-          <img src="images/map-3d.png" alt="3D 校园漫游">
+          <img src="/ppt/images/map-3d.png" alt="3D 校园漫游">
         </div>
         <div class="img-cap">3D 校园漫游 · Three.js</div>
       </figure>
       <figure class="tile" data-anim>
         <div class="frame-img" style="height:26vh">
-          <img src="images/sound-puzzle.png" alt="听音辨物谜题">
+          <img src="/ppt/images/sound-puzzle.png" alt="听音辨物谜题">
         </div>
         <div class="img-cap">听音辨物 · Sound Explore Mode</div>
       </figure>
       <figure class="tile" data-anim>
         <div class="frame-img" style="height:26vh">
-          <img src="images/community.png" alt="声音社区">
+          <img src="/ppt/images/community.png" alt="声音社区">
         </div>
         <div class="img-cap">声音社区 · Wall &amp; Ranking</div>
       </figure>
@@ -587,7 +587,7 @@
     <!-- 右侧：声音游记界面占位 -->
     <div style="margin-top:7vh">
       <div class="frame-img r-16x10" style="height:50vh">
-        <img src="images/journey.png" alt="声音游记界面">
+        <img src="/ppt/images/journey.png" alt="声音游记界面">
       </div>
       <div class="img-cap" style="margin-top:.8vh">声音游记 · Sound Journey Timeline</div>
     </div>
@@ -797,7 +797,7 @@ function startGL(){
   if(!drawDark)drawDark=bootGL('bg-dark',FS_DARK);
   if(!drawLight)drawLight=bootGL('bg-light',FS_LIGHT);
   glT0=Date.now();
-  function loop(){if(window.__lowPowerMode){glRAF=0;return;}const t=(Date.now()-glT0)/1000;drawDark(t);drawLight(t);glRAF=requestAnimationFrame(loop)}
+  function loop(){if(window.__lowPowerMode){glRAF=0;return;}const t=(Date.now()-glT0)/1000;if(document.body.classList.contains('light-bg')){drawLight(t);}else{drawDark(t);}glRAF=requestAnimationFrame(loop)}
   glRAF=requestAnimationFrame(loop);
 }
 function stopGL(){if(glRAF)cancelAnimationFrame(glRAF);glRAF=0}
@@ -838,10 +838,16 @@ ov.id='overview';
 ov.style.cssText='position:fixed;inset:0;z-index:100;background:rgba(var(--ink-rgb),.92);backdrop-filter:blur(12px);display:none;overflow-y:auto;padding:4vh 4vw';
 document.body.appendChild(ov);
 
+let ovCards=null;
 function buildOverview(){
-  ov.innerHTML='';
+  if(ovCards){
+    // 只更新高亮边框，不重建 DOM
+    ovCards.forEach((card,i)=>card.style.borderColor=i===idx?'rgba(var(--paper-rgb),.8)':'rgba(var(--paper-rgb),.15)');
+    return;
+  }
   const grid=document.createElement('div');
   grid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:2vh 1.6vw;max-width:90vw;margin:0 auto';
+  ovCards=[];
   slides.forEach((s,i)=>{
     const card=document.createElement('div');
     card.style.cssText='cursor:pointer;border-radius:6px;overflow:hidden;border:2px solid '+(i===idx?'rgba(var(--paper-rgb),.8)':'rgba(var(--paper-rgb),.15)')+';transition:border-color .2s';
@@ -859,6 +865,7 @@ function buildOverview(){
     card.appendChild(label);
     card.onclick=()=>{toggleOverview();go(i)};
     grid.appendChild(card);
+    ovCards.push(card);
   });
   ov.appendChild(grid);
 }

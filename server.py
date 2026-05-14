@@ -1,6 +1,7 @@
 """音频服务器主模块 - 整合 3D 功能"""
 import os
 import json
+import uuid
 import logging
 from flask import Flask, request, jsonify, redirect, send_file, send_from_directory
 from flask_cors import CORS
@@ -46,8 +47,8 @@ try:
     storage_manager.init_default_audio()
     storage_manager.init_soundtrack()
     logger.info('Storage initialized successfully')
-except Exception as _e:
-    logger.error(f'Storage initialization failed: {_e}')
+except Exception as e:
+    logger.error(f'Storage initialization failed: {e}')
 
 @app.errorhandler(413)
 def file_too_large(error):
@@ -123,9 +124,10 @@ def upload_audio():
             logger.error('Invalid filename: contains path traversal characters')
             return jsonify({'error': 'Invalid filename'}), 400
 
-        # 生成OSS对象键名（使用时间戳防止重名）
+        # 生成OSS对象键名（时间戳 + 随机串防止并发重名）
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        oss_key = f'audio/{timestamp}_{filename}'
+        uid = uuid.uuid4().hex[:8]
+        oss_key = f'audio/{timestamp}_{uid}_{filename}'
 
         # 确保文件名有适当的扩展名
         original_ext = os.path.splitext(audio_file.filename)[1].lower()
@@ -151,7 +153,6 @@ def upload_audio():
                 logger.info(f'Generated URL: {url}')
                 
                 # 检查文件是否存在
-                from config import LOCAL_STORAGE_DIR
                 filename = oss_key.replace('audio/', '')
                 file_path = os.path.join(LOCAL_STORAGE_DIR, 'audio', filename)
                 logger.info(f'File path: {file_path}')
@@ -159,7 +160,6 @@ def upload_audio():
                 
                 # 保存音频元数据
                 metadata_path = os.path.join(LOCAL_STORAGE_DIR, 'audio', f'{filename}.meta.json')
-                import json
                 metadata = {
                     'is_public': is_public,
                     'building_id': building_id,
@@ -197,10 +197,7 @@ def get_audio(oss_key):
     try:
         url = storage_manager.get_file_url(oss_key)
         if url:
-            if url.startswith('/'):
-                return redirect(url)
-            else:
-                return redirect(url)
+            return redirect(url)
         else:
             return jsonify({'error': 'File not found'}), 404
     except Exception as e:
@@ -393,22 +390,30 @@ def api_osm_data():
 def api_convert_wgs84_to_pixel():
     """坐标转换 API: 经纬度 → 像素"""
     try:
-        lng = float(request.args.get('lng', 0))
-        lat = float(request.args.get('lat', 0))
-        
+        try:
+            lng = float(request.args.get('lng', 0))
+            lat = float(request.args.get('lat', 0))
+        except (TypeError, ValueError):
+            return jsonify({'error': '坐标参数格式无效'}), 400
+
         data = load_osm_data()
         if not data:
             return jsonify({'error': 'no data'}), 400
-            
+
         bounds = data['osm_bounds']
         map_size = data['map_2d']
-        
-        x = (lng - bounds['min_lng']) / (bounds['max_lng'] - bounds['min_lng'])
-        y = (lat - bounds['min_lat']) / (bounds['max_lat'] - bounds['min_lat'])
-        
+
+        lng_range = bounds['max_lng'] - bounds['min_lng']
+        lat_range = bounds['max_lat'] - bounds['min_lat']
+        if lng_range == 0 or lat_range == 0:
+            return jsonify({'error': '地理范围无效'}), 400
+
+        x = (lng - bounds['min_lng']) / lng_range
+        y = (lat - bounds['min_lat']) / lat_range
+
         px = x * map_size['width']
         py = map_size['height'] - y * map_size['height']
-        
+
         return jsonify({'pixel': [px, py], 'wgs84': [lng, lat]})
     except Exception as e:
         return jsonify({'error': str(e)}), 400

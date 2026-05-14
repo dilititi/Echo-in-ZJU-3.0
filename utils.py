@@ -24,14 +24,19 @@ def rate_limit(f):
         current_time = int(time.time() / 60)  # 每分钟一个窗口
         
         with rate_limit_lock:
+            # 清理超过 5 分钟的过期记录，防止内存无限增长
+            stale = [ip for ip, d in rate_limit_store.items() if current_time - d['window'] > 5]
+            for ip in stale:
+                del rate_limit_store[ip]
+
             if client_ip not in rate_limit_store:
                 rate_limit_store[client_ip] = {'count': 0, 'window': current_time}
-            
+
             if rate_limit_store[client_ip]['window'] != current_time:
                 rate_limit_store[client_ip] = {'count': 0, 'window': current_time}
-            
+
             rate_limit_store[client_ip]['count'] += 1
-            
+
             if rate_limit_store[client_ip]['count'] > RATE_LIMIT:
                 return jsonify({'error': 'Too many requests'}), 429
         
@@ -55,7 +60,7 @@ def get_cached_data():
     """获取缓存数据"""
     current_time = time.time()
     with cache_lock:
-        if audio_list_cache['data'] and (current_time - audio_list_cache['timestamp']) < CACHE_TIMEOUT:
+        if audio_list_cache['data'] is not None and (current_time - audio_list_cache['timestamp']) < CACHE_TIMEOUT:
             return audio_list_cache['data']
     return None
 
@@ -84,5 +89,6 @@ def validate_audio_key(key):
     return True
 
 def is_default_audio(key):
-    """检查是否为默认音频"""
-    return 'default_' in key or '/default_' in key
+    """检查是否为默认音频（basename 以 default_ 开头）"""
+    basename = key.split('/')[-1] if '/' in key else key
+    return basename.startswith('default_')

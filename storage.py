@@ -166,8 +166,9 @@ class StorageManager:
                 for root, dirs, filenames in os.walk(audio_dir):
                     for f in filenames:
                         if f.endswith(('.wav', '.mp3', '.ogg', '.m4a')):
-                            # 检查文件名是否包含oss_key中的关键字
-                            if f in oss_key or oss_key.replace('audio/', '') in f:
+                            # 精确匹配文件名（去扩展名后比较，避免子串误匹配）
+                            target = oss_key.replace('audio/', '')
+                            if f == target or os.path.splitext(f)[0] == os.path.splitext(target)[0]:
                                 relative_path = os.path.relpath(os.path.join(root, f), LOCAL_STORAGE_DIR)
                                 return f'/local_audio/{relative_path.replace(os.path.sep, "/")}'
             
@@ -210,7 +211,7 @@ class StorageManager:
             files = []
             for obj in oss2.ObjectIterator(self.bucket, prefix='audio/'):
                 if any(obj.key.endswith(ext) for ext in ALLOWED_AUDIO_EXTENSIONS):
-                    url = self.bucket.sign_url('GET', obj.key, 60 * 60 * 24)  # 24小时有效
+                    url = self.bucket.sign_url('GET', obj.key, 60 * 60 * 24)
                     files.append({
                         'key': obj.key,
                         'url': url,
@@ -225,7 +226,7 @@ class StorageManager:
     def _oss_get_url(self, oss_key):
         """获取OSS文件URL"""
         try:
-            url = self.bucket.sign_url('GET', oss_key, 60 * 60)  # 1小时有效
+            url = self.bucket.sign_url('GET', oss_key, 60 * 60 * 24)
             return url
         except Exception as e:
             logger.error(f'Error in OSS get URL: {str(e)}')
@@ -309,14 +310,13 @@ class StorageManager:
         """本地列出 soundtrack"""
         soundtrack_dir = os.path.join(os.path.dirname(__file__), 'soundtrack')
         result = {}
-        audio_exts = ALLOWED_AUDIO_EXTENSIONS | {'.aac', '.ogg'}
         for lib in allowed_libs:
             lib_path = os.path.join(soundtrack_dir, lib)
             if not os.path.isdir(lib_path):
                 continue
             files = [f for f in os.listdir(lib_path)
                      if os.path.isfile(os.path.join(lib_path, f))
-                     and os.path.splitext(f)[1].lower() in audio_exts]
+                     and os.path.splitext(f)[1].lower() in ALLOWED_AUDIO_EXTENSIONS]
             if files:
                 result[lib] = files
         return result
@@ -351,7 +351,6 @@ class StorageManager:
             return
 
         allowed_libs = ['基图', '主图', '医图']
-        audio_exts = ALLOWED_AUDIO_EXTENSIONS | {'.aac', '.ogg'}
         upload_count = 0
 
         # 获取 OSS 上已有的 soundtrack 文件
@@ -371,7 +370,7 @@ class StorageManager:
                 fpath = os.path.join(lib_path, fname)
                 if not os.path.isfile(fpath):
                     continue
-                if os.path.splitext(fname)[1].lower() not in audio_exts:
+                if os.path.splitext(fname)[1].lower() not in ALLOWED_AUDIO_EXTENSIONS:
                     continue
                 oss_key = f'soundtrack/{lib}/{fname}'
                 if oss_key in existing:

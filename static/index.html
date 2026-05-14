@@ -15,8 +15,7 @@
 
     <link rel="stylesheet" href="css/main.css">
     <!-- Three.js（在现有 </head> 之前插入）-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<!-- Three.js 移至 body 末尾，不在此处加载 -->
 </head>
 <body>
 
@@ -477,6 +476,8 @@
      SCRIPTS
 ================================================================ -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="js/config.js"></script>
 <script src="js/data.js"></script>        <!-- data 先加载 -->
 <script src="js/utils.js"></script>
@@ -731,11 +732,12 @@ document.getElementById('uploadButton').addEventListener('click', function () {
     fetch(`${base}/health`, { method: 'GET', signal: controller.signal })
         .then(r => { clearTimeout(timeoutId); if (!r.ok) throw new Error('non-ok'); return r.json(); })
         .then(data => {
-            const mode = data.storage_mode || 'oss';
-            dot.className = mode === 'local' ? 'local' : 'online';
+            const mode = data.storage === 'local' ? 'local' : 'online';
+            dot.className = mode;
             const label = mode === 'local' ? '后端在线 · 本地存储模式' : '后端在线 · OSS 存储模式';
             dot.title = label;
             dot.setAttribute('aria-label', label);
+            setTimeout(checkServerHealth, 60000);
         })
         .catch(() => {
             clearTimeout(timeoutId);
@@ -744,8 +746,6 @@ document.getElementById('uploadButton').addEventListener('click', function () {
             dot.title = label;
             dot.setAttribute('aria-label', label);
         });
-
-    if (dot.className !== 'offline') setTimeout(checkServerHealth, 60000);
 })();
 
 (function () {
