@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-theme="dark">
+<html lang="zh" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -578,7 +578,7 @@ document.getElementById('confirmResetButton').addEventListener('click', () => {
     const THEME_KEY = 'zju_map_theme_v1';   // fixed: previously 'zju_map_theme' (no version suffix)
     const btn  = document.getElementById('themeToggleBtn');
     const html = document.documentElement;
-    const saved = localStorage.getItem(THEME_KEY) || 'dark';
+    const saved = localStorage.getItem(THEME_KEY) || 'light';
     html.setAttribute('data-theme', saved);
     if (btn) {
         btn.textContent = saved === 'dark' ? '☀️ 日间' : '🌙 夜间';
