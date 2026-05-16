@@ -208,7 +208,7 @@ const ConfigCheck = {
         );
         
         // 标记类型
-        const markerTypesOK = Data.markerTypes && Object.keys(Data.markerTypes).length === 5;
+        const markerTypesOK = Data.markerTypes && Object.keys(Data.markerTypes).length === 6;
         this.check(
             '标记类型',
             markerTypesOK,

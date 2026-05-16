@@ -45,6 +45,7 @@
     --c-sport:   #5a6b3a;     /* moss */
     --c-club:    #6b3a5a;     /* plum */
     --c-memory:  #7a5230;     /* sepia */
+    --c-sound:   #9c7e3a;     /* honey amber — user-uploaded audio */
 
     --font-display:    'Cormorant Garamond', 'Times New Roman', serif;
     --font-body:       'Work Sans', system-ui, sans-serif;
@@ -89,6 +90,7 @@
     --c-sport:   #8aa66a;
     --c-club:    #9c6b8a;
     --c-memory:  #c89a5e;
+    --c-sound:   #d4a04c;
 }
 
 [data-theme="light"] {
@@ -364,12 +366,14 @@ body::before {
 [data-type="memory"] { border-left: 3px solid var(--c-memory); }
 [data-type="love"]   { border-left: 3px solid var(--c-love); }
 [data-type="study"]  { border-left: 3px solid var(--c-study); }
+[data-type="sound"]  { border-left: 3px solid var(--c-sound); }
 
 [data-type="sport"]:hover,  [data-type="sport"].selected  { background: rgba(90,107,58,.14); border-color: var(--c-sport); }
 [data-type="club"]:hover,   [data-type="club"].selected   { background: rgba(107,58,90,.14); border-color: var(--c-club); }
 [data-type="memory"]:hover, [data-type="memory"].selected { background: rgba(122,82,48,.14); border-color: var(--c-memory); }
 [data-type="love"]:hover,   [data-type="love"].selected   { background: rgba(181,87,59,.14); border-color: var(--c-love); }
 [data-type="study"]:hover,  [data-type="study"].selected  { background: rgba(52,90,107,.14); border-color: var(--c-study); }
+[data-type="sound"]:hover,  [data-type="sound"].selected  { background: rgba(156,126,58,.14); border-color: var(--c-sound); }
 
 .marker-type-btn.selected {
     box-shadow: inset 0 0 0 1px var(--text-light);

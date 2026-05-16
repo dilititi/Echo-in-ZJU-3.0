@@ -4,7 +4,8 @@ const Data = {
     love: { name: '恋爱', color: '#FF6B9B', icon: '❤️' },
     sport: { name: '运动', color: '#2ECC71', icon: '⚽' },
     club: { name: '社团活动', color: '#9B59B6', icon: '🎭' },
-    memory: { name: '纪念', color: '#F39C12', icon: '📌' }
+    memory: { name: '纪念', color: '#F39C12', icon: '📌' },
+    sound: { name: '声音', color: '#9c7e3a', icon: '🎵' }
   },
 
   levels: [

@@ -17,7 +17,7 @@
   // Read from computed style so dark/light mode is respected at pin creation time.
   function getTypeColor(type) {
     const varName = { study: '--c-study', love: '--c-love', sport: '--c-sport',
-                      club: '--c-club',  memory: '--c-memory' }[type];
+                      club: '--c-club',  memory: '--c-memory', sound: '--c-sound' }[type];
     if (!varName) return '#7a5230';
     const v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
     return v || '#7a5230';

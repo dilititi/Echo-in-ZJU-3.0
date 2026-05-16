@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-theme="light">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/main.css">
-    <!-- Three.js（在现有 </head> 之前插入）-->
-<!-- Three.js 移至 body 末尾，不在此处加载 -->
+    <link rel="stylesheet" href="css/field-journal.css">
 </head>
 <body>
 
@@ -22,9 +21,7 @@
     <p>基于Leaflet开发的纯前端校园声音地图，支持地图标记、录音解说、声音谜题、事件创建、关卡解锁。</p>
 </div>
 
-<!-- ================================================================
-     WELCOME OVERLAY
-================================================================ -->
+<!-- WELCOME OVERLAY -->
 <div id="welcomeOverlay">
     <div class="welcome-deco"></div>
     <div class="welcome-inner">
@@ -38,9 +35,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     GUIDE
-================================================================ -->
+<!-- GUIDE -->
 <div id="guideOverlay"></div>
 <div id="guidePopup">
     <div class="guide-step-indicator" id="guideStepIndicator">步骤 1 / 6</div>
@@ -53,78 +48,211 @@
     </div>
 </div>
 
-<!-- ================================================================
-     TOP TOOLBAR
-================================================================ -->
-<div id="topToolbar">
-    <span class="toolbar-title">紫金港</span>
+<!-- =====================================================
+     MAIN APP — Field Journal two-column layout
+     ===================================================== -->
+<div id="app">
 
-    <!-- Level badge — click triggers App.showLevelInfo() -->
-    <div id="levelBadge" title="当前关卡 · 点击查看详情">
-        <span>关卡</span>
-        <span class="lv-num" id="levelNum">1</span>
-        <div id="levelProgressBar"><div id="levelProgressFill"></div></div>
-    </div>
+    <!-- HEADER -->
+    <header class="fj-header">
+        <div class="fj-brand">
+            <div class="fj-logo">Z</div>
+            <div>
+                <h1 class="fj-title">紫金港声音地图</h1>
+                <p class="fj-subtitle">A Field Journal of Campus Sound · Vol. III</p>
+            </div>
+        </div>
 
-    <div class="toolbar-sep"></div>
-    <!-- Main actions visible -->
-    <button class="toolbar-btn" id="helpBtn">📖 帮助</button>
-    
-    <!-- Hamburger menu for other actions -->
-    <button class="toolbar-btn" id="hamburgerBtn" title="更多功能">☰</button>
-    
-    <div class="toolbar-sep"></div>
+        <div class="fj-stats">
+            <button class="stat" id="levelBadge" title="当前关卡 · 点击查看详情" aria-label="当前关卡">
+                <span>关卡</span>
+                <span class="stat-num" id="levelNum">1</span>
+                <div class="stat-progress" id="levelProgressBar"><i id="levelProgressFill"></i></div>
+            </button>
+            <span class="sep">·</span>
+            <div class="stat" id="recordStat">
+                <span>录音</span>
+                <span class="stat-num" id="recordCount">0</span>
+            </div>
+            <span class="sep">·</span>
+            <div class="stat" id="unlockStat">
+                <span>解锁</span>
+                <span class="stat-num" id="unlockCount">0</span>
+                <span style="opacity:.5;">/30</span>
+            </div>
+        </div>
 
-    <!-- Backend connection status — polled against /health -->
-    <div id="serverStatus" title="后端连接状态" role="status" aria-label="后端连接状态：检测中"></div>
+        <div class="fj-actions">
+            <div id="serverStatus" class="fj-server-dot" title="后端连接状态" role="status" aria-label="后端连接状态：检测中"></div>
+            <button class="fj-more-btn" id="moreBtn" title="更多功能" aria-label="更多功能">⋯</button>
+        </div>
+    </header>
+
+    <!-- MAIN — Map + Sidebar -->
+    <main class="fj-main">
+
+        <!-- Map -->
+        <section class="fj-map-section">
+            <div id="map">
+                <div class="map-compass" aria-hidden="true">
+                    <svg viewBox="-40 -40 80 80" width="64" height="64">
+                        <circle class="compass-ring"        r="34" fill="none" stroke-width="1"/>
+                        <circle class="compass-ring-dashed" r="28" fill="none" stroke-width=".5" stroke-dasharray="2 3"/>
+                        <path   class="compass-needle-n" d="M 0 -28 L 4 0 L 0 28 L -4 0 Z"/>
+                        <path   class="compass-needle-s" d="M -28 0 L 0 4 L 28 0 L 0 -4 Z"/>
+                        <text   class="compass-label" y="-30" text-anchor="middle" font-size="13">N</text>
+                    </svg>
+                </div>
+                <div class="map-cartouche" aria-hidden="true">
+                    <h3>Plate IX · 紫金港</h3>
+                    <p>按时间顺序，记录在校园中采集到的环境声音。Numbered specimens indicate sound recordings.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="fj-sidebar">
+
+            <!-- Legend + Markers row -->
+            <div class="fj-row-cards">
+
+                <!-- Legend -->
+                <div class="fj-card">
+                    <div class="fj-card-header">
+                        <div class="fj-card-title">Legend</div>
+                        <div class="fj-card-label">No. 01</div>
+                    </div>
+                    <div class="fj-legend-grid">
+                        <div class="fj-legend-item"><div class="fj-legend-dot" style="background:#c85c4a;"></div><div class="fj-legend-zh">图书馆</div><div class="fj-legend-en">Libraries</div></div>
+                        <div class="fj-legend-item"><div class="fj-legend-dot" style="background:#5a7fa5;"></div><div class="fj-legend-zh">学院</div><div class="fj-legend-en">Faculties</div></div>
+                        <div class="fj-legend-item"><div class="fj-legend-dot" style="background:#7a5d47;"></div><div class="fj-legend-zh">人文</div><div class="fj-legend-en">Culture</div></div>
+                        <div class="fj-legend-item"><div class="fj-legend-dot" style="background:#6b7c5a;"></div><div class="fj-legend-zh">自然</div><div class="fj-legend-en">Nature</div></div>
+                        <div class="fj-legend-item"><div class="fj-legend-dot" style="background:#a87d5e;"></div><div class="fj-legend-zh">运动</div><div class="fj-legend-en">Sport</div></div>
+                        <div class="fj-legend-item"><div class="fj-legend-dot" style="background:rgba(248,245,240,.9);border:1.5px solid #2a2317;"></div><div class="fj-legend-zh">校门</div><div class="fj-legend-en">Gates</div></div>
+                    </div>
+                </div>
+
+                <!-- Markers (6 types — sport/club/memory/love/study/sound) -->
+                <div class="fj-card">
+                    <div class="fj-card-header">
+                        <div class="fj-card-title">Markers</div>
+                        <div class="fj-card-label">No. 02</div>
+                    </div>
+                    <div class="fj-markers-grid">
+                        <button class="fj-marker-cell" data-type="study"  title="学习">
+                            <span class="ic">🎓</span><span class="lb">Study</span>
+                        </button>
+                        <button class="fj-marker-cell" data-type="love"   title="恋爱">
+                            <span class="ic">❤️</span><span class="lb">Love</span>
+                        </button>
+                        <button class="fj-marker-cell" data-type="sport"  title="运动">
+                            <span class="ic">⚽</span><span class="lb">Sport</span>
+                        </button>
+                        <button class="fj-marker-cell" data-type="club"   title="社团">
+                            <span class="ic">🎭</span><span class="lb">Club</span>
+                        </button>
+                        <button class="fj-marker-cell" data-type="memory" title="纪念">
+                            <span class="ic">📌</span><span class="lb">Memory</span>
+                        </button>
+                        <button class="fj-marker-cell" data-type="sound"  title="声音 · 上传音频">
+                            <span class="ic">🎵</span><span class="lb">Sound</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Field Notes -->
+            <div class="fj-card fj-notes-card">
+                <div class="fj-card-header">
+                    <div class="fj-card-title">Field Notes</div>
+                    <div class="fj-card-label" id="notesCountLabel">— ENTRIES</div>
+                </div>
+
+                <!-- First-time hint (replaces floating #recommendHint) -->
+                <div class="fj-notes-hint" id="recommendHint">
+                    <span>💡 点击地图地标聆听校园故事 · 按下方 ● 录下你的声音</span>
+                    <button id="dismissRecommendHint" aria-label="关闭提示">×</button>
+                </div>
+
+                <!-- Scrollable list — P4 will merge into unified .note-entry render -->
+                <div class="fj-notes-scroll">
+                    <div id="defaultAudioFiles"></div>
+                    <div id="audioFiles"></div>
+                </div>
+
+                <!-- Recording strip — record/stop buttons share one visual slot;
+                     CSS hides whichever is currently non-actionable so it feels
+                     like one toggling button while keeping the two legacy
+                     element IDs the existing JS depends on. -->
+                <div class="fj-record-strip">
+                    <div class="fj-record-btn-slot">
+                        <button class="fj-record-btn" id="recordButton" title="开始录音" aria-label="开始录音">●</button>
+                        <button class="fj-record-btn fj-stop-btn" id="stopButton" disabled title="停止录音" aria-label="停止录音"></button>
+                    </div>
+                    <div class="fj-record-fields">
+                        <input type="text" id="audioName" placeholder="给声音起个名字…" maxlength="40">
+                        <input type="text" id="recordLocation" placeholder="地点标注 · 简短描述（可选）" maxlength="60">
+                    </div>
+                </div>
+                <div class="fj-record-status" id="recordingStatus"></div>
+            </div>
+        </aside>
+    </main>
 </div>
 
-<!-- ================================================================
-     HAMBURGER MENU DROPDOWN
-=============================================================== -->
-<div id="hamburgerMenu" style="display:none;position:fixed;top:48px;right:12px;z-index:6000;background:linear-gradient(135deg,var(--bg-card),var(--bg-card-alt));padding:10px;border:2px solid var(--gold);box-shadow:0 0 0 1px var(--gold-dark),0 8px 30px rgba(0,0,0,0.4);border-radius:4px;">
-    <div style="display:flex;flex-direction:column;gap:6px;">
-        <button class="toolbar-btn" id="view3DBtn" onclick="switchTo3D()" style="width:100%;justify-content:left;">🏙️ 3D 模式</button>
-        <button class="toolbar-btn" id="soundJourneyBtn" style="width:100%;justify-content:left;">🗺️ 声音游记</button>
-        <button class="toolbar-btn" id="socialBtn" style="width:100%;justify-content:left;">💬 社区</button>
-        <button class="toolbar-btn" id="soundModeBtn" style="width:100%;justify-content:left;">🎧 声音探索</button>
-        <button class="toolbar-btn" id="themeToggleBtn" style="width:100%;justify-content:left;">🌙 夜间</button>
-    </div>
-</div>
-
-<!-- ================================================================
-     CONTROL PANEL
-================================================================ -->
-<div id="controlPanel">
-    <p class="cp-label">📌 标记类型</p>
-    <div class="marker-type-row">
-        <button class="marker-type-btn" data-type="sport"  title="运动">⚽</button>
-        <button class="marker-type-btn" data-type="club"   title="社团">🎭</button>
-        <button class="marker-type-btn" data-type="memory" title="纪念">📌</button>
-        <button class="marker-type-btn" data-type="love"   title="恋爱">❤️</button>
-        <button class="marker-type-btn" data-type="study"  title="学习">🎓</button>
+<!-- =====================================================
+     ⋯ MORE DRAWER (right slide-in)
+     ===================================================== -->
+<div class="fj-drawer-overlay" id="moreDrawerOverlay"></div>
+<aside class="fj-drawer" id="moreDrawer" aria-hidden="true">
+    <div class="fj-drawer-header">
+        <h3 class="fj-drawer-title">More · 更多</h3>
+        <button class="fj-drawer-close" id="moreDrawerClose" aria-label="关闭">×</button>
     </div>
 
-    <button id="resetButton">🗑️ 清除所有标记</button>
-</div>
+    <div class="fj-drawer-group">
+        <h5>视图 · View</h5>
+        <button class="fj-drawer-item layer-btn active" data-layer="default"><span class="ico">📜</span>纸本默认</button>
+        <button class="fj-drawer-item layer-btn" data-layer="satellite"><span class="ico">🛰️</span>卫星地图</button>
+        <button class="fj-drawer-item" id="view3DBtn" onclick="switchTo3D()"><span class="ico">🏙️</span>3D 校园</button>
+    </div>
 
-<!-- MAP -->
-<div id="map">
-    <div class="map-compass" aria-hidden="true">
-        <svg viewBox="-40 -40 80 80" width="64" height="64">
-            <circle class="compass-ring"        r="34" fill="none" stroke-width="1"/>
-            <circle class="compass-ring-dashed" r="28" fill="none" stroke-width=".5" stroke-dasharray="2 3"/>
-            <path   class="compass-needle-n" d="M 0 -28 L 4 0 L 0 28 L -4 0 Z"/>
-            <path   class="compass-needle-s" d="M -28 0 L 0 4 L 28 0 L 0 -4 Z"/>
-            <text   class="compass-label" y="-30" text-anchor="middle" font-size="13">N</text>
-        </svg>
+    <div class="fj-drawer-group">
+        <h5>玩法 · Modes</h5>
+        <button class="fj-drawer-item" id="soundModeBtn"><span class="ico">🎧</span>声音探索（听音辨物）</button>
+        <button class="fj-drawer-item" id="libraryChallengeBtn"><span class="ico">📚</span>图书馆闭馆挑战</button>
+        <button class="fj-drawer-item" id="soundJourneyBtn"><span class="ico">🗺️</span>声音游记 · 一键全播</button>
     </div>
-    <div class="map-cartouche" aria-hidden="true">
-        <h3>Plate IX · 紫金港</h3>
-        <p>按时间顺序，记录在校园中采集到的环境声音。Numbered specimens indicate sound recordings.</p>
+
+    <div class="fj-drawer-group">
+        <h5>创作 · Create</h5>
+        <button class="fj-drawer-item" id="openUploadBtn"><span class="ico">📁</span>上传音频谜题</button>
+        <button class="fj-drawer-item" id="openCustomEventBtn"><span class="ico">✨</span>创建自定义事件</button>
     </div>
-</div>
-<!-- 3D 场景容器（默认隐藏）-->
+
+    <div class="fj-drawer-group">
+        <h5>社交 · Community</h5>
+        <button class="fj-drawer-item" id="socialBtn"><span class="ico">💬</span>声音社区 · 留言墙</button>
+    </div>
+
+    <div class="fj-drawer-group">
+        <h5>设置 · Settings</h5>
+        <button class="fj-drawer-item" id="helpBtn"><span class="ico">📖</span>帮助 & 引导</button>
+        <button class="fj-drawer-item" id="drawerResetBtn"><span class="ico">🗑️</span><span class="danger">重置所有数据</span></button>
+    </div>
+
+    <div class="fj-drawer-group">
+        <h5>状态 · Status</h5>
+        <div class="fj-drawer-status">
+            <span class="fj-server-dot" id="serverStatusMini"></span>
+            <span id="serverStatusLabel">检测中…</span>
+        </div>
+    </div>
+</aside>
+
+<!-- =====================================================
+     3D SCENE (hidden by default)
+     ===================================================== -->
 <div id="scene-3d" style="display:none;position:fixed;inset:0;z-index:2000;">
     <div id="canvas-container" style="width:100%;height:100%;"></div>
 
@@ -141,7 +269,7 @@
         <button onclick="init3D()" style="background:#d4af37;border:none;padding:8px 16px;cursor:pointer;">重试</button>
     </div>
 
-    <!-- 3D 控制面板 -->
+    <!-- 3D 控制面板 (P7 将重做纸本风) -->
     <div style="position:fixed;top:20px;left:20px;z-index:100;
          background:linear-gradient(135deg,rgba(13,27,42,.95),rgba(26,26,46,.95));
          border:2px solid #d4af37;border-radius:8px;color:#f5f0e1;padding:15px;min-width:200px;">
@@ -199,93 +327,14 @@
     </div>
 </div>
 
-<!-- ================================================================
-     图层控制面板
-================================================================ -->
-<div id="layerControl">
-    <h4>🗺️ 图层切换</h4>
-    <button class="layer-btn active" data-layer="default">默认图层</button>
-    <button class="layer-btn" data-layer="night">夜间模式</button>
-    <button class="layer-btn" data-layer="satellite">卫星地图</button>
-</div>
-
-<!-- ================================================================
-     SIDE PANEL
-================================================================ -->
-<div id="sidePanel">
-    <div id="panelToggle">
-        <span class="toggle-arrow">◀</span>
-        <span class="toggle-label">声音面板</span>
-    </div>
-    <div class="panel-content">
-
-        <div class="panel-block">
-            <h4>🎤 录制新声音</h4>
-            <input type="text" id="audioName" placeholder="给声音起个名字…" maxlength="40">
-            <div style="display:flex;gap:7px;">
-                <button id="recordButton" style="flex:1;padding:10px;margin:0;">🎤 录音</button>
-                <button id="stopButton" disabled style="flex:1;padding:10px;margin:0;border-color:#c0392b;color:#c0392b;">⏹ 停止</button>
-            </div>
-            <div id="recordingStatus" style="margin-top:8px;font-size:11px;color:var(--accent-light);text-align:center;letter-spacing:.5px;"></div>
-        </div>
-
-        <div class="panel-block">
-            <h4>📁 上传音频谜题</h4>
-            <p style="font-size:11px;color:var(--gold-light);margin:0 0 8px;letter-spacing:.3px;">支持 .wav / .mp3 / .ogg / .m4a，最大 20MB</p>
-            <input type="text" id="uploadAudioName" placeholder="音频名称…" maxlength="40">
-            <input type="file" id="audioFileInput" accept=".wav,.mp3,.ogg,.m4a,audio/*">
-            <button id="uploadButton" style="width:100%;margin:0;">上传音频</button>
-        </div>
-
-        <div class="panel-block">
-            <h4>✨ 创建自定义事件</h4>
-            <input type="text" id="customEventTitle" placeholder="事件标题…" maxlength="60">
-            <textarea id="customEventDescription" placeholder="事件描述（2–5行最佳）" style="height:84px;resize:vertical;"></textarea>
-            <label>图标来源</label>
-            <div class="radio-group">
-                <label><input type="radio" name="iconSource" value="preset" checked> 预设图标</label>
-                <label><input type="radio" name="iconSource" value="custom"> 自定义图标</label>
-            </div>
-            <select id="customEventIcon">
-                <option value="icons/west_campus.png">🏫 教室</option>
-                <option value="icons/basic_library.png">📚 图书馆</option>
-                <option value="icons/office.png">🍽️ 餐厅</option>
-                <option value="icons/cafe.png">☕ 咖啡馆</option>
-            </select>
-            <input type="file" id="customEventIconFile" accept="image/*" style="display:none;">
-            <label style="margin-top:4px;">配图（可选）</label>
-            <input type="file" id="customEventImage" accept="image/*">
-            <button id="createCustomEventButton" class="btn-primary" style="width:100%;margin:0;">✨ 创建事件</button>
-        </div>
-
-        <div class="panel-block">
-            <h4>🎵 我的录音</h4>
-            <div id="audioFiles"></div>
-        </div>
-
-        <div class="panel-block">
-            <h4>🔒 声音谜题（不可删除）</h4>
-            <div id="defaultAudioFiles"></div>
-        </div>
-
-        <div class="panel-block">
-            <h4>🎵 图书馆闭馆音乐挑战</h4>
-            <p style="font-size:12px;color:#aaa;margin:4px 0 10px 0;">随机播放一段闭馆音乐，猜猜是哪个图书馆的？</p>
-            <button id="libraryChallengeBtn" style="width:100%;padding:9px;background:linear-gradient(135deg,#1b4f72,#2e86c1);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:14px;">▶ 开始挑战</button>
-        </div>
-
-    </div>
-</div>
-
-<!-- ================================================================
-     FLOATING HINTS
-================================================================ -->
-<div id="recommendHint">💡 点击闪烁的地标，聆听校园故事</div>
+<!-- Audio permission toast -->
 <div id="audioPermissionHint">🔊 请点击地图任意位置以启用音频播放</div>
 
-<!-- ================================================================
-     MODAL: Help
-================================================================ -->
+<!-- =====================================================
+     MODALS — visual restyle in P6, structure preserved
+     ===================================================== -->
+
+<!-- Help -->
 <div id="helpModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
     <div class="modal-content">
         <button class="modal-close" data-close="helpModal">&times;</button>
@@ -295,13 +344,13 @@
             <li>🗺️ <strong>点击地标</strong>：播放校园故事音频</li>
             <li>📌 <strong>放置标记</strong>：选择类型后按 <kbd>N</kbd> 键</li>
             <li>🗑️ <strong>删除标记</strong>：选中后按 <kbd>Backspace</kbd></li>
-            <li>🎤 <strong>录制声音</strong>：在右侧面板录音并命名</li>
-            <li>📁 <strong>上传谜题</strong>：支持 .wav / .mp3 / .ogg / .m4a（≤20MB）</li>
-            <li>✨ <strong>创建事件</strong>：填写标题、描述，可选附图</li>
-            <li>🎧 <strong>声音探索</strong>：工具栏开启，听音辨物解锁地标</li>
-            <li>🗺️ <strong>声音游记</strong>：查看你留下的所有声音时间线</li>
-            <li>💬 <strong>社区</strong>：留言声音墙 + 情绪排行榜</li>
-            <li>🌙 <strong>日/夜模式</strong>：工具栏一键切换，偏好自动保存</li>
+            <li>🎤 <strong>录制声音</strong>：在 Field Notes 卡片按 ● 录音并命名</li>
+            <li>📁 <strong>上传谜题</strong>：⋯ 菜单 → 创作 → 上传音频谜题（≤20MB）</li>
+            <li>✨ <strong>创建事件</strong>：⋯ 菜单 → 创作 → 自定义事件</li>
+            <li>🎧 <strong>声音探索</strong>：⋯ 菜单 → 玩法 → 听音辨物</li>
+            <li>🗺️ <strong>声音游记</strong>：⋯ 菜单 → 玩法 → 一键全播</li>
+            <li>💬 <strong>社区</strong>：⋯ 菜单 → 社交 → 留言墙</li>
+            <li>🏙️ <strong>3D 校园</strong>：⋯ 菜单 → 视图 → 3D 校园</li>
         </ul>
         <p style="font-size:11px;color:var(--accent);margin-top:12px;">
             在浏览器控制台运行 <code style="background:rgba(212,175,55,.15);padding:1px 6px;">checkConfig()</code> 可查看完整配置检查报告。
@@ -309,9 +358,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Event Detail
-================================================================ -->
+<!-- Event Detail -->
 <div id="eventModal" class="modal">
     <div class="modal-content" style="max-width:580px;max-height:90vh;">
         <button class="modal-close" data-close="eventModal">&times;</button>
@@ -327,9 +374,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Bind Event
-================================================================ -->
+<!-- Bind Event -->
 <div id="bindEventModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" data-close="bindEventModal">&times;</button>
@@ -344,9 +389,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Audio Note
-================================================================ -->
+<!-- Audio Note -->
 <div id="audioNoteModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" data-close="audioNoteModal">&times;</button>
@@ -361,9 +404,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Sound Explore
-================================================================ -->
+<!-- Sound Explore -->
 <div id="soundExploreModal" class="modal">
     <div class="modal-content" style="text-align:center;max-width:440px;">
         <button class="modal-close" data-close="soundExploreModal">&times;</button>
@@ -383,9 +424,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Level Complete  [NEW]
-================================================================ -->
+<!-- Level Complete -->
 <div id="levelCompleteModal" class="modal">
     <div class="modal-content" style="text-align:center;max-width:420px;">
         <h2>🏆 关卡完成！</h2>
@@ -398,9 +437,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Sound Journey  [NEW]
-================================================================ -->
+<!-- Sound Journey -->
 <div id="soundJourneyModal" class="modal">
     <div class="modal-content" style="max-width:580px;">
         <button class="modal-close" data-close="soundJourneyModal">&times;</button>
@@ -414,9 +451,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Social / Community  [NEW]
-================================================================ -->
+<!-- Social -->
 <div id="socialModal" class="modal">
     <div class="modal-content" style="max-width:560px;">
         <button class="modal-close" data-close="socialModal">&times;</button>
@@ -434,9 +469,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Nickname Setup  [NEW]
-================================================================ -->
+<!-- Nickname -->
 <div id="nicknameModal" class="modal">
     <div class="modal-content" style="max-width:400px;text-align:center;">
         <h2>👤 设置昵称</h2>
@@ -451,9 +484,7 @@
     </div>
 </div>
 
-<!-- ================================================================
-     MODAL: Reset Confirm  [NEW — replaces instant delete]
-================================================================ -->
+<!-- Reset Confirm -->
 <div id="resetConfirmModal" class="modal">
     <div class="modal-content" style="max-width:400px;text-align:center;">
         <button class="modal-close" data-close="resetConfirmModal">&times;</button>
@@ -467,9 +498,48 @@
     </div>
 </div>
 
-<!-- ================================================================
-     SOUND EXPLORE FIRST-TIME GUIDE
-================================================================ -->
+<!-- Upload Audio Puzzle (NEW — extracted from sidebar) -->
+<div id="uploadModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" data-close="uploadModal">&times;</button>
+        <h2>📁 上传音频谜题</h2>
+        <hr>
+        <p style="font-size:11.5px;color:var(--text-mute);margin:0 0 12px;letter-spacing:.3px;">
+            支持 .wav / .mp3 / .ogg / .m4a，最大 20MB
+        </p>
+        <input type="text" id="uploadAudioName" placeholder="音频名称…" maxlength="40">
+        <input type="file" id="audioFileInput" accept=".wav,.mp3,.ogg,.m4a,audio/*">
+        <button id="uploadButton" class="btn-primary" style="width:100%;margin:8px 0 0;">上传</button>
+    </div>
+</div>
+
+<!-- Custom Event Create (NEW — extracted from sidebar) -->
+<div id="customEventModal" class="modal">
+    <div class="modal-content" style="max-width:520px;">
+        <button class="modal-close" data-close="customEventModal">&times;</button>
+        <h2>✨ 创建自定义事件</h2>
+        <hr>
+        <input type="text" id="customEventTitle" placeholder="事件标题…" maxlength="60">
+        <textarea id="customEventDescription" placeholder="事件描述（2–5行最佳）" style="height:84px;resize:vertical;"></textarea>
+        <label>图标来源</label>
+        <div class="radio-group">
+            <label><input type="radio" name="iconSource" value="preset" checked> 预设图标</label>
+            <label><input type="radio" name="iconSource" value="custom"> 自定义图标</label>
+        </div>
+        <select id="customEventIcon">
+            <option value="icons/west_campus.png">🏫 教室</option>
+            <option value="icons/basic_library.png">📚 图书馆</option>
+            <option value="icons/office.png">🍽️ 餐厅</option>
+            <option value="icons/cafe.png">☕ 咖啡馆</option>
+        </select>
+        <input type="file" id="customEventIconFile" accept="image/*" style="display:none;">
+        <label style="margin-top:4px;">配图（可选）</label>
+        <input type="file" id="customEventImage" accept="image/*">
+        <button id="createCustomEventButton" class="btn-primary" style="width:100%;margin:8px 0 0;">✨ 创建事件</button>
+    </div>
+</div>
+
+<!-- Sound Explore First-time Guide -->
 <div id="soundFirstGuide">
     <div style="text-align:center;">
         <div style="font-size:50px;margin-bottom:14px;">🎧</div>
@@ -484,14 +554,14 @@
     </div>
 </div>
 
-<!-- ================================================================
+<!-- =====================================================
      SCRIPTS
-================================================================ -->
+     ===================================================== -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="js/config.js"></script>
-<script src="js/data.js"></script>        <!-- data 先加载 -->
+<script src="js/data.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/migration.js"></script>
@@ -511,60 +581,56 @@
 <script src="js/config-check.js"></script>
 
 <script>
-    /* 汉堡菜单 toggle */
-document.getElementById('hamburgerBtn').addEventListener('click', (e) => {
-    e.stopPropagation(); // 防止冒泡触发下面的关闭逻辑
-    const menu = document.getElementById('hamburgerMenu');
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-});
-
-// 点击菜单外任意位置关闭
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('#hamburgerBtn') && !e.target.closest('#hamburgerMenu')) {
-        document.getElementById('hamburgerMenu').style.display = 'none';
-    }
-});
-
 /* ================================================================
-   Bootstrap — runs after all JS modules are loaded
-================================================================ */
+   Field Journal bootstrap
+   ================================================================ */
 
-/* 1. Data migration — Migration.run() per architecture docs */
-if (typeof Migration !== 'undefined') {
-    Migration.run();
-}
+/* 1. Data migration */
+if (typeof Migration !== 'undefined') { Migration.run(); }
 
-/* ----------------------------------------------------------------
-   Helpers
----------------------------------------------------------------- */
-/** Open a modal by id */
+/* ---------------- Helpers ---------------- */
 function openModal(id) {
     const el = document.getElementById(id);
     if (el) { el.style.display = 'flex'; el.setAttribute('aria-hidden', 'false'); }
 }
-/** Close a modal by id */
 function closeModal(id) {
     const el = document.getElementById(id);
     if (el) { el.style.display = 'none'; el.setAttribute('aria-hidden', 'true'); }
 }
-/** Attach Enter-key submit to an input, calling a callback */
 function onEnter(inputId, cb) {
     document.getElementById(inputId)?.addEventListener('keydown', e => {
         if (e.key === 'Enter') { e.preventDefault(); cb(); }
     });
 }
 
-/* 2. Universal modal close via [data-close] */
+/* 2. Modal close via [data-close] */
 document.querySelectorAll('[data-close]').forEach(btn => {
     btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close')));
 });
 
-/* 3. Side panel toggle */
-document.getElementById('panelToggle').addEventListener('click', () => {
-    document.getElementById('sidePanel').classList.toggle('collapsed');
+/* ---------------- ⋯ Drawer ---------------- */
+const moreDrawer = document.getElementById('moreDrawer');
+const moreOverlay = document.getElementById('moreDrawerOverlay');
+function openDrawer() {
+    moreDrawer.classList.add('open');
+    moreOverlay.classList.add('open');
+    moreDrawer.setAttribute('aria-hidden', 'false');
+}
+function closeDrawer() {
+    moreDrawer.classList.remove('open');
+    moreOverlay.classList.remove('open');
+    moreDrawer.setAttribute('aria-hidden', 'true');
+}
+document.getElementById('moreBtn').addEventListener('click', openDrawer);
+document.getElementById('moreDrawerClose').addEventListener('click', closeDrawer);
+moreOverlay.addEventListener('click', closeDrawer);
+
+/* Auto-close drawer when any drawer-item is clicked (except layer-btn which toggles in place) */
+moreDrawer.querySelectorAll('.fj-drawer-item:not(.layer-btn)').forEach(btn => {
+    btn.addEventListener('click', () => setTimeout(closeDrawer, 120));
 });
 
-/* 4. Toolbar buttons */
+/* ---------------- Toolbar wiring (drawer items reuse legacy IDs) ---------------- */
 document.getElementById('helpBtn').addEventListener('click', () => openModal('helpModal'));
 document.getElementById('socialBtn').addEventListener('click', () => {
     openModal('socialModal');
@@ -575,58 +641,149 @@ document.getElementById('soundJourneyBtn').addEventListener('click', () => {
     if (typeof App !== 'undefined' && App.generateSoundJourney) App.generateSoundJourney();
 });
 
-/* 5. Level badge */
+/* Upload + custom event drawer entries → open modals */
+document.getElementById('openUploadBtn').addEventListener('click', () => openModal('uploadModal'));
+document.getElementById('openCustomEventBtn').addEventListener('click', () => openModal('customEventModal'));
+
+/* Level badge */
 document.getElementById('levelBadge').addEventListener('click', () => {
     if (typeof App !== 'undefined' && App.showLevelInfo) App.showLevelInfo();
 });
 
-/* 6. Reset → confirm modal */
-document.getElementById('resetButton').addEventListener('click', () => openModal('resetConfirmModal'));
+/* Reset → confirm modal → full progress + marker reset + reload */
+document.getElementById('drawerResetBtn').addEventListener('click', () => openModal('resetConfirmModal'));
 document.getElementById('confirmResetButton').addEventListener('click', () => {
-    if (typeof App !== 'undefined' && App.resetAll) App.resetAll();
+    try {
+        if (typeof App !== 'undefined' && App.clearAllMarkers) App.clearAllMarkers();
+        if (typeof Storage !== 'undefined' && Storage.resetAllProgress && typeof Data !== 'undefined') {
+            Storage.resetAllProgress(Data.puzzleEvents);
+        }
+        localStorage.removeItem('mapMarkers');
+        localStorage.removeItem('zju_map_hint_dismissed_v1');
+    } catch (err) {
+        console.error('Reset failed:', err);
+    }
     closeModal('resetConfirmModal');
+    setTimeout(() => window.location.reload(), 150);
 });
 
-/* 7. Day / Night mode toggle — theme key uses consistent prefix */
-(function () {
-    const THEME_KEY = 'zju_map_theme_v1';   // fixed: previously 'zju_map_theme' (no version suffix)
-    const btn  = document.getElementById('themeToggleBtn');
-    const html = document.documentElement;
-    const saved = localStorage.getItem(THEME_KEY) || 'light';
-    html.setAttribute('data-theme', saved);
-    if (btn) {
-        btn.textContent = saved === 'dark' ? '☀️ 日间' : '🌙 夜间';
+/* ---------------- Layer buttons ----------------
+   The "default / satellite" toggle has no backing implementation yet —
+   the map uses a Leaflet CRS.Simple image layout, not tile sources.
+   Keep selection visual but surface a toast so the affordance is honest. */
+document.querySelectorAll('.fj-drawer-item.layer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.fj-drawer-item.layer-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const layer = btn.dataset.layer;
+        if (layer !== 'default') {
+            const status = document.getElementById('recordingStatus');
+            if (status) {
+                status.textContent = '🛰️ 该底图模式尚未开放';
+                setTimeout(() => { if (status.textContent.startsWith('🛰️')) status.textContent = ''; }, 2200);
+            }
+        }
+    });
+});
+
+/* ---------------- Sound explore mode ---------------- */
+document.getElementById('soundModeBtn').addEventListener('click', () => {
+    if (typeof App !== 'undefined' && App.switchExploreMode) {
+        App.switchExploreMode('sound');
+        if (App.initSoundExploreModalEvents) App.initSoundExploreModalEvents();
+    }
+});
+
+/* ---------------- Marker type cells ---------------- */
+/* Mirrors legacy .icon-option behavior: write App.state.selectedType +
+   persist via Storage. Also enables click-to-place on the map (one shot
+   per selection — the original "press N" workflow is still wired in
+   app.js for keyboard users). */
+document.querySelectorAll('.fj-marker-cell').forEach(cell => {
+    cell.addEventListener('click', () => {
+        document.querySelectorAll('.fj-marker-cell').forEach(c => c.classList.remove('selected'));
+        cell.classList.add('selected');
+        const type = cell.dataset.type;
+        if (typeof App !== 'undefined' && App.state) {
+            App.state.selectedType = type;
+            if (typeof Storage !== 'undefined' && Storage.saveUserState) {
+                Storage.saveUserState(type, App.state.selectedAudio);
+            }
+        }
+        const status = document.getElementById('recordingStatus');
+        if (status) {
+            const lb = cell.querySelector('.lb')?.textContent || type;
+            const hasAudio = !!(typeof App !== 'undefined' && App.state && App.state.selectedAudio && App.state.selectedAudio.url);
+            if (type === 'sound' && !hasAudio) {
+                // "Sound" type is semantically tied to a user-uploaded audio;
+                // surface the missing prerequisite instead of the generic hint.
+                status.textContent = '🎵 请先在 Field Notes 列表里选一段已上传的音频，再点地图落 Sound 标记';
+            } else {
+                status.textContent = '✎ 已选择「' + lb + '」· 点击地图任意位置落点（或按 N）';
+            }
+            const snapshot = status.textContent;
+            setTimeout(() => { if (status.textContent === snapshot) status.textContent = ''; }, 5000);
+        }
+    });
+});
+
+/* Click-to-place + right-click-to-delete.
+   - Click on map (when a type is selected) places a pin at the latlng
+     by reusing the legacy N-key handler, so level-system hooks fire.
+   - Right-click on any user-placed marker pops a confirm and removes it.
+     This replaces (but does not break) the legacy Backspace shortcut.
+   Both wait for App.state.map, which is initialised inside App.init(). */
+(function bindMapInteractions() {
+    function bindMarkerDelete(marker) {
+        marker.on('contextmenu', (e) => {
+            if (e.originalEvent) {
+                e.originalEvent.preventDefault();
+                e.originalEvent.stopPropagation();
+            }
+            if (typeof L !== 'undefined' && L.DomEvent) L.DomEvent.stopPropagation(e);
+            if (confirm('删除这个标记？')) {
+                App.state.map.removeLayer(marker);
+                App.state.markers.delete(marker);
+                App.state.markerCount = Math.max(0, (App.state.markerCount || 1) - 1);
+                if (App.state.selectedMarker === marker) App.state.selectedMarker = null;
+                if (App.saveMarkers) App.saveMarkers();
+            }
+        });
     }
 
-    if (btn) {
-        btn.addEventListener('click', () => {
-        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', next);
-        btn.textContent = next === 'dark' ? '☀️ 日间' : '🌙 夜间';
-        localStorage.setItem(THEME_KEY, next);
-        if (typeof App !== 'undefined' && App.applyTheme) App.applyTheme(next);
-    });
-}
+    const ready = setInterval(() => {
+        if (typeof App === 'undefined' || !App.state || !App.state.map) return;
+        clearInterval(ready);
+
+        // Click-to-place
+        App.state.map.on('click', (e) => {
+            if (App.state.currentExploreMode === 'sound') return;
+            if (!App.state.selectedType) return;
+            App.state.lastMousePosition = e.latlng;
+            App.handleKeyPress({ preventDefault() {} });
+        });
+
+        // Suppress browser right-click menu over the whole map container
+        const mapEl = document.getElementById('map');
+        if (mapEl) mapEl.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Bind delete on already-loaded markers
+        App.state.markers.forEach((_, marker) => bindMarkerDelete(marker));
+
+        // Wrap handleKeyPress so future placements pick up the handler
+        const originalHandleKeyPress = App.handleKeyPress.bind(App);
+        App.handleKeyPress = function (e) {
+            const before = App.state.markers.size;
+            originalHandleKeyPress(e);
+            if (App.state.markers.size > before) {
+                const last = [...App.state.markers.keys()].pop();
+                if (last) bindMarkerDelete(last);
+            }
+        };
+    }, 200);
 })();
 
-/* 8. Map layer selector */
-const mapLayerSelect = document.getElementById('mapLayerSelect');
-if (mapLayerSelect) {
-    mapLayerSelect.addEventListener('change', function () {
-        if (typeof App !== 'undefined' && App.showLayer) App.showLayer(this.value);
-    });
-}
-
-/* 9. Marker type buttons */
-document.querySelectorAll('.marker-type-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.marker-type-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        if (typeof App !== 'undefined' && App.setMarkerType) App.setMarkerType(btn.dataset.type);
-    });
-});
-
-/* 10. Icon source radio toggle */
+/* ---------------- Icon source radio toggle (inside customEventModal) ---------------- */
 document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
     radio.addEventListener('change', () => {
         const custom = radio.value === 'custom';
@@ -635,8 +792,7 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
     });
 });
 
-/* 11. Nickname — char counter + Enter key + save
-        NOTE: uses lowercase 'appStorage' alias to avoid shadowing native window.Storage */
+/* ---------------- Nickname (counter + Enter + save) ---------------- */
 (function () {
     const input   = document.getElementById('nicknameInput');
     const counter = document.getElementById('nicknameCounter');
@@ -650,9 +806,7 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
     function saveNickname() {
         const val = input?.value.trim().slice(0, 12) || '';
         if (val) {
-            // Use lowercase alias — 'Storage' (capitalised) is the native Web Storage interface
-            const appStorage = (typeof Storage !== 'undefined' && typeof Storage.socialData !== 'undefined')
-                ? Storage : null;
+            const appStorage = (typeof Storage !== 'undefined' && typeof Storage.socialData !== 'undefined') ? Storage : null;
             if (appStorage) appStorage.socialData.userNickname = val;
             localStorage.setItem('zju_map_nickname_v1', val);
         }
@@ -664,13 +818,12 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
     onEnter('nicknameInput', saveNickname);
 })();
 
-/* 12. Sound wall post — Enter key + loading guard */
+/* ---------------- Sound wall (Enter + post) ---------------- */
 (function () {
     function renderWall() {
         const list = document.getElementById('soundWallList');
         if (!list) return;
-        const messages = (typeof Storage !== 'undefined' && Storage.socialData)
-            ? Storage.socialData.messageWall : [];
+        const messages = (typeof Storage !== 'undefined' && Storage.socialData) ? Storage.socialData.messageWall : [];
         if (!messages.length) {
             list.innerHTML = '<p style="opacity:.5;font-size:12px;margin:6px 0;">还没有留言，来第一个吧～</p>';
             return;
@@ -705,40 +858,58 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
     renderWall();
 })();
 
-/* 13. Sound explore — Enter key to submit */
+/* ---------------- Sound explore: direct bindings ----------------
+   The legacy initSoundExploreModalEvents() assigns onclick lazily;
+   binding them here at load guarantees submit/replay work the moment
+   the modal opens (and survives any re-render of the modal content). */
+document.getElementById('submitSoundExploreBtn').addEventListener('click', () => {
+    if (typeof App !== 'undefined' && App.submitSoundExploreAnswer) App.submitSoundExploreAnswer();
+});
+document.getElementById('replaySoundBtn').addEventListener('click', () => {
+    if (typeof App === 'undefined' || !App.state) return;
+    const cur = App.state.soundExploreCurrentBuilding;
+    if (cur && App.playSoundExploreAudio) App.playSoundExploreAudio(cur.id);
+});
 onEnter('soundExploreInput', () => {
-    document.getElementById('submitSoundExploreBtn')?.click();
+    if (typeof App !== 'undefined' && App.submitSoundExploreAnswer) App.submitSoundExploreAnswer();
 });
 
-/* 14. Play-all journey */
+/* ---------------- Play-all journey ---------------- */
 document.getElementById('playAllJourneyBtn').addEventListener('click', () => {
     if (typeof App !== 'undefined' && App.playAllJourneyItems) App.playAllJourneyItems();
 });
 
-/* 15. Level complete modal close */
+/* ---------------- Level complete modal close ---------------- */
 document.getElementById('levelCompleteBtn').addEventListener('click', () => closeModal('levelCompleteModal'));
 
-/* 16. Upload button loading state */
-document.getElementById('uploadButton').addEventListener('click', function () {
-    const file = document.getElementById('audioFileInput')?.files[0];
-    if (!file) return;
-    this.classList.add('loading');
-    this.disabled = true;
-    const restore = () => { this.classList.remove('loading'); this.disabled = false; };
-    // App.uploadAudio should call restore() on completion; fallback timeout of 15 s
-    if (typeof App !== 'undefined' && App.uploadAudio) {
-        App.uploadAudio(file, restore);
-    } else {
-        setTimeout(restore, 15000);
-    }
+/* ---------------- Upload button → delegate to App.uploadAudio ----------------
+   App.uploadAudio() handles its own disabled/restored state via .finally(). */
+document.getElementById('uploadButton').addEventListener('click', () => {
+    if (typeof App !== 'undefined' && App.uploadAudio) App.uploadAudio();
+});
+/* Auto-fill upload name from filename (mirrors legacy onchange behavior) */
+document.getElementById('audioFileInput').addEventListener('change', () => {
+    if (typeof App !== 'undefined' && App.handleFileChange) App.handleFileChange();
 });
 
-/* 17. Backend health check — /health endpoint
-        Fix: AbortSignal.timeout() not available in Safari < 16.4
-        Replacement: manual AbortController + setTimeout */
+/* ---------------- Field Notes first-time hint dismiss ---------------- */
+(function () {
+    const HINT_KEY = 'zju_map_hint_dismissed_v1';
+    const hint = document.getElementById('recommendHint');
+    if (!hint) return;
+    if (localStorage.getItem(HINT_KEY) === '1') hint.style.display = 'none';
+    document.getElementById('dismissRecommendHint')?.addEventListener('click', () => {
+        hint.style.display = 'none';
+        localStorage.setItem(HINT_KEY, '1');
+    });
+})();
+
+/* ---------------- Server health check ---------------- */
 (function checkServerHealth() {
-    const dot  = document.getElementById('serverStatus');
-    const base = (typeof Config !== 'undefined') ? Config.serverUrl : window.location.origin;
+    const dot    = document.getElementById('serverStatus');
+    const miniDot = document.getElementById('serverStatusMini');
+    const label  = document.getElementById('serverStatusLabel');
+    const base   = (typeof Config !== 'undefined') ? Config.serverUrl : window.location.origin;
 
     const controller = new AbortController();
     const timeoutId  = setTimeout(() => controller.abort(), 4000);
@@ -747,21 +918,22 @@ document.getElementById('uploadButton').addEventListener('click', function () {
         .then(r => { clearTimeout(timeoutId); if (!r.ok) throw new Error('non-ok'); return r.json(); })
         .then(data => {
             const mode = data.storage === 'local' ? 'local' : 'online';
-            dot.className = mode;
-            const label = mode === 'local' ? '后端在线 · 本地存储模式' : '后端在线 · OSS 存储模式';
-            dot.title = label;
-            dot.setAttribute('aria-label', label);
+            const text = mode === 'local' ? '后端在线 · 本地存储' : '后端在线 · OSS 存储';
+            [dot, miniDot].forEach(el => { if (el) el.className = `fj-server-dot ${mode}`; });
+            if (dot) { dot.title = text; dot.setAttribute('aria-label', text); }
+            if (label) label.textContent = text;
             setTimeout(checkServerHealth, 60000);
         })
         .catch(() => {
             clearTimeout(timeoutId);
-            dot.className = 'offline';
-            const label = '后端离线 · 仅限本地存储模式';
-            dot.title = label;
-            dot.setAttribute('aria-label', label);
+            const text = '后端离线 · 仅限本地存储';
+            [dot, miniDot].forEach(el => { if (el) el.className = 'fj-server-dot offline'; });
+            if (dot) { dot.title = text; dot.setAttribute('aria-label', text); }
+            if (label) label.textContent = text;
         });
 })();
 
+/* ---------------- URL param: ?mode=3d auto-switch ---------------- */
 (function () {
     if (new URLSearchParams(window.location.search).get('mode') === '3d') {
         const trySwitch = () => typeof switchTo3D === 'function'
@@ -771,10 +943,7 @@ document.getElementById('uploadButton').addEventListener('click', function () {
     }
 })();
 
-/* ============================================================
-   展览空闲回退：2 分钟无操作自动跳回 PPT
-   关闭方式：URL 加 ?kiosk=0
-   ============================================================ */
+/* ---------------- Kiosk idle fallback (2 min → PPT) ---------------- */
 (function () {
     if (new URLSearchParams(window.location.search).get('kiosk') === '0') return;
     const IDLE_MS = 120000;
@@ -791,7 +960,6 @@ document.getElementById('uploadButton').addEventListener('click', function () {
     });
     reset();
 })();
-
 </script>
 </body>
 </html>
