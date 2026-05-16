@@ -64,7 +64,7 @@ Object.assign(App, {
             left: 50%;
             transform: translate(-50%, -50%);
             background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
-            border: 2px solid var(--art-deco-gold);
+            border: 2px solid var(--gold);
             padding: 30px;
             max-width: 500px;
             max-height: 80vh;
@@ -83,10 +83,10 @@ Object.assign(App, {
 
             content = `
                 <div style="text-align: center;">
-                    <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--art-deco-gold); margin-bottom: 15px;">
+                    <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--gold); margin-bottom: 15px;">
                     <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${displayEvent.title}${hiddenBadge}</h3>
                     <div style="color: #e0e0e0; line-height: 1.8; margin-bottom: 15px; text-align: left; white-space: pre-line;">${displayEvent.description}</div>
-                    <div style="margin-top: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border-left: 3px solid var(--art-deco-gold); border-radius: 0 6px 6px 0;">
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(181, 87, 59, 0.08); border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0;">
                         <p style="margin: 0 0 10px 0; font-size: 12px; color: #f4d35e;">🎵 声音谜题（不可删除）</p>
                         <button id="puzzlePlayBtn" style="
                             background: linear-gradient(135deg, #1a6b3a, #2d9e5f);
@@ -105,7 +105,7 @@ Object.assign(App, {
                                 box-sizing: border-box;
                                 padding: 7px 10px;
                                 border-radius: 4px;
-                                border: 1px solid var(--art-deco-gold);
+                                border: 1px solid var(--gold);
                                 background: rgba(255,255,255,0.08);
                                 color: #f5f0e1;
                                 font-size: 13px;
@@ -115,7 +115,7 @@ Object.assign(App, {
                                 <button id="puzzleRevealBtn" style="
                                     background: rgba(212, 175, 55, 0.15);
                                     color: #f4d35e;
-                                    border: 1px solid var(--art-deco-gold);
+                                    border: 1px solid var(--gold);
                                     padding: 6px 14px;
                                     border-radius: 4px;
                                     cursor: pointer;
@@ -134,7 +134,7 @@ Object.assign(App, {
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
                     </div>` : ''}
-                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">📝 参与答题</button>' : ''}
+                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--gold), var(--gold-light));">📝 参与答题</button>' : ''}
                     <button id="closeBuildingInfo" style="margin-top: 15px;">关闭</button>
                 </div>
             `;
@@ -142,13 +142,13 @@ Object.assign(App, {
             const emotionTag = this.getBuildingEmotionTag(buildingId);
             content = `
                 <div style="text-align: center;">
-                    <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--art-deco-gold); margin-bottom: 15px;">
+                    <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--gold); margin-bottom: 15px;">
                     <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${building.name}</h3>
                     <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 15px;">${building.description || ''}</p>
                     ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
                         <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
                     </div>` : ''}
-                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">📝 参与答题</button>' : ''}
+                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--gold), var(--gold-light));">📝 参与答题</button>' : ''}
                     <button id="closeBuildingInfo" style="margin-top: 10px;">关闭</button>
                 </div>
             `;
@@ -206,14 +206,14 @@ Object.assign(App, {
     renderQuizContent(quiz, building) {
         return `
             <div style="text-align: center;">
-                <h3 style="font-family: var(--font-display); color: var(--art-deco-gold); margin: 0 0 20px 0; letter-spacing: 2px;">📝 校史问答</h3>
+                <h3 style="font-family: var(--font-display); color: var(--gold); margin: 0 0 20px 0; letter-spacing: 2px;">📝 校史问答</h3>
                 <p style="color: #e0e0e0; font-size: 16px; margin-bottom: 20px;">${quiz.question}</p>
                 <div id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
                     ${quiz.options.map((opt, i) => `
                         <button class="quiz-option" data-index="${i}" style="
                             padding: 12px 20px;
                             background: rgba(212, 175, 55, 0.1);
-                            border: 2px solid var(--art-deco-gold);
+                            border: 2px solid var(--gold);
                             border-radius: 8px;
                             cursor: pointer;
                             font-size: 14px;

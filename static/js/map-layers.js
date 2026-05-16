@@ -17,8 +17,8 @@ Object.assign(App, {
             top: 10px;
             right: 10px;
             z-index: 1000;
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
-            border: 2px solid var(--art-deco-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--gold);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -54,7 +54,7 @@ Object.assign(App, {
                 if (mapContainer) mapContainer.style.filter = 'brightness(0.7) saturate(0.8)';
             }
             document.querySelectorAll('.building-marker').forEach(marker => {
-                marker.style.boxShadow = '0 0 10px var(--art-deco-gold)';
+                marker.style.boxShadow = '0 0 10px var(--gold)';
             });
         } else {
             root.style.setProperty('--art-deco-bg-main', '#f5f0e6');

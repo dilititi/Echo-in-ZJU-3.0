@@ -58,8 +58,8 @@ Object.assign(App, {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
-            border: 3px solid var(--art-deco-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 3px solid var(--gold);
             padding: 30px 40px;
             border-radius: 10px;
             z-index: 7000;
@@ -68,11 +68,11 @@ Object.assign(App, {
         `;
         popup.innerHTML = `
             <div style="font-size: 48px; margin-bottom: 15px;">🤝</div>
-            <h2 style="font-family: var(--font-display); color: var(--art-deco-gold); margin: 0 0 10px 0; letter-spacing: 2px;">结伴任务完成！</h2>
-            <h3 style="font-family: var(--font-display); color: var(--art-deco-text-dark); margin: 0 0 10px 0;">${task.title}</h3>
-            <p style="color: var(--art-deco-text-dark); margin: 0 0 15px 0;">${task.description}</p>
+            <h2 style="font-family: var(--font-display); color: var(--gold); margin: 0 0 10px 0; letter-spacing: 2px;">结伴任务完成！</h2>
+            <h3 style="font-family: var(--font-display); color: var(--text-light); margin: 0 0 10px 0;">${task.title}</h3>
+            <p style="color: var(--text-light); margin: 0 0 15px 0;">${task.description}</p>
             <div style="padding: 10px; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
-                <p style="margin: 0; color: var(--art-deco-gold);">🎁 奖励：${task.reward}</p>
+                <p style="margin: 0; color: var(--gold);">🎁 奖励：${task.reward}</p>
             </div>
         `;
         document.body.appendChild(popup);
@@ -128,7 +128,7 @@ Object.assign(App, {
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
-            border: 2px solid var(--art-deco-gold);
+            border: 2px solid var(--gold);
             padding: 20px 30px;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
@@ -138,18 +138,18 @@ Object.assign(App, {
             color: #f5f0e1;
         `;
         infoDiv.innerHTML = `
-            <h3 style="margin:0 0 8px 0;color:var(--art-deco-gold);font-family:var(--font-display);letter-spacing:2px;">
+            <h3 style="margin:0 0 8px 0;color:var(--gold);font-family:var(--font-display);letter-spacing:2px;">
                 第 ${level.id} 关：${level.title}
             </h3>
             <p style="margin:0 0 10px 0;color:#ccc;font-size:13px;">${level.description}</p>
-            <div style="background:rgba(212,175,55,0.08);border-left:3px solid var(--art-deco-gold);padding:10px 14px;border-radius:0 6px 6px 0;text-align:left;margin-bottom:12px;">
+            <div style="background:rgba(181,87,59,0.08);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;text-align:left;margin-bottom:12px;">
                 <p style="margin:0 0 4px 0;font-size:12px;color:#f4d35e;">🎯 本关目标</p>
                 <p style="margin:0;font-size:13px;font-weight:bold;color:#f5f0e1;">${level.target}</p>
             </div>
             ${guide.action ? `<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:10px 14px;text-align:left;margin-bottom:12px;">
                 <p style="margin:0;font-size:13px;color:#e0e0e0;">${guide.icon} <strong>操作：</strong>${guide.action}</p>
             </div>` : ''}
-            <button id="closeLevelInfoBtn" style="padding:8px 24px;background:linear-gradient(135deg,var(--art-deco-gold),var(--art-deco-gold-light));color:#1b263b;border:none;border-radius:5px;cursor:pointer;font-weight:bold;font-size:13px;">知道了</button>
+            <button id="closeLevelInfoBtn" style="padding:8px 24px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--bg-card);border:none;cursor:pointer;font-weight:bold;font-size:13px;">知道了</button>
         `;
         document.body.appendChild(infoDiv);
 
@@ -192,14 +192,14 @@ Object.assign(App, {
                     position: fixed; top: 50%; left: 50%;
                     transform: translate(-50%, -50%);
                     background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
-                    border: 2px solid var(--art-deco-gold);
+                    border: 2px solid var(--gold);
                     padding: 28px; max-width: 420px; width: 90%;
                     border-radius: 10px; z-index: 6500;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
                     color: #f5f0e1; text-align: center;
                 `;
                 pop.innerHTML = `
-                    <h3 style="margin:0 0 6px 0;color:var(--art-deco-gold);font-family:var(--font-display);letter-spacing:2px;">🎵 图书馆闭馆音乐挑战</h3>
+                    <h3 style="margin:0 0 6px 0;color:var(--gold);font-family:var(--font-display);letter-spacing:2px;">🎵 图书馆闭馆音乐挑战</h3>
                     <p style="font-size:12px;color:#aaa;margin:0 0 16px 0;">聆听音乐，猜猜是哪个图书馆的闭馆曲？</p>
                     <button id="lcPlayBtn" style="background:linear-gradient(135deg,#1a6b3a,#2d9e5f);color:#fff;border:none;padding:9px 24px;border-radius:5px;cursor:pointer;font-size:14px;margin-bottom:14px;">▶ 播放音乐</button>
                     <div id="lcGuessArea" style="display:none;">
@@ -327,7 +327,7 @@ Object.assign(App, {
                 const achievement = Data.achievements[index];
                 if (achievement && achievements.includes(achievement.id)) {
                     icon.style.opacity = '1';
-                    icon.style.filter = 'drop-shadow(0 0 3px var(--art-deco-gold))';
+                    icon.style.filter = 'drop-shadow(0 0 3px var(--gold))';
                 } else {
                     icon.style.opacity = '0.3';
                     icon.style.filter = 'none';
@@ -348,7 +348,7 @@ Object.assign(App, {
             left: 50%;
             transform: translate(-50%, -50%);
             background: #3a3a3a;
-            border: 3px solid var(--art-deco-gold);
+            border: 3px solid var(--gold);
             padding: 30px 40px;
             border-radius: 10px;
             z-index: 7000;
@@ -358,9 +358,9 @@ Object.assign(App, {
         `;
         popup.innerHTML = `
             <div style="font-size: 48px; margin-bottom: 15px;">${achievement.icon}</div>
-            <h2 style="font-family: var(--font-display); color: var(--art-deco-gold); margin: 0 0 10px 0; letter-spacing: 2px;">成就解锁！</h2>
-            <h3 style="font-family: var(--font-display); color: var(--art-deco-text-dark); margin: 0 0 10px 0;">${achievement.title}</h3>
-            <p style="color: var(--art-deco-text-dark); margin: 0;">${achievement.description}</p>
+            <h2 style="font-family: var(--font-display); color: var(--gold); margin: 0 0 10px 0; letter-spacing: 2px;">成就解锁！</h2>
+            <h3 style="font-family: var(--font-display); color: var(--text-light); margin: 0 0 10px 0;">${achievement.title}</h3>
+            <p style="color: var(--text-light); margin: 0;">${achievement.description}</p>
         `;
         document.body.appendChild(popup);
 

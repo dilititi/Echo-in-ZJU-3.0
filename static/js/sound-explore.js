@@ -19,8 +19,8 @@ Object.assign(App, {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
-            border: 2px solid var(--art-deco-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--gold);
             padding: 30px;
             max-width: 600px;
             max-height: 80vh;
@@ -35,12 +35,12 @@ Object.assign(App, {
                 <div style="display: flex; align-items: center; padding: 10px; background: rgba(212, 175, 55, 0.05); border-radius: 8px; margin-bottom: 10px;">
                     <span style="font-size: 24px; margin-right: 15px;">${markerType.emoji}</span>
                     <div style="flex: 1;">
-                        <p style="margin: 0; font-weight: bold; color: var(--art-deco-text-dark);">${marker.name || `标记 ${index + 1}`}</p>
-                        <p style="margin: 5px 0 0 0; font-size: 12px; color: var(--art-deco-accent);">${new Date(marker.createdAt).toLocaleString()}</p>
+                        <p style="margin: 0; font-weight: bold; color: var(--text-light);">${marker.name || `标记 ${index + 1}`}</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: var(--text-mute);">${new Date(marker.createdAt).toLocaleString()}</p>
                     </div>
                     <button class="journey-play-btn" data-url="${marker.audioUrl}" style="
                         padding: 8px 15px;
-                        background: var(--art-deco-gold);
+                        background: var(--gold);
                         border: none;
                         border-radius: 4px;
                         cursor: pointer;
@@ -52,13 +52,13 @@ Object.assign(App, {
 
         popup.innerHTML = `
             <div style="text-align: center;">
-                <h2 style="font-family: var(--font-display); color: var(--art-deco-gold); margin: 0 0 20px 0; letter-spacing: 2px;">🎧 我的声音游记</h2>
-                <p style="color: var(--art-deco-text-dark); margin-bottom: 20px;">共 ${sortedMarkers.length} 个声音记忆</p>
+                <h2 style="font-family: var(--font-display); color: var(--gold); margin: 0 0 20px 0; letter-spacing: 2px;">🎧 我的声音游记</h2>
+                <p style="color: var(--text-light); margin-bottom: 20px;">共 ${sortedMarkers.length} 个声音记忆</p>
                 <div style="max-height: 400px; overflow-y: auto;">
                     ${journeyItems}
                 </div>
                 <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-                    <button id="playAllJourney" style="padding: 10px 20px; background: linear-gradient(135deg, var(--art-deco-gold), var(--art-deco-gold-light));">▶ 全部播放</button>
+                    <button id="playAllJourney" style="padding: 10px 20px; background: linear-gradient(135deg, var(--gold), var(--gold-light));">▶ 全部播放</button>
                     <button id="closeJourney" style="padding: 10px 20px;">关闭</button>
                 </div>
             </div>
@@ -142,13 +142,13 @@ Object.assign(App, {
             position: fixed;
             top: 10px;
             right: 10px;
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
-            border: 2px solid var(--art-deco-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--gold);
             padding: 10px 15px;
             border-radius: 8px;
             z-index: 5000;
             font-size: 14px;
-            color: var(--art-deco-text-dark);
+            color: var(--text-light);
         `;
         progressHint.innerHTML = `🎧 声音探索 | 已解锁: <strong>${unlockedCount}</strong>/${totalBuildings}`;
         document.body.appendChild(progressHint);
@@ -554,8 +554,8 @@ Object.assign(App, {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, var(--art-deco-bg-card) 0%, #f0e6d3 100%);
-            border: 3px solid var(--art-deco-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 3px solid var(--gold);
             padding: 30px 40px;
             border-radius: 15px;
             z-index: 7000;
@@ -565,9 +565,9 @@ Object.assign(App, {
         `;
         popup.innerHTML = `
             <div style="font-size: 48px; margin-bottom: 15px;">🎉</div>
-            <h2 style="font-family: var(--font-display); color: var(--art-deco-gold); margin: 0 0 10px 0; letter-spacing: 2px;">地标解锁成功！</h2>
-            <h3 style="font-family: var(--font-display); color: var(--art-deco-text-dark); margin: 0 0 10px 0;">${building.name}</h3>
-            <p style="color: var(--art-deco-text-dark); margin: 0;">该地标已在地图上显示</p>
+            <h2 style="font-family: var(--font-display); color: var(--gold); margin: 0 0 10px 0; letter-spacing: 2px;">地标解锁成功！</h2>
+            <h3 style="font-family: var(--font-display); color: var(--text-light); margin: 0 0 10px 0;">${building.name}</h3>
+            <p style="color: var(--text-light); margin: 0;">该地标已在地图上显示</p>
         `;
         document.body.appendChild(popup);
 
