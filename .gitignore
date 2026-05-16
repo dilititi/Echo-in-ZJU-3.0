@@ -35,4 +35,16 @@ ENV/
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Claude Code tooling artifacts
+.agents/
+.claude/agents/
+.claude/skills/
+.claude/worktrees/
+skills-lock.json
+
+# Local scratch / dumps
+overpass_full.json
+import json*.py
+旧版本index*
