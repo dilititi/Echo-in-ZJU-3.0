@@ -2,8 +2,10 @@
 import os
 import json
 import uuid
+import mimetypes
 import logging
-from flask import Flask, request, jsonify, redirect, send_file, send_from_directory
+from flask import Flask, request, jsonify, redirect, send_file, send_from_directory, Response, stream_with_context
+from werkzeug.exceptions import NotFound
 from flask_cors import CORS
 from datetime import datetime
 
@@ -249,20 +251,41 @@ def serve_local_audio(file_path):
 @app.route('/default_audio/<path:filename>')
 @rate_limit
 def serve_default_audio(filename):
-    """提供默认音频文件：OSS 模式重定向到签名 URL，本地模式直接 serve"""
+    # OSS 模式服务端代理流：浏览器看到同源响应，绕开 OSS bucket CORS 配置
     try:
-        if not storage_manager.use_local_fallback:
+        if not storage_manager.use_local_fallback and storage_manager.bucket:
             oss_key = f'audio/default_{filename}'
-            url = storage_manager.get_file_url(oss_key)
-            if url:
-                return redirect(url)
-            return jsonify({'error': 'File not found'}), 404
+            try:
+                obj = storage_manager.bucket.get_object(oss_key)
+            except Exception as e:
+                logger.warning(f'OSS get_object failed for {oss_key}: {e}')
+                return jsonify({'error': 'File not found'}), 404
+
+            def generate():
+                try:
+                    for chunk in obj:
+                        if chunk:
+                            yield chunk
+                finally:
+                    try: obj.close()
+                    except Exception: pass
+
+            mime = (mimetypes.guess_type(filename)[0]
+                    or (obj.headers.get('Content-Type') if hasattr(obj, 'headers') else None)
+                    or 'application/octet-stream')
+            headers = {'Cache-Control': 'public, max-age=86400'}
+            if hasattr(obj, 'headers'):
+                for h in ('Content-Length', 'ETag', 'Last-Modified'):
+                    v = obj.headers.get(h)
+                    if v: headers[h] = v
+            return Response(stream_with_context(generate()),
+                            mimetype=mime, headers=headers)
 
         default_audio_path = os.path.join(os.path.dirname(__file__), 'audio', 'default_audio')
-        file_path = os.path.join(default_audio_path, filename)
-        if os.path.exists(file_path):
-            return send_file(file_path, as_attachment=False)
-        return jsonify({'error': 'File not found'}), 404
+        try:
+            return send_from_directory(default_audio_path, filename)
+        except NotFound:
+            return jsonify({'error': 'File not found'}), 404
     except Exception as e:
         logger.error(f'Error in serve_default_audio: {str(e)}')
         return jsonify({'error': 'Internal server error'}), 500
@@ -427,16 +450,16 @@ def api_convert_wgs84_to_pixel():
 if __name__ == '__main__':
     logger.info('Starting Flask server...')
     logger.info('-' * 60)
+    port = int(os.getenv('PORT', 8081))
     logger.info('🎓 紫金港声音校园 - 已整合 3D 功能')
     logger.info('-' * 60)
     logger.info('访问地址:')
-    logger.info('  介绍:   http://localhost:8081/ (PPT 介绍页)')
-    logger.info('  2D:     http://localhost:8081/map')
-    logger.info('  3D:     http://localhost:8081/3d_index.html')
+    logger.info(f'  介绍:   http://localhost:{port}/ (PPT 介绍页)')
+    logger.info(f'  2D:     http://localhost:{port}/map')
+    logger.info(f'  3D:     http://localhost:{port}/3d_index.html')
     logger.info('-' * 60)
-    
+
     try:
-        port = int(os.getenv('PORT', 8081))
         logger.info(f"Server starting on http://0.0.0.0:{port}, debug mode: {DEBUG}")
         app.run(host='0.0.0.0', port=port, debug=DEBUG)
     except Exception as e:

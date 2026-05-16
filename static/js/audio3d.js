@@ -121,7 +121,7 @@ const Audio3D = (() => {
 
         if (buffer) return Promise.resolve(play(buffer));
 
-        return fetch(url)
+        return fetch(Config.resolveUrl(url))
             .then(r => r.ok ? r.arrayBuffer() : Promise.reject(r.status))
             .then(ab => ctx.decodeAudioData(ab))
             .then(buf => play(buf))
@@ -269,6 +269,21 @@ const Audio3D = (() => {
         initBirds();
     }
 
-return { init, updateListener, startRain, stopRain, setMasterVolume, playSpatialAudio, tick: tickMovingSources };
+// 保留 AudioContext、只 ramp masterGain，因为关闭后 init() 早退会重用旧 ctx
+let preMuteVolume = 0.8;
+function mute() {
+    if (!ctx || !masterGain) return;
+    stopRain();
+    preMuteVolume = masterGain.gain.value;
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.25);
+}
+function unmute() {
+    if (!ctx || !masterGain) return;
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(preMuteVolume || 0.8, ctx.currentTime + 0.25);
+}
+
+return { init, updateListener, startRain, stopRain, setMasterVolume, playSpatialAudio, mute, unmute, tick: tickMovingSources };
 
 })();

@@ -723,6 +723,319 @@ body {
     border-color: #a83a2c !important;
 }
 
+/* P7 — 3D scene paper panels (over dark Three.js canvas) */
+
+/* Loading / error overlays */
+.fj-3d-loading {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+    padding: 28px 44px;
+    background: var(--bg-card);
+    border: 1px solid var(--text-light);
+    box-shadow: var(--paper-frame);
+    color: var(--text-light);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: .5px;
+    text-align: center;
+    line-height: 1.4;
+}
+.fj-3d-loading-mark {
+    display: block;
+    color: var(--gold);
+    font-size: 28px;
+    margin-bottom: 4px;
+    animation: fjLoadingPulse 1.4s ease-in-out infinite;
+}
+.fj-3d-loading-sub {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+}
+@keyframes fjLoadingPulse {
+    0%, 100% { opacity: .35; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+.fj-3d-error {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 300;
+    min-width: 280px;
+    padding: 24px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--text-light);
+    box-shadow: var(--paper-frame-lg);
+    color: var(--text-light);
+    text-align: center;
+}
+.fj-3d-error h3 {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--gold-dark);
+    margin: 0 0 8px;
+    letter-spacing: .5px;
+}
+.fj-3d-error p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 0 0 14px;
+    line-height: 1.6;
+}
+
+/* Panels (shared) */
+.fj-3d-panel {
+    position: fixed;
+    top: 20px;
+    z-index: 100;
+    background: var(--bg-card);
+    border: 1px solid var(--text-light);
+    box-shadow: var(--paper-frame);
+    padding: 22px 22px 16px;
+    color: var(--text-light);
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+.fj-3d-panel::before {
+    content: '';
+    position: absolute; inset: 6px;
+    border: 1px solid var(--paper-edge);
+    pointer-events: none;
+}
+.fj-3d-panel--controls {
+    left: 20px;
+    width: 244px;
+}
+.fj-3d-panel--info {
+    right: 20px;
+    width: 296px;
+}
+
+/* Decorative corner crosses (inside the paper double-frame) */
+.fj-3d-corner {
+    position: absolute;
+    color: var(--gold);
+    font-size: 9px;
+    line-height: 1;
+    pointer-events: none;
+    opacity: .75;
+}
+.fj-3d-corner--tl { top: 10px;    left: 10px;   }
+.fj-3d-corner--tr { top: 10px;    right: 10px;  }
+.fj-3d-corner--bl { bottom: 10px; left: 10px;   }
+.fj-3d-corner--br { bottom: 10px; right: 10px;  }
+/* × close 占了 info 面板右上角，让位 */
+.fj-3d-panel--info .fj-3d-corner--tr { display: none; }
+
+/* Specimen tag — small horizontal label above the title */
+.fj-3d-panel-tag {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 2px 8px;
+    background: var(--text-light);
+    color: var(--bg-card);
+    font-family: var(--font-body);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Floating × close on info panel — paper stamp style */
+.fj-3d-panel-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 22px; height: 22px;
+    background: var(--bg-card);
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    z-index: 2;
+    transition: background .2s ease, color .2s ease;
+}
+.fj-3d-panel-close:hover {
+    background: var(--text-light);
+    color: var(--bg-card);
+}
+
+.fj-3d-panel-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--text-light);
+    margin: 0;
+    letter-spacing: .3px;
+}
+.fj-3d-panel-subtitle {
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin: 2px 0 12px;
+}
+
+.fj-3d-divider {
+    border: none;
+    border-top: 1px solid var(--paper-edge);
+    margin: 12px 0 10px;
+}
+
+.fj-3d-label {
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin: 0 0 8px;
+}
+
+/* Buttons */
+.fj-3d-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+.fj-3d-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    padding: 7px 10px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+    border-radius: 0;
+    white-space: nowrap;
+}
+/* CJK 字符不需要字距，去掉避免视觉松散 */
+.fj-3d-btn--cn {
+    letter-spacing: 0;
+    font-size: 12.5px;
+    font-weight: 500;
+}
+.fj-3d-btn:hover {
+    background: var(--text-light);
+    color: var(--bg-card);
+}
+.fj-3d-btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+}
+.fj-3d-btn--primary {
+    background: var(--gold);
+    border-color: var(--gold-dark);
+    color: var(--bg-card);
+}
+.fj-3d-btn--primary:hover {
+    background: var(--gold-dark);
+    color: var(--bg-card);
+}
+
+/* Volume slider */
+.fj-3d-volume {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 2px 2px;
+    padding: 4px 0;
+}
+.fj-3d-volume span {
+    font-size: 12px;
+    color: var(--gold-dark);
+}
+.fj-3d-volume input[type="range"] {
+    flex: 1;
+    accent-color: var(--gold);
+    cursor: pointer;
+    height: 4px;
+}
+
+/* Help list (operations cheat-sheet) — dotted leader between key/value */
+.fj-3d-help {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.fj-3d-help li {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 11.5px;
+}
+.fj-3d-help li span {
+    color: var(--text-light);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+.fj-3d-help li::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px dotted var(--paper-edge);
+    transform: translateY(-3px);
+    order: 1;
+}
+.fj-3d-help li em {
+    font-style: italic;
+    font-family: var(--font-display);
+    color: var(--gold-dark);
+    font-size: 13px;
+    flex-shrink: 0;
+    text-transform: lowercase;
+    letter-spacing: .3px;
+    order: 2;
+}
+
+/* Info panel content */
+.fj-3d-info-name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    letter-spacing: .3px;
+}
+.fj-3d-info-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-light);
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .fj-3d-panel--controls,
+    .fj-3d-panel--info {
+        width: calc(50% - 28px);
+        min-width: 0;
+    }
+    .fj-3d-loading { font-size: 18px; padding: 20px 28px; }
+}
+
 /* ── Responsive (small viewports / kiosk safety) ──────── */
 @media (max-width: 1180px) {
     .fj-main { grid-template-columns: 1fr 360px; }

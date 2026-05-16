@@ -164,7 +164,7 @@ Object.assign(App, {
             puzzlePlayBtn.onclick = () => {
                 if (!audioFile) return;
                 if (puzzleAudio) { puzzleAudio.pause(); puzzleAudio.currentTime = 0; }
-                puzzleAudio = new Audio(audioFile);
+                puzzleAudio = new Audio(Config.resolveUrl(audioFile));
                 puzzleAudio.volume = 0.8;
                 puzzleAudio.play().catch(() => {});
                 document.getElementById('puzzleGuessArea').style.display = 'block';
@@ -309,7 +309,7 @@ Object.assign(App, {
         const soundFile = areaSounds[buildingId];
         if (soundFile && this.state.ambientAudioEnabled !== false) {
             try {
-                const audioUrl = `/default_audio/${soundFile}`;
+                const audioUrl = Config.resolveUrl(`/default_audio/${soundFile}`);
                 if (this.state.ambientAudio) this.state.ambientAudio.pause();
                 this.state.ambientAudio = new Audio(audioUrl);
                 this.state.ambientAudio.volume = 0.3;

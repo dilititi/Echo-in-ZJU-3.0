@@ -69,7 +69,7 @@ Object.assign(App, {
         popup.querySelectorAll('.journey-play-btn').forEach(btn => {
             btn.onclick = () => {
                 const url = btn.dataset.url;
-                const audio = new Audio(url);
+                const audio = new Audio(Config.resolveUrl(url));
                 audio.play();
             };
         });
@@ -91,7 +91,7 @@ Object.assign(App, {
                 return;
             }
             const marker = markers[currentIndex];
-            const audio = new Audio(marker.audioUrl);
+            const audio = new Audio(Config.resolveUrl(marker.audioUrl));
             audio.onended = () => { currentIndex++; playNext(); };
             audio.play();
         };
@@ -105,12 +105,12 @@ Object.assign(App, {
         if (mode === 'normal') {
             this.hideSoundHotspots();
             this.showAllBuildingMarkers();
-            this.showProgressiveHint('welcome');
+            const hint = document.getElementById('sound-progress-hint');
+            if (hint) hint.remove();
         } else if (mode === 'sound') {
             this.hideAllBuildingMarkers();
             this.showUnlockedBuildingMarkers();
             this.showSoundExploreGuide();
-            this.showProgressiveHint('soundMode');
         }
     },
 
@@ -133,25 +133,33 @@ Object.assign(App, {
             this.showSoundHotspots();
         }
 
-        const unlockedCount = this.state.soundExploreUnlockedBuildings.size;
-        const totalBuildings = Object.keys(Data.buildings).length;
-
+        const existing = document.getElementById('sound-progress-hint');
+        if (existing) existing.remove();
         const progressHint = document.createElement('div');
         progressHint.id = 'sound-progress-hint';
         progressHint.style.cssText = `
             position: fixed;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-            border: 2px solid var(--gold);
-            padding: 10px 15px;
-            border-radius: 8px;
-            z-index: 5000;
-            font-size: 14px;
+            bottom: 18px;
+            left: 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--text-light);
+            padding: 8px 14px;
+            z-index: 1200;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             color: var(--text-light);
+            box-shadow: var(--paper-lift);
+            font-family: var(--font-body);
         `;
-        progressHint.innerHTML = `🎧 声音探索 | 已解锁: <strong>${unlockedCount}</strong>/${totalBuildings}`;
+        progressHint.innerHTML = this._renderProgressHint();
         document.body.appendChild(progressHint);
+    },
+
+    _renderProgressHint() {
+        const unlocked = this.state.soundExploreUnlockedBuildings.size;
+        const total = Object.keys(Data.buildings).length;
+        return `Sound Explore · 已解锁 <strong style="font-family:var(--font-display);font-style:italic;color:var(--gold);font-size:15px;letter-spacing:0;">${unlocked}</strong> / ${total}`;
     },
 
     showSoundHotspots() {
@@ -270,11 +278,7 @@ Object.assign(App, {
 
     updateSoundProgressHint() {
         const progressHint = document.getElementById('sound-progress-hint');
-        if (progressHint) {
-            const unlockedCount = this.state.soundExploreUnlockedBuildings.size;
-            const totalBuildings = Object.keys(Data.buildings).length;
-            progressHint.innerHTML = `🎧 声音探索 | 已解锁: <strong>${unlockedCount}</strong>/${totalBuildings}`;
-        }
+        if (progressHint) progressHint.innerHTML = this._renderProgressHint();
     },
 
     hideAllBuildingMarkers() {
@@ -391,7 +395,7 @@ Object.assign(App, {
         if (puzzleEvent && puzzleEvent.audioPattern) {
             const audioFile = this.getAudioFileByPattern(puzzleEvent.audioPattern);
             if (audioFile) {
-                const audio = new Audio(audioFile);
+                const audio = new Audio(Config.resolveUrl(audioFile));
                 this.state.soundExploreCurrentAudio = audio;
                 audio.volume = 0.7;
 

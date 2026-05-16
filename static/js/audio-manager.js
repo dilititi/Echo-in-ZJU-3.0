@@ -289,10 +289,6 @@ Object.assign(App, {
             return;
         }
 
-        if (url.startsWith('/')) {
-            url = Config.serverUrl + url;
-        }
-
         if (this.state.currentAudio && this.state.currentPlayButton === button) {
             if (this.state.isPlaying) {
                 this.state.currentAudio.pause();
@@ -341,7 +337,7 @@ Object.assign(App, {
                 oldestAudio.src = '';
                 this.state.audioPool.delete(oldestKey);
             }
-            audio = new Audio(url);
+            audio = new Audio(Config.resolveUrl(url));
             this.state.audioPool.set(url, audio);
         }
 

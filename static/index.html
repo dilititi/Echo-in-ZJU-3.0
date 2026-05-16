@@ -256,74 +256,73 @@
 <div id="scene-3d" style="display:none;position:fixed;inset:0;z-index:2000;">
     <div id="canvas-container" style="width:100%;height:100%;"></div>
 
-    <div id="3d-loading" style="position:fixed;top:50%;left:50%;
-         transform:translate(-50%,-50%);font-size:24px;color:#d4af37;z-index:200;">
-        🎮 正在加载 3D 紫金港...
+    <div id="3d-loading" class="fj-3d-loading">
+        <span class="fj-3d-loading-mark">✦</span>
+        正在加载 3D 紫金港
+        <span class="fj-3d-loading-sub">Loading the campus model…</span>
     </div>
 
-    <div id="3d-error" style="display:none;position:fixed;top:50%;left:50%;
-         transform:translate(-50%,-50%);background:rgba(139,0,0,.95);color:white;
-         padding:20px;text-align:center;z-index:300;">
-        <h3>❌ 加载失败</h3>
+    <div id="3d-error" class="fj-3d-error" style="display:none;">
+        <h3>加载失败</h3>
         <p id="3d-error-msg">请检查网络连接</p>
-        <button onclick="init3D()" style="background:#d4af37;border:none;padding:8px 16px;cursor:pointer;">重试</button>
+        <button class="fj-3d-btn fj-3d-btn--primary" onclick="init3D()">重试</button>
     </div>
 
-    <!-- 3D 控制面板 (P7 将重做纸本风) -->
-    <div style="position:fixed;top:20px;left:20px;z-index:100;
-         background:linear-gradient(135deg,rgba(13,27,42,.95),rgba(26,26,46,.95));
-         border:2px solid #d4af37;border-radius:8px;color:#f5f0e1;padding:15px;min-width:200px;">
-        <h3 style="color:#d4af37;margin-bottom:10px;">🎮 3D 校园</h3>
-        <button onclick="toggleView3D()" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
-            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
-            切换视角
-        </button>
-        <button onclick="switchTo2D()" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
-            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
-            ← 返回 2D
-        </button>
-        <hr style="margin:10px 0;border-color:#d4af37;">
-        <p style="font-size:11px;color:#d4af37;margin:0 0 6px;font-weight:bold;">🎵 环境音效</p>
-        <button onclick="Audio3D.startRain(0.5)" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
-            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
-            🌧️ 开始下雨
-        </button>
-        <button onclick="Audio3D.stopRain()" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
-            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
-            🌤️ 停止下雨
-        </button>
-        <div style="margin:8px 4px 2px;display:flex;align-items:center;gap:8px;">
-            <span style="font-size:11px;color:#aaa;">🔊</span>
+    <!-- 3D 控制面板（P7 纸本风） -->
+    <div class="fj-3d-panel fj-3d-panel--controls">
+        <span class="fj-3d-corner fj-3d-corner--tl">✦</span>
+        <span class="fj-3d-corner fj-3d-corner--tr">✦</span>
+        <span class="fj-3d-corner fj-3d-corner--bl">✦</span>
+        <span class="fj-3d-corner fj-3d-corner--br">✦</span>
+
+        <div class="fj-3d-panel-tag">№ 01 · Controls</div>
+        <h3 class="fj-3d-panel-title">3D Campus</h3>
+        <div class="fj-3d-panel-subtitle">紫金港校区 · 立体游览</div>
+
+        <div class="fj-3d-btn-group">
+            <button class="fj-3d-btn fj-3d-btn--cn" onclick="toggleView3D()">切换视角</button>
+            <button class="fj-3d-btn fj-3d-btn--primary" onclick="switchTo2D()">← 返回 2D</button>
+        </div>
+
+        <hr class="fj-3d-divider">
+        <p class="fj-3d-label">Ambient · 环境音效</p>
+        <div class="fj-3d-btn-group">
+            <button class="fj-3d-btn fj-3d-btn--cn" onclick="Audio3D.startRain(0.5)">🌧️ 开始下雨</button>
+            <button class="fj-3d-btn fj-3d-btn--cn" onclick="Audio3D.stopRain()">🌤️ 停止下雨</button>
+        </div>
+        <div class="fj-3d-volume">
+            <span>🔊</span>
             <input type="range" min="0" max="1" step="0.05" value="0.8"
                    oninput="Audio3D.setMasterVolume(+this.value)"
-                   title="主音量"
-                   style="flex:1;accent-color:#d4af37;cursor:pointer;">
+                   title="主音量">
         </div>
-        <hr style="margin:10px 0;border-color:#d4af37;">
-        <p style="font-size:12px;color:#aaa;">
-            <strong>操作说明:</strong><br>
-            左键拖拽: 旋转视角<br>
-            滚轮: 缩放<br>
-            右键拖拽: 平移<br>
-            点击建筑: 查看详情
-        </p>
+
+        <hr class="fj-3d-divider">
+        <p class="fj-3d-label">Controls · 操作说明</p>
+        <ul class="fj-3d-help">
+            <li><span>左键拖拽</span><em>rotate</em></li>
+            <li><span>滚轮</span><em>zoom</em></li>
+            <li><span>右键拖拽</span><em>pan</em></li>
+            <li><span>点击建筑</span><em>inspect</em></li>
+        </ul>
     </div>
 
     <!-- 3D 建筑信息面板 -->
-    <div id="3d-info-panel" style="display:none;position:fixed;top:20px;right:20px;z-index:100;
-         background:linear-gradient(135deg,rgba(13,27,42,.95),rgba(26,26,46,.95));
-         border:2px solid #d4af37;border-radius:8px;color:#f5f0e1;padding:15px;width:280px;">
-        <div id="3d-building-name" style="font-size:18px;font-weight:bold;color:#d4af37;margin-bottom:10px;">-</div>
-        <p id="3d-building-desc" style="font-size:14px;line-height:1.6;"></p>
-        <hr style="margin:10px 0;border-color:#d4af37;">
-        <button onclick="play3DSound()" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
-            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
-            🔊 播放声音
-        </button>
-        <button onclick="close3DInfo()" style="background:linear-gradient(135deg,#d4af37,#f4d35e);
-            border:none;color:#1b263b;padding:8px 16px;margin:4px;border-radius:4px;cursor:pointer;font-weight:bold;">
-            关闭
-        </button>
+    <div id="3d-info-panel" class="fj-3d-panel fj-3d-panel--info" style="display:none;">
+        <span class="fj-3d-corner fj-3d-corner--tl">✦</span>
+        <span class="fj-3d-corner fj-3d-corner--tr">✦</span>
+        <span class="fj-3d-corner fj-3d-corner--bl">✦</span>
+        <span class="fj-3d-corner fj-3d-corner--br">✦</span>
+        <button class="fj-3d-panel-close" onclick="close3DInfo()" aria-label="关闭">×</button>
+
+        <div class="fj-3d-panel-tag">Specimen · 标本</div>
+        <div id="3d-building-name" class="fj-3d-info-name">-</div>
+        <p id="3d-building-desc" class="fj-3d-info-desc"></p>
+        <hr class="fj-3d-divider">
+        <div class="fj-3d-btn-group">
+            <button class="fj-3d-btn fj-3d-btn--primary" onclick="play3DSound()">🔊 播放声音</button>
+            <button class="fj-3d-btn fj-3d-btn--cn" onclick="close3DInfo()">关闭</button>
+        </div>
     </div>
 </div>
 
@@ -589,13 +588,19 @@
 if (typeof Migration !== 'undefined') { Migration.run(); }
 
 /* ---------------- Helpers ---------------- */
+function blurIfInside(el) {
+    if (el && el.contains(document.activeElement)) document.activeElement.blur();
+}
 function openModal(id) {
     const el = document.getElementById(id);
     if (el) { el.style.display = 'flex'; el.setAttribute('aria-hidden', 'false'); }
 }
 function closeModal(id) {
     const el = document.getElementById(id);
-    if (el) { el.style.display = 'none'; el.setAttribute('aria-hidden', 'true'); }
+    if (!el) return;
+    blurIfInside(el);
+    el.style.display = 'none';
+    el.setAttribute('aria-hidden', 'true');
 }
 function onEnter(inputId, cb) {
     document.getElementById(inputId)?.addEventListener('keydown', e => {
@@ -617,6 +622,7 @@ function openDrawer() {
     moreDrawer.setAttribute('aria-hidden', 'false');
 }
 function closeDrawer() {
+    blurIfInside(moreDrawer);
     moreDrawer.classList.remove('open');
     moreOverlay.classList.remove('open');
     moreDrawer.setAttribute('aria-hidden', 'true');

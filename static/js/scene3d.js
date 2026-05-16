@@ -9,25 +9,26 @@ let groundMesh = null;
 let groundGrid = null;
 
 // ── 切换函数（供 index.html 调用）────────────────────────────────
+// Field Journal 布局把所有 2D UI 都包在 #app 里，3D 场景独立挂在 body 上、
+// position:fixed; z-index:2000 覆盖，所以只需要切 #app 与 #scene-3d 的显示即可。
+function _setDisplay(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = value;
+}
+
 function switchTo3D() {
-    document.getElementById('map').style.display = 'none';
-    document.getElementById('controlPanel').style.display = 'none';
-    document.getElementById('layerControl').style.display = 'none';
-    document.getElementById('sidePanel').style.display = 'none';
-    document.getElementById('topToolbar').style.display = 'none';
-    document.getElementById('hamburgerMenu').style.display = 'none';
-    document.getElementById('scene-3d').style.display = 'block';
+    _setDisplay('app', 'none');
+    _setDisplay('scene-3d', 'block');
     if (!scene3dReady) init3D();
+    if (typeof Audio3D !== 'undefined' && Audio3D.unmute) Audio3D.unmute();
 }
 
 function switchTo2D() {
-    Audio3D.stopRain();
-    document.getElementById('scene-3d').style.display = 'none';
-    document.getElementById('map').style.display = '';
-    document.getElementById('controlPanel').style.display = '';
-    document.getElementById('layerControl').style.display = '';
-    document.getElementById('sidePanel').style.display = '';
-    document.getElementById('topToolbar').style.display = '';
+    // 3D 声音必须全部静音：zones / birds / rain 都挂在 masterGain 上，
+    // 只 stopRain 不够。mute() 内部已经包含 stopRain。
+    if (typeof Audio3D !== 'undefined' && Audio3D.mute) Audio3D.mute();
+    _setDisplay('scene-3d', 'none');
+    _setDisplay('app', '');
 }
 
 // ── 初始化 ────────────────────────────────────────────────────────
@@ -70,7 +71,7 @@ function init3D() {
         setup3DInteraction();
         window.addEventListener('resize', on3DResize);
 
-        document.getElementById('3d-loading').style.display = 'none';
+        _setDisplay('3d-loading', 'none');
         scene3dReady = true;
         animate3D();
     } catch (e) {
@@ -80,9 +81,10 @@ function init3D() {
 }
 
 function show3DError(msg) {
-    document.getElementById('3d-loading').style.display = 'none';
-    document.getElementById('3d-error').style.display = 'block';
-    document.getElementById('3d-error-msg').textContent = msg;
+    _setDisplay('3d-loading', 'none');
+    _setDisplay('3d-error', 'block');
+    const m = document.getElementById('3d-error-msg');
+    if (m) m.textContent = msg;
 }
 
 // ── 光照 ──────────────────────────────────────────────────────────
