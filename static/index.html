@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/main.css">
     <!-- Three.js（在现有 </head> 之前插入）-->
@@ -483,7 +483,9 @@
 <script src="js/migration.js"></script>
 <script src="js/app.js"></script>
 <script src="js/map-layers.js"></script>
+<script src="js/map-layers-patch.js"></script>
 <script src="js/markers.js"></script>
+<script src="js/markers-patch.js"></script>
 <script src="js/level-system.js"></script>
 <script src="js/audio-manager.js"></script>
 <script src="js/sound-explore.js"></script>
@@ -753,6 +755,27 @@ document.getElementById('uploadButton').addEventListener('click', function () {
             : setTimeout(trySwitch, 300);
         setTimeout(trySwitch, 900);
     }
+})();
+
+/* ============================================================
+   展览空闲回退：2 分钟无操作自动跳回 PPT
+   关闭方式：URL 加 ?kiosk=0
+   ============================================================ */
+(function () {
+    if (new URLSearchParams(window.location.search).get('kiosk') === '0') return;
+    const IDLE_MS = 120000;
+    const PPT_URL = './ppt/index.html';
+    let timer = 0;
+    const reset = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { window.location.href = PPT_URL; }, IDLE_MS);
+    };
+    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'wheel', 'scroll', 'click'];
+    events.forEach(ev => window.addEventListener(ev, reset, { passive: true, capture: true }));
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') reset(); else clearTimeout(timer);
+    });
+    reset();
 })();
 
 </script>
