@@ -187,6 +187,26 @@
     <div class="meta-row" data-anim>
       <span>声音传播</span><span>·</span><span>课程展览</span><span>·</span><span>2026</span>
     </div>
+    <div style="display:flex;gap:1.6vw;flex-wrap:wrap;margin-top:1.2vh" data-anim>
+      <a href="../index.html"
+         style="font-family:var(--mono);font-size:max(12px,1vw);letter-spacing:.24em;text-transform:uppercase;
+                color:var(--ink);background:var(--paper);text-decoration:none;
+                padding:1.6vh 3vw;border:1px solid var(--paper);
+                transition:background .25s,color .25s,transform .25s;font-weight:600"
+         onmouseover="this.style.background='transparent';this.style.color='var(--paper)';this.style.transform='translateX(4px)'"
+         onmouseout="this.style.background='var(--paper)';this.style.color='var(--ink)';this.style.transform='translateX(0)'">
+        直接游玩 →
+      </a>
+      <a href="../index.html?mode=3d"
+         style="font-family:var(--mono);font-size:max(12px,1vw);letter-spacing:.24em;text-transform:uppercase;
+                color:var(--paper);text-decoration:none;
+                padding:1.6vh 3vw;border:1px solid rgba(var(--paper-rgb),.45);
+                transition:border-color .25s,opacity .25s;opacity:.78"
+         onmouseover="this.style.borderColor='rgba(var(--paper-rgb),.95)';this.style.opacity='1'"
+         onmouseout="this.style.borderColor='rgba(var(--paper-rgb),.45)';this.style.opacity='.78'">
+        3D 漫游 →
+      </a>
+    </div>
   </div>
   <div class="foot">
     <div>紫金港 · Zijingang Campus</div>
@@ -409,30 +429,6 @@
 </section>
 
 </div><!-- /deck -->
-
-<!-- 浮动地图入口 -->
-<div style="position:fixed;bottom:8.5vh;right:3vw;z-index:40;display:flex;gap:.8vw;align-items:center">
-  <a href="../index.html"
-     style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-            color:rgba(255,255,255,.5);text-decoration:none;
-            background:rgba(10,20,12,.28);backdrop-filter:blur(8px);
-            padding:6px 13px;border:1px solid rgba(255,255,255,.18);
-            transition:all .25s"
-     onmouseover="this.style.color='rgba(255,255,255,.92)';this.style.borderColor='rgba(255,255,255,.5)'"
-     onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.18)'">
-    2D 地图
-  </a>
-  <a href="../index.html?mode=3d"
-     style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-            color:rgba(255,255,255,.5);text-decoration:none;
-            background:rgba(10,20,12,.28);backdrop-filter:blur(8px);
-            padding:6px 13px;border:1px solid rgba(255,255,255,.18);
-            transition:all .25s"
-     onmouseover="this.style.color='rgba(255,255,255,.92)';this.style.borderColor='rgba(255,255,255,.5)'"
-     onmouseout="this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.18)'">
-    3D 漫游
-  </a>
-</div>
 
 <div id="nav"></div>
 
