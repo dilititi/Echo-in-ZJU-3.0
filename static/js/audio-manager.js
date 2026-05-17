@@ -10,25 +10,33 @@ Object.assign(App, {
     },
 
     handleKeyPress(e) {
-        e.preventDefault();
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+
+        const setStatus = (msg) => {
+            const s = document.getElementById('recordingStatus');
+            if (!s) return;
+            s.textContent = msg;
+            const snap = s.textContent;
+            setTimeout(() => { if (s.textContent === snap) s.textContent = ''; }, 3500);
+        };
 
         if (this.state.markerCount >= Config.maxMarkers) {
-            alert('地图标记数量已达到上限');
+            setStatus('⚠ 地图标记数量已达到上限');
             return;
         }
 
         if (!this.state.lastMousePosition) {
-            alert('请先将鼠标移动到地图上要放置标记的位置');
+            setStatus('✎ 请先将鼠标移动到地图上要放置标记的位置');
+            return;
+        }
+
+        const markerType = Data.markerTypes[this.state.selectedType];
+        if (!markerType) {
+            setStatus('✎ 请先在侧栏 Markers 卡片选择一个标记类型');
             return;
         }
 
         const mousePos = this.state.lastMousePosition;
-        const markerType = Data.markerTypes[this.state.selectedType];
-
-        if (!markerType) {
-            alert('请先选择一个标记类型');
-            return;
-        }
 
         const icon = L.divIcon({
             className: 'user-marker',

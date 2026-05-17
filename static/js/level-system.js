@@ -119,6 +119,8 @@ Object.assign(App, {
             6: { icon: '🎉', action: '自由探索校园，解锁更多隐藏彩蛋与社交互动' },
         };
         const guide = levelGuides[level.id] || {};
+        const nextLevel = Data.levels.find(l => l.id === level.id + 1);
+        const completed = (Storage.userProgress.completedLevels || []).includes(level.id);
 
         const infoDiv = document.createElement('div');
         infoDiv.id = 'level-info';
@@ -152,6 +154,13 @@ Object.assign(App, {
             ${guide.action ? `<div style="border:1px dashed var(--paper-edge);padding:10px 14px;text-align:left;margin-bottom:14px;">
                 <p style="margin:0;font-size:12.5px;color:var(--text-soft);line-height:1.55;">${guide.icon} <strong style="color:var(--text-light);">操作：</strong>${guide.action}</p>
             </div>` : ''}
+            ${nextLevel ? `<div style="background:var(--bg-card-alt);border:1px solid var(--paper-edge);padding:10px 14px;text-align:left;margin-bottom:14px;">
+                <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--text-soft);font-weight:600;">${completed ? '已完成 · Cleared' : '解锁下一关 · Next Chapter'}</p>
+                <p style="margin:0 0 3px 0;font-size:13px;color:var(--text-light);font-family:var(--font-display);font-style:italic;">第 ${nextLevel.id} 关 · ${nextLevel.title}</p>
+                <p style="margin:0;font-size:11.5px;color:var(--text-soft);line-height:1.5;">条件：${completed ? '已解锁，可随时进入' : level.target}</p>
+            </div>` : `<div style="background:var(--bg-card-alt);border:1px solid var(--paper-edge);padding:10px 14px;text-align:left;margin-bottom:14px;">
+                <p style="margin:0;font-size:11.5px;color:var(--text-soft);font-style:italic;">这是最后一关 · 自由探索中</p>
+            </div>`}
             <button id="closeLevelInfoBtn" style="padding:9px 26px;background:var(--bg-card);color:var(--text-light);border:1px solid var(--text-light);font-family:var(--font-body);font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:600;cursor:pointer;transition:background .2s,color .2s;"
                 onmouseover="this.style.background='var(--text-light)';this.style.color='var(--bg-card)';"
                 onmouseout="this.style.background='var(--bg-card)';this.style.color='var(--text-light)';">知道了 · Got it</button>

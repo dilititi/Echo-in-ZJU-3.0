@@ -105,7 +105,7 @@ Object.assign(App, {
                             border-radius: 4px; cursor: pointer; font-size: 12px;
                         ">显示答案</button>
                         <span id="puzzleAnswer" style="
-                            font-size: 13px; color: #f4d35e; font-weight: bold;
+                            font-size: 13px; color: rgb(168, 86, 67); font-weight: bold;
                             letter-spacing: 1px; display: none;
                         ">答案：${audioAnswerName}</span>
                     </div>

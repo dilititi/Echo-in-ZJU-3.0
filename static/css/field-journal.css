@@ -633,7 +633,7 @@ body {
     color: var(--bg-card) !important;
 }
 #puzzleAnswer {
-    color: var(--text-light) !important;
+    color: rgb(168, 86, 67) !important;
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 600;
