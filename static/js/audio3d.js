@@ -218,6 +218,150 @@ const Audio3D = (() => {
         }, 2100);
     }
 
+    // ── 雪（低通粉噪音 → 蒙起来的"安静"质感）─────────────────────────
+    let snowSource = null;
+    function startSnow(intensity = 0.22) {
+        if (snowSource) return;
+        const sampleRate = ctx.sampleRate;
+        const frames = sampleRate * 10;
+        const buffer = ctx.createBuffer(2, frames, sampleRate);
+        // Pink noise (粉噪音) — softer than white noise
+        for (let ch = 0; ch < 2; ch++) {
+            const data = buffer.getChannelData(ch);
+            let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+            for (let i = 0; i < frames; i++) {
+                const white = Math.random() * 2 - 1;
+                b0=0.99886*b0+white*0.0555179; b1=0.99332*b1+white*0.0750759;
+                b2=0.96900*b2+white*0.1538520; b3=0.86650*b3+white*0.3104856;
+                b4=0.55000*b4+white*0.5329522; b5=-0.7616*b5-white*0.0168980;
+                data[i] = (b0+b1+b2+b3+b4+b5+b6+white*0.5362)*0.11;
+                b6 = white * 0.115926;
+            }
+        }
+        // 重低通 → 像雪盖下来的闷感
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 380;
+
+        const src = ctx.createBufferSource();
+        src.buffer = buffer;
+        src.loop = true;
+
+        const gain = ctx.createGain();
+        gain.gain.value = 0;
+        gain.gain.linearRampToValueAtTime(intensity, ctx.currentTime + 1.2);
+
+        src.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterGain);
+        src.start();
+        snowSource = { source: src, gain };
+    }
+
+    function stopSnow() {
+        if (!snowSource) return;
+        const s = snowSource;
+        snowSource = null;
+        s.gain.gain.cancelScheduledValues(ctx.currentTime);
+        s.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
+        setTimeout(() => { try { s.source.stop(); } catch(e) {} }, 1300);
+    }
+
+    // ── 雷声（雷雨预设里间歇触发的低频轰鸣）──────────────────────────
+    let thunderTimer = null;
+    function playThunderClap() {
+        if (!ctx) return;
+        const sampleRate = ctx.sampleRate;
+        const durationSec = 1.8 + Math.random() * 1.5;
+        const frames = Math.floor(sampleRate * durationSec);
+        const buffer = ctx.createBuffer(2, frames, sampleRate);
+        const baseFreq = 36 + Math.random() * 28;
+        for (let ch = 0; ch < 2; ch++) {
+            const data = buffer.getChannelData(ch);
+            for (let i = 0; i < frames; i++) {
+                const t = i / sampleRate;
+                const decay = Math.exp(-t * 1.4);
+                const rumble = Math.sin(2 * Math.PI * baseFreq * t) * decay * 0.55;
+                const crack  = (Math.random() * 2 - 1) * decay * 0.18;
+                data[i] = rumble + crack;
+            }
+        }
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 220;
+        const src = ctx.createBufferSource();
+        src.buffer = buffer;
+        const gain = ctx.createGain();
+        gain.gain.value = 0.55;
+        src.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterGain);
+        src.start();
+    }
+
+    function startThunder() {
+        if (thunderTimer) return;
+        const scheduleNext = () => {
+            const delaySec = 7 + Math.random() * 14;  // 7–21s
+            thunderTimer = setTimeout(() => {
+                playThunderClap();
+                scheduleNext();
+            }, delaySec * 1000);
+        };
+        scheduleNext();
+    }
+
+    function stopThunder() {
+        if (thunderTimer) clearTimeout(thunderTimer);
+        thunderTimer = null;
+    }
+
+    // ── 鸟鸣预设：在原有 2 只鸟基础上加 4 只额外鸟声 ────────────────
+    let extraBirds = [];
+    function startExtraBirds() {
+        if (extraBirds.length || !ctx) return;
+        const slots = [
+            [55, 14, 30], [-60, 16, -45], [25, 12, 80], [-35, 18, -75],
+        ];
+        slots.forEach(pos => {
+            const buf = synthNoise('bird', 8);
+            createSpatialSource({
+                buffer: buf,
+                pos,
+                volume: 0.32,
+                loop: true,
+                maxDist: 90,
+            }).then(s => { if (s) extraBirds.push(s); });
+        });
+    }
+
+    function stopExtraBirds() {
+        const batch = extraBirds;
+        extraBirds = [];
+        batch.forEach(b => {
+            try {
+                b.gain.gain.cancelScheduledValues(ctx.currentTime);
+                b.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
+                setTimeout(() => { try { b.source.stop(); } catch(e) {} }, 900);
+            } catch (e) {}
+        });
+    }
+
+    // ── 环境音预设（暴露给 UI）─────────────────────────────────────
+    // 'default' / 'bird' / 'snow' / 'storm'。
+    // 各预设都建立在常驻的 zones+2 birds 之上，只切换覆盖层。
+    let currentPreset = 'default';
+    function setAmbientPreset(name) {
+        if (!ctx) return;
+        currentPreset = name;
+        if (name !== 'storm') { stopRain(); stopThunder(); }
+        if (name !== 'snow')  stopSnow();
+        if (name !== 'bird')  stopExtraBirds();
+        if (name === 'bird')  startExtraBirds();
+        else if (name === 'snow')  startSnow();
+        else if (name === 'storm') { startRain(0.5); startThunder(); }
+    }
+
     // ── 更新听者位置（每帧由 animate3D 调用）────────────────────────
     function updateListener(camera) {
         if (!ctx) return;
@@ -274,6 +418,9 @@ let preMuteVolume = 0.8;
 function mute() {
     if (!ctx || !masterGain) return;
     stopRain();
+    stopSnow();
+    stopThunder();
+    stopExtraBirds();
     preMuteVolume = masterGain.gain.value;
     masterGain.gain.cancelScheduledValues(ctx.currentTime);
     masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.25);
@@ -284,6 +431,6 @@ function unmute() {
     masterGain.gain.linearRampToValueAtTime(preMuteVolume || 0.8, ctx.currentTime + 0.25);
 }
 
-return { init, updateListener, startRain, stopRain, setMasterVolume, playSpatialAudio, mute, unmute, tick: tickMovingSources };
+return { init, updateListener, startRain, stopRain, startSnow, stopSnow, startThunder, stopThunder, setAmbientPreset, setMasterVolume, playSpatialAudio, mute, unmute, tick: tickMovingSources };
 
 })();

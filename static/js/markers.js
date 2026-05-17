@@ -3,12 +3,16 @@ Object.assign(App, {
 
     createBuildingMarker(buildingId, building) {
         const iconSize = 120;
+        // Markers display at 120px; the layers/*.jpg photos are 400KB–1.3MB each.
+        // Use pre-generated 240px thumbnails (scripts/gen_marker_thumbs.py).
+        // Path is layers/<file> → layers/thumbs/<file>.
+        const thumb = (building.image || '').replace(/^layers\//, 'layers/thumbs/');
         const icon = L.divIcon({
             className: 'building-marker',
             html: `<div class="building-marker-container" style="
                 width: ${iconSize}px;
                 height: ${iconSize}px;
-                background-image: url('${building.image}');
+                background-image: url('${thumb}');
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;

@@ -287,9 +287,11 @@
 
         <hr class="fj-3d-divider">
         <p class="fj-3d-label">Ambient · 环境音效</p>
-        <div class="fj-3d-btn-group">
-            <button class="fj-3d-btn fj-3d-btn--cn" onclick="Audio3D.startRain(0.5)">🌧️ 开始下雨</button>
-            <button class="fj-3d-btn fj-3d-btn--cn" onclick="Audio3D.stopRain()">🌤️ 停止下雨</button>
+        <div class="fj-3d-btn-group" id="ambientPresetGroup">
+            <button class="fj-3d-btn fj-3d-btn--cn fj-3d-btn--active" data-preset="default" onclick="select3DPreset(this)">🍃 默认</button>
+            <button class="fj-3d-btn fj-3d-btn--cn" data-preset="bird"  onclick="select3DPreset(this)">🐦 鸟鸣</button>
+            <button class="fj-3d-btn fj-3d-btn--cn" data-preset="snow"  onclick="select3DPreset(this)">❄️ 下雪</button>
+            <button class="fj-3d-btn fj-3d-btn--cn" data-preset="storm" onclick="select3DPreset(this)">⛈️ 雷雨</button>
         </div>
         <div class="fj-3d-volume">
             <span>🔊</span>
@@ -682,22 +684,34 @@ document.getElementById('confirmResetButton').addEventListener('click', () => {
 });
 
 /* ---------------- Layer buttons ----------------
-   default      → 纸本底图（默认），关闭插画图层
+   default      → 纸本底图（默认），关闭其它覆盖层
    illustrated  → 在纸本上叠加渐进式手绘插画（IllustratedLayer）
-   satellite    → 占位 toast（CRS.Simple 不支持真卫星瓦片） */
+   satellite    → 紫金港卫星底图（assets/紫金港卫星地图.png）*/
+function toggleSatelliteLayer(visible) {
+    const map = App && App.state && App.state.map;
+    if (!map) return;
+    if (visible && !App.state.satelliteOverlay) {
+        App.state.satelliteOverlay = L.imageOverlay(
+            'assets/紫金港卫星地图.png',
+            [[0, 0], [1000, 1000]],
+            { opacity: 0.85, interactive: false }
+        );
+    }
+    const ov = App.state.satelliteOverlay;
+    if (!ov) return;
+    if (visible) {
+        if (!map.hasLayer(ov)) ov.addTo(map);
+    } else if (map.hasLayer(ov)) {
+        map.removeLayer(ov);
+    }
+}
 document.querySelectorAll('.fj-drawer-item.layer-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.fj-drawer-item.layer-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const layer = btn.dataset.layer;
         if (window.IllustratedLayer) IllustratedLayer.setVisible(layer === 'illustrated');
-        if (layer === 'satellite') {
-            const status = document.getElementById('recordingStatus');
-            if (status) {
-                status.textContent = '🛰️ 该底图模式尚未开放';
-                setTimeout(() => { if (status.textContent.startsWith('🛰️')) status.textContent = ''; }, 2200);
-            }
-        }
+        toggleSatelliteLayer(layer === 'satellite');
     });
 });
 

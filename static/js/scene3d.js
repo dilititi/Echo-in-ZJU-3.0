@@ -314,6 +314,15 @@ function toggleView3D() {
     smoothMove3DCamera(new THREE.Vector3(...views[viewMode3D].pos), new THREE.Vector3(...views[viewMode3D].target));
 }
 
+function select3DPreset(btn) {
+    if (!btn) return;
+    document.querySelectorAll('#ambientPresetGroup .fj-3d-btn').forEach(b => b.classList.remove('fj-3d-btn--active'));
+    btn.classList.add('fj-3d-btn--active');
+    if (typeof Audio3D !== 'undefined' && Audio3D.setAmbientPreset) {
+        Audio3D.setAmbientPreset(btn.dataset.preset);
+    }
+}
+
 function on3DResize() {
     if (!renderer) return;
     camera.aspect = window.innerWidth / window.innerHeight;

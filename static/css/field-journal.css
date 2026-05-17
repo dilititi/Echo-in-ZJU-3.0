@@ -954,6 +954,15 @@ body {
     background: var(--gold-dark);
     color: var(--bg-card);
 }
+.fj-3d-btn--active {
+    background: var(--gold);
+    border-color: var(--gold-dark);
+    color: var(--bg-card);
+}
+.fj-3d-btn--active:hover {
+    background: var(--gold-dark);
+    color: var(--bg-card);
+}
 
 /* Volume slider */
 .fj-3d-volume {
