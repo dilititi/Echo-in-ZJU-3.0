@@ -23,10 +23,19 @@ const Storage = {
     audioNotes: {},
     userMarkers: [],
 
+    // 服务端共享留言缓存
+    serverCache: {
+        stats: null,
+        statsAt: 0,
+        messagesByBuilding: {}
+    },
+
     initSocialData() {
         if (!this.socialData.deviceId) {
             this.socialData.deviceId = 'user_' + Date.now();
         }
+        const savedNickname = localStorage.getItem('zju_map_nickname_v1');
+        if (savedNickname) this.socialData.userNickname = savedNickname;
         this.loadSocialData();
     },
 
@@ -100,22 +109,105 @@ const Storage = {
         }
     },
 
-    addMessageToWall(message, audioData) {
+    addMessageToWall(message, audioData, options) {
+        const opts = options || {};
+        const buildingId = opts.buildingId || '';
+        const emotion = opts.emotion || '';
+        const trimmed = (message || '').substring(0, 140);
         const wallMessage = {
-            id: Date.now(),
+            id: 'local_' + Date.now(),
+            buildingId,
+            emotion,
             nickname: this.socialData.userNickname,
-            message: message.substring(0, 15),
+            message: trimmed,
             audioKey: audioData ? audioData.key : null,
             audioUrl: audioData ? audioData.url : null,
-            timestamp: new Date().toLocaleString()
+            timestamp: new Date().toLocaleString(),
+            _pending: true
         };
-        
+
         this.socialData.messageWall.unshift(wallMessage);
-        if (this.socialData.messageWall.length > 10) {
-            this.socialData.messageWall = this.socialData.messageWall.slice(0, 10);
+        if (this.socialData.messageWall.length > 20) {
+            this.socialData.messageWall = this.socialData.messageWall.slice(0, 20);
         }
-        
         this.saveSocialData();
+
+        const body = {
+            message: trimmed,
+            nickname: this.socialData.userNickname,
+            building_id: buildingId,
+            audio_key: audioData ? audioData.key : '',
+            emotion
+        };
+        const apiUrl = (window.Config && Config.resolveUrl)
+            ? Config.resolveUrl('/api/messages') : '/api/messages';
+        return fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+            .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+            .then(record => {
+                wallMessage.id = record.id;
+                wallMessage._pending = false;
+                wallMessage.serverTimestamp = record.timestamp;
+                this.saveSocialData();
+                // 失效该建筑缓存
+                if (buildingId) {
+                    delete this.serverCache.messagesByBuilding[buildingId];
+                    this.serverCache.stats = null;
+                }
+                return record;
+            })
+            .catch(err => {
+                console.warn('addMessageToWall: server post failed, kept local pending', err);
+                return null;
+            });
+    },
+
+    loadServerMessages(buildingId, limit) {
+        const id = buildingId || '';
+        const cacheKey = id || '__all__';
+        const cached = this.serverCache.messagesByBuilding[cacheKey];
+        if (cached && (Date.now() - cached.at) < 30000) {
+            return Promise.resolve(cached.data);
+        }
+        const params = new URLSearchParams();
+        if (id) params.set('building_id', id);
+        if (limit) params.set('limit', String(limit));
+        const path = '/api/messages' + (params.toString() ? '?' + params : '');
+        const apiUrl = (window.Config && Config.resolveUrl)
+            ? Config.resolveUrl(path) : path;
+        return fetch(apiUrl)
+            .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+            .then(j => {
+                const data = j.messages || [];
+                this.serverCache.messagesByBuilding[cacheKey] = { at: Date.now(), data };
+                return data;
+            })
+            .catch(err => {
+                console.warn('loadServerMessages failed', err);
+                return [];
+            });
+    },
+
+    getMessagesStats(force) {
+        if (!force && this.serverCache.stats && (Date.now() - this.serverCache.statsAt) < 30000) {
+            return Promise.resolve(this.serverCache.stats);
+        }
+        const apiUrl = (window.Config && Config.resolveUrl)
+            ? Config.resolveUrl('/api/messages/stats') : '/api/messages/stats';
+        return fetch(apiUrl)
+            .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+            .then(stats => {
+                this.serverCache.stats = stats || {};
+                this.serverCache.statsAt = Date.now();
+                return this.serverCache.stats;
+            })
+            .catch(err => {
+                console.warn('getMessagesStats failed', err);
+                return {};
+            });
     },
 
     updateEmotionRanking(buildingId, emotionType) {
@@ -291,5 +383,14 @@ const Storage = {
         this.userMarkers = [];
         localStorage.removeItem('userMarkers');
         localStorage.removeItem('mapMarkers');
+        this.serverCache = { stats: null, statsAt: 0, messagesByBuilding: {} };
+        const apiUrl = (window.Config && Config.resolveUrl)
+            ? Config.resolveUrl('/api/messages') : '/api/messages';
+        fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'X-API-Key': (window.Config && Config.apiKey) || 'default_api_key'
+            }
+        }).catch(err => console.warn('Server messages reset failed', err));
     }
 };

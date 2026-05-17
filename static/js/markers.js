@@ -73,89 +73,83 @@ Object.assign(App, {
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         `;
 
-        let content = '';
+        const emotionTag = this.getBuildingEmotionTag(buildingId);
+        const hiddenBadge = (showPuzzle && displayEvent && displayEvent.hidden)
+            ? '<span style="background: linear-gradient(135deg, #d4af37, #f4d35e); color: #1b263b; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px;">🎭 隐藏彩蛋</span>'
+            : '';
+        const audioFile = (showPuzzle && displayEvent) ? this.getAudioFileByPattern(displayEvent.audioPattern) : '';
+        const audioAnswerName = audioFile
+            ? audioFile.split('/').pop().replace(/\.[^.]+$/, '').replace(/^default_/, '')
+            : '';
+        const titleText = (showPuzzle && displayEvent) ? displayEvent.title : building.name;
 
-        if (showPuzzle && displayEvent) {
-            const emotionTag = this.getBuildingEmotionTag(buildingId);
-            const hiddenBadge = displayEvent.hidden ? '<span style="background: linear-gradient(135deg, #d4af37, #f4d35e); color: #1b263b; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px;">🎭 隐藏彩蛋</span>' : '';
-            const audioFile = this.getAudioFileByPattern(displayEvent.audioPattern);
-            const audioAnswerName = audioFile ? audioFile.split('/').pop().replace(/\.[^.]+$/, '') : '';
-
-            content = `
-                <div style="text-align: center;">
-                    <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--gold); margin-bottom: 15px;">
-                    <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${displayEvent.title}${hiddenBadge}</h3>
-                    <div style="color: #e0e0e0; line-height: 1.8; margin-bottom: 15px; text-align: left; white-space: pre-line;">${displayEvent.description}</div>
-                    <div style="margin-top: 15px; padding: 12px; background: rgba(181, 87, 59, 0.08); border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0;">
-                        <p style="margin: 0 0 10px 0; font-size: 12px; color: #f4d35e;">🎵 声音谜题（不可删除）</p>
-                        <button id="puzzlePlayBtn" style="
-                            background: linear-gradient(135deg, #1a6b3a, #2d9e5f);
-                            color: #fff;
-                            border: none;
-                            padding: 8px 20px;
-                            border-radius: 4px;
-                            cursor: pointer;
-                            font-size: 14px;
-                            margin-bottom: 10px;
-                        ">▶ 播放音频</button>
-                        <div id="puzzleGuessArea" style="display: none; margin-top: 10px;">
-                            <p style="margin: 0 0 8px 0; font-size: 13px; color: #e0e0e0;">你猜这是什么声音？</p>
-                            <input id="puzzleGuessInput" type="text" placeholder="输入你的猜测..." style="
-                                width: 100%;
-                                box-sizing: border-box;
-                                padding: 7px 10px;
-                                border-radius: 4px;
-                                border: 1px solid var(--gold);
-                                background: rgba(255,255,255,0.08);
-                                color: #f5f0e1;
-                                font-size: 13px;
-                                margin-bottom: 8px;
-                            ">
-                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 4px;">
-                                <button id="puzzleRevealBtn" style="
-                                    background: rgba(212, 175, 55, 0.15);
-                                    color: #f4d35e;
-                                    border: 1px solid var(--gold);
-                                    padding: 6px 14px;
-                                    border-radius: 4px;
-                                    cursor: pointer;
-                                    font-size: 12px;
-                                ">显示答案</button>
-                                <span id="puzzleAnswer" style="
-                                    font-size: 13px;
-                                    color: #f4d35e;
-                                    font-weight: bold;
-                                    letter-spacing: 1px;
-                                    display: none;
-                                ">答案：${audioAnswerName}</span>
-                            </div>
-                        </div>
+        const puzzleBlock = (showPuzzle && displayEvent) ? `
+            <div style="margin-top: 15px; padding: 12px; background: rgba(181, 87, 59, 0.08); border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0;">
+                <p style="margin: 0 0 10px 0; font-size: 12px; color: #f4d35e;">🎵 声音谜题（不可删除）</p>
+                <button id="puzzlePlayBtn" style="
+                    background: linear-gradient(135deg, #1a6b3a, #2d9e5f);
+                    color: #fff; border: none; padding: 8px 20px;
+                    border-radius: 4px; cursor: pointer; font-size: 14px; margin-bottom: 10px;
+                ">▶ 播放音频</button>
+                <div id="puzzleGuessArea" style="display: none; margin-top: 10px;">
+                    <p style="margin: 0 0 8px 0; font-size: 13px; color: #e0e0e0;">你猜这是什么声音？</p>
+                    <input id="puzzleGuessInput" type="text" placeholder="输入你的猜测..." style="
+                        width: 100%; box-sizing: border-box; padding: 7px 10px;
+                        border-radius: 4px; border: 1px solid var(--gold);
+                        background: rgba(255,255,255,0.08); color: #f5f0e1;
+                        font-size: 13px; margin-bottom: 8px;">
+                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 4px;">
+                        <button id="puzzleRevealBtn" style="
+                            background: rgba(212, 175, 55, 0.15); color: #f4d35e;
+                            border: 1px solid var(--gold); padding: 6px 14px;
+                            border-radius: 4px; cursor: pointer; font-size: 12px;
+                        ">显示答案</button>
+                        <span id="puzzleAnswer" style="
+                            font-size: 13px; color: #f4d35e; font-weight: bold;
+                            letter-spacing: 1px; display: none;
+                        ">答案：${audioAnswerName}</span>
                     </div>
-                    ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
-                        <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
-                    </div>` : ''}
-                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--gold), var(--gold-light));">📝 参与答题</button>' : ''}
-                    <button id="closeBuildingInfo" style="margin-top: 15px;">关闭</button>
                 </div>
-            `;
-        } else {
-            const emotionTag = this.getBuildingEmotionTag(buildingId);
-            content = `
-                <div style="text-align: center;">
-                    <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--gold); margin-bottom: 15px;">
-                    <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${building.name}</h3>
-                    <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 15px;">${building.description || ''}</p>
-                    ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
-                        <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${emotionTag}</p>
-                    </div>` : ''}
-                    ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--gold), var(--gold-light));">📝 参与答题</button>' : ''}
-                    <button id="closeBuildingInfo" style="margin-top: 10px;">关闭</button>
-                </div>
-            `;
+            </div>` : '';
+
+        const descriptionText = (showPuzzle && displayEvent) ? displayEvent.description : (building.description || '');
+        const descriptionBlock = descriptionText
+            ? `<div style="color: #e0e0e0; line-height: 1.8; margin: 15px 0; text-align: left; white-space: pre-line;">${this.escapeHtml(descriptionText)}</div>`
+            : '';
+
+        const communityBlock = `
+            <div class="fj-bldg-voices" data-building-id="${buildingId}" style="margin: 12px 0 16px;">
+                <div class="fj-bldg-voices-head" data-state="loading">加载社区声音中…</div>
+                <div class="fj-bldg-voices-list"></div>
+                <button class="fj-bldg-voices-cta" id="addBuildingVoiceBtn">+ 留下你的声音</button>
+            </div>`;
+
+        popup.innerHTML = `
+            <div style="text-align: center;">
+                <img src="${building.image}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--gold); margin-bottom: 15px;">
+                <h3 style="font-family: var(--font-display); color: #f5f0e1; margin: 0 0 10px 0; letter-spacing: 2px;">${this.escapeHtml(titleText)}${hiddenBadge}</h3>
+                ${communityBlock}
+                ${puzzleBlock}
+                ${descriptionBlock}
+                ${emotionTag ? `<div style="margin-top: 10px; padding: 8px; background: rgba(255, 107, 155, 0.1); border-radius: 4px;">
+                    <p style="margin: 0; font-size: 12px; color: #FF6B9B;">${this.escapeHtml(emotionTag)}</p>
+                </div>` : ''}
+                ${quiz && !Storage.userProgress.completedQuizzes?.includes(quiz.id) ? '<button id="startQuizBtn" style="margin-top: 15px; background: linear-gradient(135deg, var(--gold), var(--gold-light));">📝 参与答题</button>' : ''}
+                <button id="closeBuildingInfo" style="margin-top: 15px;">关闭</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+        const addVoiceBtn = popup.querySelector('#addBuildingVoiceBtn');
+        if (addVoiceBtn) {
+            addVoiceBtn.onclick = () => {
+                if (typeof window.openSocialModal === 'function') {
+                    window.openSocialModal(buildingId);
+                }
+            };
         }
 
-        popup.innerHTML = content;
-        document.body.appendChild(popup);
+        this.loadBuildingCommunity(popup, buildingId);
 
         const puzzlePlayBtn = document.getElementById('puzzlePlayBtn');
         if (puzzlePlayBtn && displayEvent) {
@@ -275,6 +269,56 @@ Object.assign(App, {
         });
     },
 
+    escapeHtml(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+            { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+        ));
+    },
+
+    loadBuildingCommunity(popup, buildingId) {
+        const wrap = popup.querySelector('.fj-bldg-voices');
+        if (!wrap) return;
+        const head = wrap.querySelector('.fj-bldg-voices-head');
+        const list = wrap.querySelector('.fj-bldg-voices-list');
+
+        const renderEmpty = () => {
+            head.dataset.state = 'empty';
+            head.textContent = '还没有人在这里留下声音 · 你来当第一个';
+            list.innerHTML = '';
+        };
+
+        if (!(typeof Storage !== 'undefined' && Storage.loadServerMessages)) {
+            renderEmpty();
+            return;
+        }
+
+        Storage.loadServerMessages(buildingId, 3).then(msgs => {
+            const stats = (Storage.serverCache && Storage.serverCache.stats && Storage.serverCache.stats[buildingId])
+                || null;
+            const msgCount = stats ? stats.messages : msgs.length;
+            const recCount = stats ? stats.recordings : msgs.filter(m => m.audio_key).length;
+
+            if (!msgs.length && !msgCount) {
+                renderEmpty();
+                return;
+            }
+
+            head.dataset.state = 'ready';
+            const parts = [];
+            if (recCount) parts.push(`${recCount} 段录音`);
+            if (msgCount) parts.push(`${msgCount} 条留言`);
+            head.textContent = '★ ' + (parts.join(' · ') || '声音') + '留在这里';
+
+            list.innerHTML = msgs.slice(0, 3).map(m => {
+                const ts = m.timestamp ? new Date(m.timestamp).toLocaleDateString() : '';
+                return `<div class="fj-bldg-voice-card">
+                    <div class="fj-bldg-voice-text">"${this.escapeHtml(m.message)}"</div>
+                    <div class="fj-bldg-voice-meta">— ${this.escapeHtml(m.nickname || '探索者')} ${this.escapeHtml(ts)}</div>
+                </div>`;
+            }).join('');
+        });
+    },
+
     getBuildingEmotionTag(buildingId) {
         const emotionTags = {
             'qizhen_lake': '大家觉得这里最让人：治愈 😍',
@@ -360,6 +404,7 @@ Object.assign(App, {
             console.error('Failed to save markers:', e);
             alert('保存标记失败，可能是存储空间不足');
         }
+        if (this.refreshHeaderStats) this.refreshHeaderStats();
     },
 
     loadMarkers() {

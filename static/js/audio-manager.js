@@ -528,6 +528,9 @@ Object.assign(App, {
         const formData = new FormData();
         formData.append('audio', this.elements.audioFileInput.files[0]);
         formData.append('filename', audioName);
+        const uploadModal = document.getElementById('uploadModal');
+        const buildingId = (uploadModal && uploadModal.dataset.buildingId) || '';
+        if (buildingId) formData.append('building_id', buildingId);
 
         try {
             this.elements.uploadButton.disabled = true;

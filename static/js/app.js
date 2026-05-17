@@ -65,6 +65,12 @@ const App = {
 
         this.showAllBuildingMarkers();
 
+        if (window.Markers && Markers.refreshStats) {
+            Markers.refreshStats();
+        }
+
+        if (this.refreshHeaderStats) this.refreshHeaderStats();
+
         const hasVisited = localStorage.getItem('hasVisitedBefore');
         if (!hasVisited) {
             this.showWelcomeOverlay();
@@ -149,6 +155,10 @@ const App = {
         });
 
         document.addEventListener('keydown', (e) => {
+            const t = e.target;
+            const tag = t && t.tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || (t && t.isContentEditable)) return;
+            if (document.querySelector('.modal[style*="display: flex"], .modal[style*="display: block"], #building-info-popup')) return;
             if (e.key.toLowerCase() === 'n') {
                 this.handleKeyPress(e);
             } else if (e.key === 'Backspace') {
@@ -193,6 +203,39 @@ const App = {
             this.elements.resetButton.addEventListener('click', () => {
                 if (confirm('确定要清除所有标记吗？')) {
                     this.clearAllMarkers();
+                }
+            });
+        }
+
+        const compass = document.querySelector('.map-compass');
+        if (compass) {
+            const PAN_PX = 220;
+            const panByDirection = (dx, dy) => {
+                if (this.state.map) this.state.map.panBy([dx, dy], { animate: true });
+            };
+            const handleCompassClick = (clientX, clientY) => {
+                const rect = compass.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = clientX - cx;
+                const dy = clientY - cy;
+                // Closer to center than half-radius → reset view.
+                if (Math.hypot(dx, dy) < rect.width * 0.18) {
+                    this.state.map.fitBounds([[0, 0], [1000, 1000]]);
+                    return;
+                }
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    panByDirection(dx > 0 ? PAN_PX : -PAN_PX, 0);
+                } else {
+                    panByDirection(0, dy > 0 ? PAN_PX : -PAN_PX);
+                }
+            };
+            compass.addEventListener('click', (e) => handleCompassClick(e.clientX, e.clientY));
+            compass.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const rect = compass.getBoundingClientRect();
+                    handleCompassClick(rect.left + rect.width / 2, rect.top);
                 }
             });
         }

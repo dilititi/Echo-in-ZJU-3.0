@@ -13,6 +13,44 @@
 (function () {
   if (typeof App === 'undefined') return;
 
+  // 模块级密度统计（{ buildingId: {messages, recordings, last_at} }）
+  const Markers = window.Markers || (window.Markers = {});
+  Markers._stats = Markers._stats || {};
+
+  function renderBadge(buildingId) {
+    const s = Markers._stats[buildingId];
+    if (!s) return '';
+    const total = (s.messages || 0) + (s.recordings || 0);
+    if (!total) return '';
+    return `<span class="fj-marker-badge">· ${total}</span>`;
+  }
+
+  Markers.applyBadge = function (buildingId) {
+    if (!App.state || !App.state.buildingMarkers) return;
+    const marker = App.state.buildingMarkers[buildingId];
+    if (!marker || !marker._icon) return;
+    const root = marker._icon.querySelector('.fj-bm');
+    if (!root) return;
+    const existing = root.querySelector('.fj-marker-badge');
+    if (existing) existing.remove();
+    const html = renderBadge(buildingId);
+    if (html) root.insertAdjacentHTML('beforeend', html);
+  };
+
+  Markers.applyAllBadges = function () {
+    if (!App.state || !App.state.buildingMarkers) return;
+    Object.keys(App.state.buildingMarkers).forEach(id => Markers.applyBadge(id));
+  };
+
+  Markers.refreshStats = function () {
+    if (!(typeof Storage !== 'undefined' && Storage.getMessagesStats)) return Promise.resolve({});
+    return Storage.getMessagesStats(true).then(stats => {
+      Markers._stats = stats || {};
+      Markers.applyAllBadges();
+      return Markers._stats;
+    });
+  };
+
   // Field Journal palette — matches --c-* CSS vars in main.css.
   // Read from computed style so dark/light mode is respected at pin creation time.
   function getTypeColor(type) {
@@ -107,6 +145,7 @@
 
   App.createBuildingMarker = function (buildingId, building) {
     const SIZE = 110;
+    const badgeHtml = renderBadge(buildingId);
     const icon = L.divIcon({
       className: 'building-marker fj-building-marker',
       html: `
@@ -125,6 +164,7 @@
                 inset 0 0 0 4px #c4a878,
                 0 3px 12px rgba(42,35,23,.18);
           "></div>
+          ${badgeHtml}
           <div style="
               position:absolute; left:-2px; bottom:-22px; right:-2px;
               text-align:center;
@@ -165,7 +205,11 @@
     marker.buildingId = buildingId;
     marker.buildingData = building;
 
-    marker.on('click', () => { this.showBuildingInfo(buildingId, building); });
+    marker.on('click', () => {
+      const el = marker.getElement();
+      if (el) el.classList.remove('recommended-highlight');
+      this.showBuildingInfo(buildingId, building);
+    });
     marker.on('mouseover', function () {
       const el = this.getElement().querySelector('.fj-bm');
       if (el) el.style.transform = 'scale(1.06) rotate(-1deg)';

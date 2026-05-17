@@ -1,12 +1,17 @@
 """存储管理模块"""
 import os
 import glob
+import json
+import time
+import uuid
 import logging
 import oss2
 from config import (
     OSS_ACCESS_KEY_ID, OSS_ACCESS_KEY_SECRET, OSS_BUCKET_NAME, OSS_ENDPOINT,
     LOCAL_STORAGE_DIR, DEFAULT_AUDIO_DIR, ALLOWED_AUDIO_EXTENSIONS
 )
+
+MESSAGES_PREFIX = 'messages/'
 
 logger = logging.getLogger(__name__)
 
@@ -384,6 +389,126 @@ class StorageManager:
                     logger.error(f'Failed to upload soundtrack {oss_key}: {str(e)}')
 
         logger.info(f'Soundtrack init done, uploaded {upload_count} files')
+
+    # ===== 留言持久化 =====
+    def save_message(self, payload):
+        """保存一条留言到 messages/<uuid>.json，返回 id 或 None"""
+        msg_id = uuid.uuid4().hex
+        record = {
+            'id': msg_id,
+            'building_id': payload.get('building_id') or '',
+            'nickname': payload.get('nickname') or '探索者',
+            'message': payload.get('message') or '',
+            'audio_key': payload.get('audio_key') or '',
+            'emotion': payload.get('emotion') or '',
+            'timestamp': int(time.time() * 1000),
+        }
+        ok = (self._local_save_message(record) if self.use_local_fallback
+              else self._oss_save_message(record))
+        return record if ok else None
+
+    def list_messages(self, building_id=None, limit=None):
+        """列出留言，按 timestamp 倒序"""
+        records = (self._local_list_messages() if self.use_local_fallback
+                   else self._oss_list_messages())
+        if building_id:
+            records = [r for r in records if r.get('building_id') == building_id]
+        records.sort(key=lambda r: r.get('timestamp', 0), reverse=True)
+        if limit:
+            records = records[:limit]
+        return records
+
+    def messages_stats(self):
+        """聚合 {building_id: {messages, recordings, last_at}}"""
+        records = (self._local_list_messages() if self.use_local_fallback
+                   else self._oss_list_messages())
+        stats = {}
+        for r in records:
+            bid = r.get('building_id') or ''
+            if not bid:
+                continue
+            s = stats.setdefault(bid, {'messages': 0, 'recordings': 0, 'last_at': 0})
+            s['messages'] += 1
+            if r.get('audio_key'):
+                s['recordings'] += 1
+            ts = r.get('timestamp', 0)
+            if ts > s['last_at']:
+                s['last_at'] = ts
+        return stats
+
+    def delete_all_messages(self):
+        """清空所有留言（reset 用）"""
+        try:
+            if self.use_local_fallback:
+                dirp = os.path.join(LOCAL_STORAGE_DIR, 'messages')
+                if os.path.isdir(dirp):
+                    for f in os.listdir(dirp):
+                        if f.endswith('.json'):
+                            try:
+                                os.remove(os.path.join(dirp, f))
+                            except Exception as e:
+                                logger.warning(f'Failed to delete {f}: {e}')
+            else:
+                keys = [obj.key for obj in oss2.ObjectIterator(self.bucket, prefix=MESSAGES_PREFIX)]
+                for i in range(0, len(keys), 100):
+                    self.bucket.batch_delete_objects(keys[i:i+100])
+            return True
+        except Exception as e:
+            logger.error(f'Error in delete_all_messages: {e}')
+            return False
+
+    def _local_save_message(self, record):
+        try:
+            dirp = os.path.join(LOCAL_STORAGE_DIR, 'messages')
+            os.makedirs(dirp, exist_ok=True)
+            fp = os.path.join(dirp, f"{record['id']}.json")
+            with open(fp, 'w', encoding='utf-8') as f:
+                json.dump(record, f, ensure_ascii=False)
+            return True
+        except Exception as e:
+            logger.error(f'Local save_message error: {e}')
+            return False
+
+    def _local_list_messages(self):
+        results = []
+        dirp = os.path.join(LOCAL_STORAGE_DIR, 'messages')
+        if not os.path.isdir(dirp):
+            return results
+        for fname in os.listdir(dirp):
+            if not fname.endswith('.json'):
+                continue
+            try:
+                with open(os.path.join(dirp, fname), 'r', encoding='utf-8') as f:
+                    results.append(json.load(f))
+            except Exception as e:
+                logger.warning(f'Skipping unreadable message {fname}: {e}')
+        return results
+
+    def _oss_save_message(self, record):
+        try:
+            key = f"{MESSAGES_PREFIX}{record['id']}.json"
+            body = json.dumps(record, ensure_ascii=False).encode('utf-8')
+            self.bucket.put_object(key, body)
+            return True
+        except Exception as e:
+            logger.error(f'OSS save_message error: {e}')
+            return False
+
+    def _oss_list_messages(self):
+        results = []
+        try:
+            for obj in oss2.ObjectIterator(self.bucket, prefix=MESSAGES_PREFIX):
+                if not obj.key.endswith('.json'):
+                    continue
+                try:
+                    raw = self.bucket.get_object(obj.key).read()
+                    results.append(json.loads(raw.decode('utf-8')))
+                except Exception as e:
+                    logger.warning(f'Skipping unreadable OSS message {obj.key}: {e}')
+        except Exception as e:
+            logger.error(f'OSS list_messages error: {e}')
+        return results
+
 
 # 全局存储管理器实例
 storage_manager = StorageManager()

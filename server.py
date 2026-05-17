@@ -192,6 +192,82 @@ def upload_audio():
         logger.error(f'Error in upload_audio: {str(e)}')
         return jsonify({'error': 'Internal server error'}), 500
 
+@app.route('/api/messages', methods=['POST'])
+@rate_limit
+def post_message():
+    """提交一条建筑留言（可选携带录音 key）"""
+    try:
+        data = request.get_json(silent=True) or {}
+        message = (data.get('message') or '').strip()
+        if not message:
+            return jsonify({'error': 'message required'}), 400
+        if len(message) > 140:
+            return jsonify({'error': 'message too long'}), 400
+        nickname = (data.get('nickname') or '探索者').strip()[:12]
+        building_id = (data.get('building_id') or '').strip()
+        audio_key = (data.get('audio_key') or '').strip()
+        emotion = (data.get('emotion') or '').strip()[:20]
+
+        if audio_key and not validate_audio_key(audio_key):
+            return jsonify({'error': 'invalid audio_key'}), 400
+
+        record = storage_manager.save_message({
+            'message': message,
+            'nickname': nickname,
+            'building_id': building_id,
+            'audio_key': audio_key,
+            'emotion': emotion,
+        })
+        if not record:
+            return jsonify({'error': 'Failed to save message'}), 500
+        return jsonify(record)
+    except Exception as e:
+        logger.error(f'Error in post_message: {e}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/api/messages', methods=['GET'])
+@rate_limit
+def list_messages():
+    """获取建筑留言列表"""
+    try:
+        building_id = request.args.get('building_id', '').strip() or None
+        try:
+            limit = int(request.args.get('limit', '20'))
+        except ValueError:
+            limit = 20
+        limit = max(1, min(limit, 100))
+        records = storage_manager.list_messages(building_id=building_id, limit=limit)
+        return jsonify({'messages': records})
+    except Exception as e:
+        logger.error(f'Error in list_messages: {e}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/api/messages/stats', methods=['GET'])
+@rate_limit
+def messages_stats():
+    """聚合每栋建筑的留言/录音统计"""
+    try:
+        return jsonify(storage_manager.messages_stats())
+    except Exception as e:
+        logger.error(f'Error in messages_stats: {e}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/api/messages', methods=['DELETE'])
+@require_auth
+@rate_limit
+def delete_all_messages():
+    """清空所有留言（重置全部数据用）"""
+    try:
+        ok = storage_manager.delete_all_messages()
+        return jsonify({'ok': bool(ok)})
+    except Exception as e:
+        logger.error(f'Error in delete_all_messages: {e}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
 @app.route('/audio/<path:oss_key>')
 @rate_limit
 def get_audio(oss_key):

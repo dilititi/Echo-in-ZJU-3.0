@@ -124,32 +124,37 @@ Object.assign(App, {
         infoDiv.id = 'level-info';
         infoDiv.style.cssText = `
             position: fixed;
-            top: 20px;
+            top: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
-            border: 2px solid var(--gold);
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            background: var(--bg-card);
+            border: 1px solid var(--text-light);
+            padding: 22px 30px 20px;
+            box-shadow: var(--paper-frame);
             z-index: 4000;
             text-align: center;
             max-width: 480px;
-            color: #f5f0e1;
+            color: var(--text-light);
+            font-family: var(--font-body);
         `;
         infoDiv.innerHTML = `
-            <h3 style="margin:0 0 8px 0;color:var(--gold);font-family:var(--font-display);letter-spacing:2px;">
-                第 ${level.id} 关：${level.title}
-            </h3>
-            <p style="margin:0 0 10px 0;color:#ccc;font-size:13px;">${level.description}</p>
-            <div style="background:rgba(181,87,59,0.08);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 6px 6px 0;text-align:left;margin-bottom:12px;">
-                <p style="margin:0 0 4px 0;font-size:12px;color:#f4d35e;">🎯 本关目标</p>
-                <p style="margin:0;font-size:13px;font-weight:bold;color:#f5f0e1;">${level.target}</p>
+            <div style="font-size:9.5px;letter-spacing:2.6px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;">
+                Chapter ${level.id} of ${Data.levels.length}
             </div>
-            ${guide.action ? `<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:10px 14px;text-align:left;margin-bottom:12px;">
-                <p style="margin:0;font-size:13px;color:#e0e0e0;">${guide.icon} <strong>操作：</strong>${guide.action}</p>
+            <h3 style="margin:0 0 8px 0;color:var(--text-light);font-family:var(--font-display);font-style:italic;font-weight:500;font-size:22px;letter-spacing:.3px;">
+                第 ${level.id} 关 · ${level.title}
+            </h3>
+            <p style="margin:0 0 14px 0;color:var(--text-soft);font-size:13px;line-height:1.6;">${level.description}</p>
+            <div style="background:var(--bg-card-alt);border-left:2px solid var(--gold);padding:10px 14px;text-align:left;margin-bottom:12px;">
+                <p style="margin:0 0 3px 0;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);font-weight:600;">本关目标 · Goal</p>
+                <p style="margin:0;font-size:13px;color:var(--text-light);font-family:var(--font-display);font-style:italic;">${level.target}</p>
+            </div>
+            ${guide.action ? `<div style="border:1px dashed var(--paper-edge);padding:10px 14px;text-align:left;margin-bottom:14px;">
+                <p style="margin:0;font-size:12.5px;color:var(--text-soft);line-height:1.55;">${guide.icon} <strong style="color:var(--text-light);">操作：</strong>${guide.action}</p>
             </div>` : ''}
-            <button id="closeLevelInfoBtn" style="padding:8px 24px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--bg-card);border:none;cursor:pointer;font-weight:bold;font-size:13px;">知道了</button>
+            <button id="closeLevelInfoBtn" style="padding:9px 26px;background:var(--bg-card);color:var(--text-light);border:1px solid var(--text-light);font-family:var(--font-body);font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:600;cursor:pointer;transition:background .2s,color .2s;"
+                onmouseover="this.style.background='var(--text-light)';this.style.color='var(--bg-card)';"
+                onmouseout="this.style.background='var(--bg-card)';this.style.color='var(--text-light)';">知道了 · Got it</button>
         `;
         document.body.appendChild(infoDiv);
 
@@ -439,6 +444,7 @@ Object.assign(App, {
 
         Storage.saveUserProgress();
         this.unlockLayersByLevel(currentLevel.id);
+        if (this.refreshHeaderStats) this.refreshHeaderStats();
         this.showLevelCompleteModal(currentLevel);
         this.state.isCompletingLevel = false;
     },

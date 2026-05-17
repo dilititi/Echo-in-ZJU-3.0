@@ -854,19 +854,27 @@ button.loading::before { content: '⟳ '; display: inline-block; animation: spin
 }
 
 /* ─── Marker animations ────────────────────────────────── */
-.recommended-highlight {
-    animation: recommendPulse 2.2s ease-in-out infinite !important;
+/* IMPORTANT: animate the INNER element, never the Leaflet icon root.
+   The root carries `transform: translate3d(x,y,0)` for map positioning,
+   and a keyframe `transform: scale(...)` would replace it — markers
+   would visually detach from their lat/lng after a pan and become
+   unclickable / appear to "snap to center". */
+.recommended-highlight .fj-bm,
+.recommended-highlight .building-marker-container {
+    animation: recommendPulse 2.2s ease-in-out infinite;
 }
 @keyframes recommendPulse {
     0%,100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(181,87,59,.5)); }
     50%     { transform: scale(1.18); filter: drop-shadow(0 0 16px rgba(181,87,59,.9)); }
 }
-.playing-marker { animation: playingPulse 1.1s ease-in-out infinite; }
+.playing-marker .fj-bm,
+.playing-marker .building-marker-container { animation: playingPulse 1.1s ease-in-out infinite; }
 @keyframes playingPulse {
     0%,100% { transform: scale(1); }
     50%     { transform: scale(1.22); filter: drop-shadow(0 0 12px var(--gold)); }
 }
-.selection-highlight { animation: selPulse .6s ease-in-out infinite alternate; }
+.selection-highlight .fj-bm,
+.selection-highlight .building-marker-container { animation: selPulse .6s ease-in-out infinite alternate; }
 @keyframes selPulse {
     0%   { transform: scale(1); filter: drop-shadow(0 0 10px var(--success)); }
     100% { transform: scale(1.12); filter: drop-shadow(0 0 18px var(--success)); }
@@ -931,8 +939,15 @@ button.loading::before { content: '⟳ '; display: inline-block; animation: spin
     border: 1px solid var(--text-light);
     box-shadow: var(--paper-lift);
     display: grid; place-items: center;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
 }
+.map-compass:hover {
+    transform: scale(1.06);
+    box-shadow: var(--paper-frame);
+}
+.map-compass:active { transform: scale(.96); }
 .map-compass svg { display: block; }
 .map-compass .compass-ring,
 .map-compass .compass-ring-dashed { stroke: var(--text-light); }

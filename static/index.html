@@ -94,7 +94,7 @@
         <!-- Map -->
         <section class="fj-map-section">
             <div id="map">
-                <div class="map-compass" aria-hidden="true">
+                <div class="map-compass" role="button" tabindex="0" title="点击 N/E/S/W 方位向该方向平移地图">
                     <svg viewBox="-40 -40 80 80" width="64" height="64">
                         <circle class="compass-ring"        r="34" fill="none" stroke-width="1"/>
                         <circle class="compass-ring-dashed" r="28" fill="none" stroke-width=".5" stroke-dasharray="2 3"/>
@@ -451,15 +451,15 @@
 </div>
 
 <!-- Social -->
-<div id="socialModal" class="modal">
+<div id="socialModal" class="modal" data-building-id="">
     <div class="modal-content" style="max-width:560px;">
         <button class="modal-close" data-close="socialModal">&times;</button>
         <h2>💬 声音社区</h2>
         <hr>
-        <p style="font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;">📢 声音留言墙</p>
+        <p id="socialModalScopeLabel" style="font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;">📢 声音留言墙</p>
         <div id="soundWallList"></div>
         <div style="display:flex;gap:8px;margin-top:8px;">
-            <input type="text" id="wallMessageInput" placeholder="留下你的声音故事…" maxlength="120" style="margin:0;flex:1;">
+            <input type="text" id="wallMessageInput" placeholder="留下你的声音故事…" maxlength="140" style="margin:0;flex:1;">
             <button id="postWallMessage" class="btn-primary" style="margin:0;padding:9px 16px;white-space:nowrap;">发布</button>
         </div>
         <hr style="margin:18px 0 14px;">
@@ -570,6 +570,7 @@
 <script src="js/markers.js"></script>
 <script src="js/markers-patch.js"></script>
 <script src="js/level-system.js"></script>
+<script src="js/guide-system.js"></script>
 <script src="js/audio-manager.js"></script>
 <script src="js/sound-explore.js"></script>
 <script src="js/coordinate_system.js"></script>
@@ -639,7 +640,10 @@ moreDrawer.querySelectorAll('.fj-drawer-item:not(.layer-btn)').forEach(btn => {
 /* ---------------- Toolbar wiring (drawer items reuse legacy IDs) ---------------- */
 document.getElementById('helpBtn').addEventListener('click', () => openModal('helpModal'));
 document.getElementById('socialBtn').addEventListener('click', () => {
+    const m = document.getElementById('socialModal');
+    if (m) m.dataset.buildingId = '';
     openModal('socialModal');
+    if (typeof window.renderWall === 'function') window.renderWall();
     if (typeof App !== 'undefined' && App.refreshSocialUI) App.refreshSocialUI();
 });
 document.getElementById('soundJourneyBtn').addEventListener('click', () => {
@@ -802,6 +806,7 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
 (function () {
     const input   = document.getElementById('nicknameInput');
     const counter = document.getElementById('nicknameCounter');
+    let pendingAfterNickname = null;
 
     input?.addEventListener('input', () => {
         const len = input.value.length;
@@ -817,30 +822,100 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
             localStorage.setItem('zju_map_nickname_v1', val);
         }
         closeModal('nicknameModal');
+        const next = pendingAfterNickname;
+        pendingAfterNickname = null;
+        if (typeof next === 'function') next();
     }
 
+    function cancelNickname() {
+        closeModal('nicknameModal');
+        pendingAfterNickname = null;
+    }
+
+    window.requireNickname = function (callback) {
+        const hasName = !!localStorage.getItem('zju_map_nickname_v1');
+        if (hasName) { callback(); return; }
+        pendingAfterNickname = callback;
+        if (input) input.value = '';
+        if (counter) { counter.textContent = '0 / 12'; counter.className = 'char-counter'; }
+        openModal('nicknameModal');
+        setTimeout(() => input?.focus(), 60);
+    };
+
     document.getElementById('saveNicknameBtn').addEventListener('click', saveNickname);
-    document.getElementById('cancelNicknameBtn').addEventListener('click', () => closeModal('nicknameModal'));
+    document.getElementById('cancelNicknameBtn').addEventListener('click', cancelNickname);
     onEnter('nicknameInput', saveNickname);
 })();
 
 /* ---------------- Sound wall (Enter + post) ---------------- */
 (function () {
+    function escapeHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, c => (
+            { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+        ));
+    }
+
+    function getScopeBuildingId() {
+        const modal = document.getElementById('socialModal');
+        return (modal && modal.dataset.buildingId) || '';
+    }
+
+    function getBuildingName(buildingId) {
+        if (!buildingId || typeof Data === 'undefined' || !Data.buildings) return '';
+        return (Data.buildings[buildingId] && Data.buildings[buildingId].name) || '';
+    }
+
     function renderWall() {
         const list = document.getElementById('soundWallList');
         if (!list) return;
-        const messages = (typeof Storage !== 'undefined' && Storage.socialData) ? Storage.socialData.messageWall : [];
-        if (!messages.length) {
-            list.innerHTML = '<p style="opacity:.5;font-size:12px;margin:6px 0;">还没有留言，来第一个吧～</p>';
-            return;
+        const buildingId = getScopeBuildingId();
+        const scopeLabel = document.getElementById('socialModalScopeLabel');
+        if (scopeLabel) {
+            const name = getBuildingName(buildingId);
+            scopeLabel.textContent = name
+                ? `📢 ${name} · 留下你的声音`
+                : '📢 声音留言墙';
         }
-        list.innerHTML = messages.map(m =>
-            `<div style="padding:6px 0;border-bottom:1px solid rgba(212,175,55,.15);">
-                <span style="color:var(--gold);font-size:11px;">${m.nickname || '匿名'}</span>
-                <span style="opacity:.4;font-size:10px;margin-left:6px;">${m.timestamp}</span>
-                <div style="margin-top:2px;font-size:12px;">${m.message}</div>
-            </div>`
-        ).join('');
+
+        const renderList = (messages) => {
+            if (!messages.length) {
+                list.innerHTML = '<p style="opacity:.5;font-size:12px;margin:6px 0;">还没有留言，来第一个吧～</p>';
+                return;
+            }
+            list.innerHTML = messages.map(m => {
+                const nickname = escapeHtml(m.nickname || '匿名');
+                const ts = escapeHtml(m.timestamp || formatTs(m.timestamp));
+                const text = escapeHtml(m.message);
+                return `<div style="padding:6px 0;border-bottom:1px solid rgba(212,175,55,.15);">
+                    <span style="color:var(--gold);font-size:11px;">${nickname}</span>
+                    <span style="opacity:.4;font-size:10px;margin-left:6px;">${ts}</span>
+                    <div style="margin-top:2px;font-size:12px;">${text}</div>
+                </div>`;
+            }).join('');
+        };
+
+        if (buildingId && typeof Storage !== 'undefined' && Storage.loadServerMessages) {
+            list.innerHTML = '<p style="opacity:.4;font-size:12px;margin:6px 0;">加载留言中…</p>';
+            Storage.loadServerMessages(buildingId, 30).then(serverMsgs => {
+                const localPending = (Storage.socialData?.messageWall || [])
+                    .filter(m => m._pending && m.buildingId === buildingId);
+                const normalized = serverMsgs.map(m => ({
+                    nickname: m.nickname,
+                    message: m.message,
+                    timestamp: formatTs(m.timestamp)
+                }));
+                renderList(localPending.concat(normalized));
+            });
+        } else {
+            const messages = (typeof Storage !== 'undefined' && Storage.socialData) ? Storage.socialData.messageWall : [];
+            renderList(messages);
+        }
+    }
+
+    function formatTs(ts) {
+        if (!ts) return '';
+        if (typeof ts === 'string') return ts;
+        try { return new Date(ts).toLocaleString(); } catch (e) { return ''; }
     }
 
     function postMessage() {
@@ -848,7 +923,8 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
         const msg   = input?.value.trim();
         if (!msg) return;
         if (typeof Storage !== 'undefined' && Storage.addMessageToWall) {
-            Storage.addMessageToWall(msg);
+            const buildingId = getScopeBuildingId();
+            const promise = Storage.addMessageToWall(msg, null, { buildingId });
             input.value = '';
             renderWall();
             const btn = document.getElementById('postWallMessage');
@@ -856,8 +932,32 @@ document.querySelectorAll('input[name="iconSource"]').forEach(radio => {
             btn.textContent = '✓ 已发布';
             btn.disabled = true;
             setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1500);
+            if (promise && promise.then) {
+                promise.then(() => {
+                    renderWall();
+                    if (buildingId && typeof Markers !== 'undefined' && Markers.refreshStats) {
+                        Markers.refreshStats();
+                    }
+                });
+            }
         }
     }
+
+    window.openSocialModal = function (buildingId) {
+        const proceed = () => {
+            const modal = document.getElementById('socialModal');
+            if (modal) modal.dataset.buildingId = buildingId || '';
+            if (typeof openModal === 'function') openModal('socialModal');
+            renderWall();
+        };
+        if (typeof window.requireNickname === 'function') {
+            window.requireNickname(proceed);
+        } else {
+            proceed();
+        }
+    };
+
+    window.renderWall = renderWall;
 
     document.getElementById('postWallMessage').addEventListener('click', postMessage);
     onEnter('wallMessageInput', postMessage);

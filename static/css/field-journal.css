@@ -633,7 +633,7 @@ body {
     color: var(--bg-card) !important;
 }
 #puzzleAnswer {
-    color: var(--gold-dark) !important;
+    color: var(--text-light) !important;
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 600;
@@ -1047,4 +1047,93 @@ body {
     .fj-stats { font-size: 9.5px; gap: 10px; }
     .fj-stats .stat-num { font-size: 14px; }
     .fj-title { font-size: 18px; }
+}
+
+/* ============================================================
+   Community voices on building popup + marker density badge
+   ============================================================ */
+.fj-bldg-voices {
+    text-align: left;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--paper-edge);
+    padding: 12px 14px;
+}
+.fj-bldg-voices-head {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--gold-dark) !important;
+    margin-bottom: 8px;
+}
+.fj-bldg-voices-head[data-state="empty"] {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.4px;
+    color: var(--paper-edge-dark) !important;
+}
+.fj-bldg-voices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.fj-bldg-voice-card {
+    border-left: 2px solid var(--gold);
+    padding: 4px 0 4px 10px;
+}
+.fj-bldg-voice-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--text-light) !important;
+    line-height: 1.5 !important;
+}
+.fj-bldg-voice-meta {
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    color: var(--paper-edge-dark) !important;
+    letter-spacing: .3px;
+    margin-top: 2px;
+}
+.fj-bldg-voices-cta {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--gold) !important;
+    color: var(--gold-dark) !important;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background .2s ease, color .2s ease;
+    width: 100%;
+}
+.fj-bldg-voices-cta:hover {
+    background: var(--gold) !important;
+    color: var(--bg-card) !important;
+}
+
+/* Density badge on top-right of building marker (paper stamp) */
+.fj-marker-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    line-height: 22px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--gold-dark);
+    background: var(--bg-card);
+    border: 1px solid var(--text-light);
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(42,35,23,.25);
+    pointer-events: none;
+    white-space: nowrap;
 }
