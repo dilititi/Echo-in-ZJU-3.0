@@ -261,6 +261,25 @@ Object.assign(App, {
                     Storage.saveUserProgress();
                 }
 
+                // solvedBuildings records buildings whose puzzle was attempted (right or wrong);
+                // the illustrated reveal triggers on attempt, not on success.
+                if (!Storage.userProgress.solvedBuildings) {
+                    Storage.userProgress.solvedBuildings = [];
+                }
+                let newlySolved = false;
+                if (quiz.buildingId && !Storage.userProgress.solvedBuildings.includes(quiz.buildingId)) {
+                    Storage.userProgress.solvedBuildings.push(quiz.buildingId);
+                    Storage.saveUserProgress();
+                    newlySolved = true;
+                }
+
+                if (window.AnimationSystem && quiz.buildingId) {
+                    window.AnimationSystem.playAt(quiz.buildingId, { result: isCorrect ? 'correct' : 'wrong' });
+                }
+                if (newlySolved && window.IllustratedLayer && window.IllustratedLayer.render) {
+                    window.IllustratedLayer.render();
+                }
+
                 document.getElementById('closeQuizBtn').onclick = () => {
                     popup.remove();
                     this.stopAreaAmbientSound();

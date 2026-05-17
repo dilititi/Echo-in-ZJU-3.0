@@ -213,6 +213,7 @@
     <div class="fj-drawer-group">
         <h5>视图 · View</h5>
         <button class="fj-drawer-item layer-btn active" data-layer="default"><span class="ico">📜</span>纸本默认</button>
+        <button class="fj-drawer-item layer-btn" data-layer="illustrated"><span class="ico">🎨</span>插画图层</button>
         <button class="fj-drawer-item layer-btn" data-layer="satellite"><span class="ico">🛰️</span>卫星地图</button>
         <button class="fj-drawer-item" id="view3DBtn" onclick="switchTo3D()"><span class="ico">🏙️</span>3D 校园</button>
     </div>
@@ -559,6 +560,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/data.js"></script>
 <script src="js/utils.js"></script>
@@ -576,6 +578,8 @@
 <script src="js/coordinate_system.js"></script>
 <script src="js/audio3d.js"></script>
 <script src="js/scene3d.js"></script>
+<script src="js/animation-system.js"></script>
+<script src="js/illustrated-layer.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/tests.js"></script>
 <script src="js/config-check.js"></script>
@@ -678,15 +682,16 @@ document.getElementById('confirmResetButton').addEventListener('click', () => {
 });
 
 /* ---------------- Layer buttons ----------------
-   The "default / satellite" toggle has no backing implementation yet —
-   the map uses a Leaflet CRS.Simple image layout, not tile sources.
-   Keep selection visual but surface a toast so the affordance is honest. */
+   default      → 纸本底图（默认），关闭插画图层
+   illustrated  → 在纸本上叠加渐进式手绘插画（IllustratedLayer）
+   satellite    → 占位 toast（CRS.Simple 不支持真卫星瓦片） */
 document.querySelectorAll('.fj-drawer-item.layer-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.fj-drawer-item.layer-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const layer = btn.dataset.layer;
-        if (layer !== 'default') {
+        if (window.IllustratedLayer) IllustratedLayer.setVisible(layer === 'illustrated');
+        if (layer === 'satellite') {
             const status = document.getElementById('recordingStatus');
             if (status) {
                 status.textContent = '🛰️ 该底图模式尚未开放';
