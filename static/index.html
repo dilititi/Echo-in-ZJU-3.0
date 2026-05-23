@@ -697,10 +697,7 @@ function toggleSatelliteLayer(visible) {
     if (visible && !App.state.satelliteOverlay) {
         App.state.satelliteOverlay = L.imageOverlay(
             'assets/紫金港卫星地图.png',
-            [
-                [30.29752, 120.06529],   // 西南角 [south, west]
-                [30.31317, 120.08756],   // 东北角 [north, east]
-            ]
+            [[0, 0], [1000, 1000]]
         );
     }
     const ov = App.state.satelliteOverlay;
