@@ -47,6 +47,20 @@
       offsetX + (cLng - minLng) * cosLat * scale,
     ];
   }
+
+  // Apply force-directed spread offsets so 120×120 marker thumbnails don't
+  // overlap in dense clusters (especially the 6-building agricultural blob).
+  // Offsets are precomputed in scripts/force_spread_markers.py; opt out with
+  // ?spread=0 in the URL when you need raw centroid positions.
+  const spread = window.MarkerSpreadOffsets;
+  const params = new URLSearchParams(window.location.search);
+  if (spread && params.get('spread') !== '0') {
+    for (const [id, b] of Object.entries(Data.buildings)) {
+      const off = spread[id];
+      if (!off || !Array.isArray(b.position)) continue;
+      b.position = [b.position[0] + off[0], b.position[1] + off[1]];
+    }
+  }
 })();
 
 App.init();
