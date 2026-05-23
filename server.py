@@ -289,13 +289,13 @@ def serve_local_audio(file_path):
     try:
         # 构建可能的文件路径
         local_storage_path = os.path.join(LOCAL_STORAGE_DIR, file_path)
-        default_audio_path = os.path.join(os.path.dirname(__file__), 'audio', 'default_audio', file_path)
-        
+        default_audio_path = os.path.join(DEFAULT_AUDIO_DIR, file_path)
+
         # 记录路径信息
         logger.info(f'Requested file path: {file_path}')
         logger.info(f'Local storage path: {local_storage_path}')
         logger.info(f'Default audio path: {default_audio_path}')
-        
+
         # 选择存在的文件路径
         if os.path.exists(local_storage_path):
             actual_path = local_storage_path
@@ -303,9 +303,9 @@ def serve_local_audio(file_path):
             actual_path = default_audio_path
         else:
             return jsonify({'error': 'File not found'}), 404
-        
+
         # 安全检查，防止路径遍历
-        if not (actual_path.startswith(LOCAL_STORAGE_DIR) or actual_path.startswith(os.path.join(os.path.dirname(__file__), 'audio', 'default_audio'))):
+        if not (actual_path.startswith(LOCAL_STORAGE_DIR) or actual_path.startswith(DEFAULT_AUDIO_DIR)):
             return jsonify({'error': 'Access denied'}), 403
         
         # 检查文件类型
@@ -357,9 +357,8 @@ def serve_default_audio(filename):
             return Response(stream_with_context(generate()),
                             mimetype=mime, headers=headers)
 
-        default_audio_path = os.path.join(os.path.dirname(__file__), 'audio', 'default_audio')
         try:
-            return send_from_directory(default_audio_path, filename)
+            return send_from_directory(DEFAULT_AUDIO_DIR, filename)
         except NotFound:
             return jsonify({'error': 'File not found'}), 404
     except Exception as e:

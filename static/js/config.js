@@ -1,6 +1,6 @@
 // 站点配置。
 // serverUrl: 当页面通过 http(s) 加载时同源；通过 file:// 加载时回退到本地后端
-// 端口（默认 10000，可通过 ?api=http://host:port 覆盖）。
+// 端口（默认 8081，可通过 ?api=http://host:port 覆盖）。
 (function () {
     const origin = window.location.origin;
     const isHttp = typeof origin === 'string' && /^https?:/.test(origin);
@@ -9,7 +9,7 @@
     const params = new URLSearchParams(window.location.search);
     const override = params.get('api');
 
-    const serverUrl = override || (isHttp ? origin : 'http://127.0.0.1:10000');
+    const serverUrl = override || (isHttp ? origin : 'http://127.0.0.1:8081');
 
     window.Config = {
         serverUrl,

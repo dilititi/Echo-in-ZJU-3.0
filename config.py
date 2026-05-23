@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(24))
 
 # 本地存储配置
 LOCAL_STORAGE_DIR = os.path.join(os.path.dirname(__file__), 'local_storage')
-DEFAULT_AUDIO_DIR = os.path.join(os.path.dirname(__file__), 'audio', 'default_audio')
+DEFAULT_AUDIO_DIR = os.path.join(os.path.dirname(__file__), 'static', 'default_audio')
 
 # 服务器配置
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'

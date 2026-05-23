@@ -32,7 +32,7 @@ Object.assign(App, {
 
         const markerType = Data.markerTypes[this.state.selectedType];
         if (!markerType) {
-            setStatus('✎ 请先在侧栏 Markers 卡片选择一个标记类型');
+            setStatus('✎ 请重新选择标记类型，再点击地图落点');
             return;
         }
 
@@ -106,6 +106,18 @@ Object.assign(App, {
         if (Storage.userProgress.currentLevel === 2) {
             this.completeLevel();
         }
+
+        this.clearSelectedType();
+    },
+
+    clearSelectedType() {
+        this.state.selectedType = null;
+        document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+        document.querySelectorAll('.fj-marker-cell').forEach(c => {
+            c.classList.remove('selected');
+            c.classList.add('dimmed');
+        });
+        Storage.saveUserState(null, this.state.selectedAudio);
     },
 
     updateAudioList(forceRefresh = false) {

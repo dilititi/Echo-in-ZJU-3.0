@@ -57,10 +57,10 @@ const App = {
         Data.puzzleEvents = Storage.loadEventReactions(Data.puzzleEvents);
 
         this.parseShareLink();
-        this.loadMarkers();
         this.updateAudioList();
 
         this.initMap();
+        this.loadMarkers();
         this.initEventListeners();
 
         this.showAllBuildingMarkers();

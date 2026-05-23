@@ -221,6 +221,14 @@ body {
     color: var(--bg-card) !important;
     border-color: var(--text-light) !important;
 }
+.fj-marker-cell.dimmed {
+    opacity: 0.35;
+    transition: opacity var(--t), transform var(--t);
+}
+.fj-marker-cell.dimmed:hover {
+    opacity: 0.65;
+    transform: none;
+}
 .fj-marker-cell .ic { font-size: 17px; line-height: 1; }
 .fj-marker-cell .lb {
     font-size: 8.5px; letter-spacing: 1.4px;
